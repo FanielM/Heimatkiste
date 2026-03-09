@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heimatkiste | Bauernportal</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+    <link rel="stylesheet" href="farmer.css">
+</head>
+<body>
+
+<header>
+    <a href="index.html" class="logo"><i class='bx bxs-map-pin'></i>Heimatkiste</a>
+    <span>Erzeuger-Dashboard</span>
+</header>
+
+<div class="container">
+    <h1>Neues Produkt anbieten</h1>
+
+    <form id="add-product-form">
+        <div class="upload-container">
+            <label for="product-img" class="upload-box" id="drop-area">
+                <i class='bx bx-cloud-upload'></i>
+                <p>Produktbild hochladen</p>
+                <img id="img-preview" src="" alt="Vorschau" style="display:none;">
+            </label>
+            <input type="file" id="product-img" accept="image/*" hidden>
+        </div>
+
+        <div class="input-group">
+            <input type="text" id="product-name" placeholder="Produktname (z.B. Bio-Heidelbeeren)" required>
+            <input type="text" id="farmer-name" placeholder="Dein Hofname" required>
+        </div>
+
+        <div class="input-group">
+            <input type="number" id="product-price" step="0.01" placeholder="Preis in €" required>
+            <select id="product-category" required>
+                <option value="">Kategorie wählen</option>
+                <option value="Obst">Obst</option>
+                <option value="Gemüse">Gemüse</option>
+                <option value="Fleisch">Fleisch</option>
+                <option value="Milchprodukte">Milchprodukte</option>
+                <option value="Eier & Honig">Eier & Honig</option>
+            </select>
+        </div>
+
+        <textarea id="product-desc" rows="4" placeholder="Beschreibe dein Produkt"></textarea>
+        <button type="submit" class="btn">Produkt veröffentlichen</button>
+    </form>
+
+    <section class="products-list">
+        <h2>Deine aktiven Angebote</h2>
+        <div id="farmer-inventory"></div>
+    </section>
+</div>
+
+<script src="farmer-logic.js"></script>
+
+</body>
+</html>
