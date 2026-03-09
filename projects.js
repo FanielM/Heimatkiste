@@ -42,4 +42,81 @@ const defaultProducts = [
     }
 ];
 
+// --- GLOBAL VERFÜGBAR MACHEN ---
 window.products = defaultProducts;
+
+// --- PRODUKTE RENDERN ---
+window.renderProducts = function(filter = 'Alle') {
+    const container = document.getElementById('products-grid');
+    if (!container) return;
+
+    // Farmer-Produkte aus LocalStorage laden
+    let farmerProducts = [];
+    try {
+        const localData = JSON.parse(localStorage.getItem('farmerProducts')) || [];
+        farmerProducts = localData.map(p => ({
+            title: p.name || "Unbenannt",
+            price: parseFloat(String(p.price).replace(',', '.')) || 0,
+            farmer: p.farmer || "Lokaler Hof",
+            category: p.category || "Allgemein",
+            img: p.img || "https://via.placeholder.com/400",
+            desc: p.desc || ""
+        }));
+    } catch (e) {
+        console.warn("LocalStorage konnte nicht gelesen werden.");
+    }
+
+    const allProducts = [...window.products, ...farmerProducts];
+
+    // Filter anwenden
+    const filtered = (filter === 'Alle' || filter === 'Alle zeigen') 
+        ? allProducts 
+        : allProducts.filter(p => p.category === filter);
+
+    // HTML erzeugen
+    if (filtered.length === 0) {
+        container.innerHTML = '<p class="empty-msg">Aktuell keine Produkte in dieser Kategorie verfügbar.</p>';
+    } else {
+        container.innerHTML = filtered.map(p => `
+            <a href="products-detail.html?title=${encodeURIComponent(p.title)}" class="box">
+                <div class="farmer-tag"><i class='bx bxs-store-alt'></i> ${p.farmer}</div>
+                <img src="${p.img}" alt="${p.title}">
+                <h2>${p.title}</h2>
+                <p class="product-desc">${p.desc}</p>
+                <h3 class="preis">${p.price.toFixed(2).replace('.', ',')}€</h3>
+                <div class="box-icons">
+                    <i class='bx bx-cart-alt' onclick="addToCart('${p.title}', ${p.price}); event.stopPropagation();"></i>
+                    <i class='bx bx-heart' onclick="toggleFavorite('${p.title}'); event.stopPropagation();"></i>
+                </div>
+            </a>
+        `).join('');
+    }
+
+    // Kategorie-Zähler updaten
+    updateCategoryCounts(allProducts);
+};
+
+// --- KATEGORIE-ZÄHLER ---
+window.updateCategoryCounts = function(allProducts) {
+    const categories = ['Frisch vom Feld','Obst','Gemüse','Milchprodukte','Eier & Honig','Fleisch'];
+
+    // Gesamtanzahl
+    const totalCount = allProducts.length;
+    const allCountElement = document.getElementById('count-Alle');
+    if (allCountElement) allCountElement.innerText = `${totalCount} Produkte`;
+
+    categories.forEach(cat => {
+        const count = allProducts.filter(p => p.category === cat).length;
+        const element = document.getElementById(`count-${cat}`);
+        if (element) {
+            element.innerText = `${count} ${count === 1 ? 'Produkt' : 'Produkte'}`;
+        }
+    });
+};
+
+// --- AUTOMATISCH RENDERN ---
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => window.renderProducts());
+} else {
+    window.renderProducts();
+}
