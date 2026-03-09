@@ -74,4 +74,35 @@ if(document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => renderProducts());
 } else {
     renderProducts();
+}function renderProducts(category) {
+    const grid = document.getElementById('products-grid');
+    if (!grid) return;
+
+    // 1. Filtern der Produkte
+    const filtered = category === 'Alle' 
+        ? window.products 
+        : window.products.filter(p => p.category === category);
+
+    // 2. Grid leeren
+    grid.innerHTML = '';
+
+    // 3. Prüfen, ob Produkte gefunden wurden
+    if (filtered.length === 0) {
+        grid.innerHTML = '<p class="empty-msg">Aktuell keine Produkte in dieser Kategorie verfügbar.</p>';
+        return;
+    }
+
+    // 4. Produkte anzeigen
+    filtered.forEach(p => {
+        const card = `
+            <div class="product-box">
+                <img src="${p.img}" alt="${p.title}">
+                <h3>${p.title}</h3>
+                <p>${p.farmer}</p>
+                <span class="price">${p.price.toFixed(2)}€</span>
+                <i class='bx bx-shopping-bag' onclick="addToCart('${p.title}')"></i>
+            </div>
+        `;
+        grid.insertAdjacentHTML('beforeend', card);
+    });
 }
