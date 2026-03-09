@@ -214,3 +214,58 @@ function addToCart(title) {
 
 // Initial alle Produkte anzeigen
 renderProducts("Alle");
+// Container für Produkte
+const productContainer = document.getElementById("products-grid"); 
+
+// Produkte anzeigen
+function renderProducts(category = "Alle") {
+  productContainer.innerHTML = ""; // Inhalt löschen
+
+  let filtered = products;
+
+  if (category !== "Alle") {
+    filtered = products.filter(p => p.category === category);
+  }
+
+  if (filtered.length === 0) {
+    productContainer.innerHTML = "<p class='empty-msg'>Keine Produkte verfügbar...</p>";
+    return;
+  }
+
+  filtered.forEach(p => {
+    const card = document.createElement("div");
+    card.className = "product-card";
+
+    card.innerHTML = `
+      <img src="${p.img}" alt="${p.title}">
+      <h3>${p.title}</h3>
+      <p>${p.price.toFixed(2)} €</p>
+      <p>${p.farmer}</p>
+      <button onclick="addToCart('${p.title}')">Kaufen</button>
+    `;
+
+    productContainer.appendChild(card);
+  });
+
+  updateCategoryCounts();
+}
+
+// Kategorie‑Zähler
+function updateCategoryCounts() {
+  const categories = ["Obst", "Gemüse", "Milchprodukte", "Alle"];
+  categories.forEach(cat => {
+    const count = cat === "Alle"
+      ? products.length
+      : products.filter(p => p.category === cat).length;
+    const el = document.getElementById(`count-${cat}`);
+    if (el) el.textContent = `${count} Produkte`;
+  });
+}
+
+// Warenkorb ✨ (vorerst Alert)
+function addToCart(title) {
+  alert(`"${title}" wurde zum Warenkorb hinzugefügt!`);
+}
+
+// Seite starten
+renderProducts("Alle");
