@@ -1,139 +1,122 @@
-<!DOCTYPE html>
-<html lang="de">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Heimatkiste | Regionaler Marktplatz</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
-    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
+// --- STANDARD PRODUKTE ---
+const defaultProducts = [
+    { 
+        title: "Bio-Äpfel (Elstar)", 
+        price: 2.80, 
+        farmer: "Obsthof Meyer", 
+        category: "Frisch vom Feld", 
+        img: "https://images.unsplash.com/photo-1560806887-1e4cd0b6bcd6?w=400",
+        desc: "Knackige Bio-Äpfel aus der Region. Ideal für Snacks oder Kuchen. Frei von Pestiziden, frisch vom Baum."
+    },
+    { 
+        title: "Heumilch", 
+        price: 1.45, 
+        farmer: "Hof Sonnenschein", 
+        category: "Milchprodukte", 
+        img: "https://images.unsplash.com/photo-1550583724-125581f77833?w=400",
+        desc: "Frische Heumilch von glücklichen Kühen. Voller Geschmack, direkt vom Bauernhof in deine Küche."
+    },
+    { 
+        title: "Freiland-Eier (10er)", 
+        price: 3.90, 
+        farmer: "Geflügelhof Weber", 
+        category: "Eier & Honig", 
+        img: "https://images.unsplash.com/photo-1582284540020-8acbe03f4924?w=400",
+        desc: "Frische Freiland-Eier aus regionaler Haltung. Perfekt für Frühstück, Backen oder kreative Rezepte."
+    },
+    { 
+        title: "Bunte Karotten", 
+        price: 1.90, 
+        farmer: "Gemüsebau Lang", 
+        category: "Frisch vom Feld", 
+        img: "https://images.unsplash.com/photo-1598170845058-32b9d6a5da37?w=400",
+        desc: "Süße, knackige Karotten direkt vom Feld in deine Küche."
+    },
+    { 
+        title: "Waldhonig (500g)", 
+        price: 6.50, 
+        farmer: "Imkerei Schmidt", 
+        category: "Eier & Honig", 
+        img: "https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=400",
+        desc: "Naturbelassener Waldhonig aus nachhaltiger Imkerei. Perfekt zum Süßen und Verwöhnen."
+    }
+];
 
-<header>
-    <a href="index.html" class="logo"><i class='bx bxs-map-pin'></i>Heimatkiste</a>
-    <ul class="navbar">
-        <li><a href="#home">Start</a></li>
-        <li><a href="#categories">Kategorien</a></li>
-        <li><a href="#produkte">Marktplatz</a></li>
-        <li><a href="#about">Über uns</a></li>
-    </ul>
-    <div class="header-icons">
-        <a href="farmer.html" class="btn-farmer">Für Bauern</a>
-        <div class="cart-icon" id="cart-btn">
-            <i class='bx bx-shopping-bag'></i>
-            <span id="cart-count">0</span>
-        </div>
-        <div class="favorites-icon" id="favorites-btn">
-            <i class='bx bx-star'></i>
-            <span id="favorites-count">0</span>
-        </div>
-        <i class='bx bx-menu' id="menu-icon"></i>
-    </div>
-</header>
+// --- GLOBAL VERFÜGBAR MACHEN ---
+window.products = defaultProducts;
 
-<section class="home swiper" id="home">
-    <div class="swiper-wrapper">
-        <div class="swiper-slide container">
-            <div class="home-text">
-                <span>Direkt & Fair</span>
-                <h1>Dein digitaler <br>Hofladen der Region</h1>
-                <p>Unterstütze lokale Erzeuger und genieße frische Produkte ohne Zwischenhändler.</p>
-                <div class="home-btns">
-                    <a href="#produkte" class="btn">Marktplatz</a>
-                    <a href="#about" class="btn-alt">Unsere Vision</a>
+// --- PRODUKTE RENDERN ---
+window.renderProducts = function(filter = 'Alle') {
+    const container = document.getElementById('products-grid');
+    if (!container) return;
+
+    // Farmer-Produkte aus LocalStorage laden
+    let farmerProducts = [];
+    try {
+        const localData = JSON.parse(localStorage.getItem('farmerProducts')) || [];
+        farmerProducts = localData.map(p => ({
+            title: p.name || "Unbenannt",
+            price: parseFloat(String(p.price).replace(',', '.')) || 0,
+            farmer: p.farmer || "Lokaler Hof",
+            category: p.category || "Allgemein",
+            img: p.img || "https://via.placeholder.com/400",
+            desc: p.desc || ""
+        }));
+    } catch (e) {
+        console.warn("LocalStorage konnte nicht gelesen werden.");
+    }
+
+    const allProducts = [...window.products, ...farmerProducts];
+
+    // Filter anwenden
+    const filtered = (filter === 'Alle' || filter === 'Alle zeigen') 
+        ? allProducts 
+        : allProducts.filter(p => p.category === filter);
+
+    // HTML erzeugen
+    if (filtered.length === 0) {
+        container.innerHTML = '<p class="empty-msg">Aktuell keine Produkte in dieser Kategorie verfügbar.</p>';
+    } else {
+        container.innerHTML = filtered.map(p => `
+            <a href="products-detail.html?title=${encodeURIComponent(p.title)}" class="box">
+                <div class="farmer-tag"><i class='bx bxs-store-alt'></i> ${p.farmer}</div>
+                <img src="${p.img}" alt="${p.title}">
+                <h2>${p.title}</h2>
+                <p class="product-desc">${p.desc}</p>
+                <h3 class="preis">${p.price.toFixed(2).replace('.', ',')}€</h3>
+                <div class="box-icons">
+                    <i class='bx bx-cart-alt' onclick="addToCart('${p.title}', ${p.price}); event.stopPropagation();"></i>
+                    <i class='bx bx-heart' onclick="toggleFavorite('${p.title}'); event.stopPropagation();"></i>
                 </div>
-            </div>
-            <div class="home-img">
-                <img src="https://images.unsplash.com/photo-1595113316349-9fa4ee24f884?auto=format&fit=crop&w=800&q=80" alt="Bauer">
-            </div>
-        </div>
-    </div>
-    <div class="swiper-pagination"></div>
-</section>
+            </a>
+        `).join('');
+    }
 
-<section class="categories" id="categories">
-    <div class="heading"><h1>Was suchst du heute?</h1></div>
-    <div class="categories-container">
-        <div class="box" onclick="renderProducts('Frisch vom Feld')">
-            <img src="https://images.unsplash.com/photo-1610832958506-aa56368176cf?w=400" alt="Frisch vom Feld">
-            <h2>Frisch vom Feld</h2>
-            <span class="count" id="count-Frisch vom Feld">0 Produkte</span>
-        </div>
-        <div class="box" onclick="renderProducts('Obst')">
-            <img src="https://images.unsplash.com/photo-1610832958506-aa56368176cf?w=400" alt="Obst">
-            <h2>Obst</h2>
-            <span class="count" id="count-Obst">0 Produkte</span>
-        </div>
-        <div class="box" onclick="renderProducts('Gemüse')">
-            <img src="https://images.unsplash.com/photo-1597362868423-3b1ad00dc9bb?w=400" alt="Gemüse">
-            <h2>Gemüse</h2>
-            <span class="count" id="count-Gemüse">0 Produkte</span>
-        </div>
-        <div class="box" onclick="renderProducts('Milchprodukte')">
-            <img src="https://images.unsplash.com/photo-1528750955925-53f58e2c31a9?w=400" alt="Milchprodukte">
-            <h2>Milchprodukte</h2>
-            <span class="count" id="count-Milchprodukte">0 Produkte</span>
-        </div>
-        <div class="box" onclick="renderProducts('Eier & Honig')">
-            <img src="https://images.unsplash.com/photo-1582284540020-8acbe03f4924?w=400" alt="Eier & Honig">
-            <h2>Eier & Honig</h2>
-            <span class="count" id="count-Eier & Honig">0 Produkte</span>
-        </div>
-        <div class="box" onclick="renderProducts('Alle')">
-            <div style="font-size: 3rem; color: #3cb815; text-align: center;"><i class='bx bx-grid-alt'></i></div>
-            <h2>Alle zeigen</h2>
-            <span class="count" id="count-Alle">0 Produkte</span>
-        </div>
-    </div>
-</section>
+    // Kategorie-Zähler updaten
+    updateCategoryCounts(allProducts);
+};
 
-<section class="produkte" id="produkte">
-    <div class="heading">
-        <h1>Frisch vom Feld</h1>
-    </div>
-    <div id="products-grid" class="produkte-container">
-        <p class="empty-msg">Keine Produkte verfügbar...</p>
-    </div>
-</section>
+// --- KATEGORIE-ZÄHLER ---
+window.updateCategoryCounts = function(allProducts) {
+    const categories = ['Frisch vom Feld','Obst','Gemüse','Milchprodukte','Eier & Honig','Fleisch'];
 
-<section class="about" id="about">
-    <div class="about-container">
-        <div class="about-img">
-            <img src="https://images.unsplash.com/photo-1500651230702-0e2d8a49d4ad?w=800" alt="Unser Hof">
-        </div>
-        <div class="about-text">
-            <span>Über uns</span>
-            <h2>Frische, die verbindet</h2>
-            <p>Heimatkiste ist dein digitaler Hofladen. Wir bringen Erzeuger und Genießer direkt zusammen.</p>
-            <p>Jeder Kauf unterstützt die Landwirtschaft in deiner Region und schont das Klima durch kurze Wege.</p>
-            <a href="farmer.html" class="btn">Partner werden</a>
-        </div>
-    </div>
-</section>
+    // Gesamtanzahl
+    const totalCount = allProducts.length;
+    const allCountElement = document.getElementById('count-Alle');
+    if (allCountElement) allCountElement.innerText = `${totalCount} Produkte`;
 
-<footer>
-    <div class="footer-container">
-        <div class="footer-box">
-            <a href="#" class="logo"><i class='bx bxs-map-pin'></i>Heimatkiste</a>
-            <p>Dein Marktplatz für nachhaltigen Genuss.</p>
-            <div class="social">
-                <a href="#"><i class='bx bxl-instagram'></i></a>
-                <a href="#"><i class='bx bxl-facebook'></i></a>
-            </div>
-        </div>
-        <div class="footer-box">
-            <h3>Kontakt</h3>
-            <p><i class='bx bx-envelope'></i> hallo@heimatkiste.de</p>
-            <p><i class='bx bx-phone'></i> +49 123 45678</p>
-            <p><i class='bx bx-map'></i> Musterstadt, Deutschland</p>
-        </div>
-    </div>
-    <div class="copyright"><p>&#169; 2026 Heimatkiste - Regionaler Marktplatz</p></div>
-</footer>
+    categories.forEach(cat => {
+        const count = allProducts.filter(p => p.category === cat).length;
+        const element = document.getElementById(`count-${cat}`);
+        if (element) {
+            element.innerText = `${count} ${count === 1 ? 'Produkt' : 'Produkte'}`;
+        }
+    });
+};
 
-<script src="products.js"></script>
-<script src="main.js"></script>
-</body>
-</html>
+// --- AUTOMATISCH RENDERN ---
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => window.renderProducts());
+} else {
+    window.renderProducts();
+}
