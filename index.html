@@ -56,6 +56,11 @@
 <section class="categories" id="categories">
     <div class="heading"><h1>Was suchst du heute?</h1></div>
     <div class="categories-container">
+        <div class="box" onclick="renderProducts('Frisch vom Feld')">
+            <img src="https://images.unsplash.com/photo-1610832958506-aa56368176cf?w=400" alt="Frisch vom Feld">
+            <h2>Frisch vom Feld</h2>
+            <span class="count" id="count-Frisch vom Feld">0 Produkte</span>
+        </div>
         <div class="box" onclick="renderProducts('Obst')">
             <img src="https://images.unsplash.com/photo-1610832958506-aa56368176cf?w=400" alt="Obst">
             <h2>Obst</h2>
@@ -67,9 +72,14 @@
             <span class="count" id="count-Gemüse">0 Produkte</span>
         </div>
         <div class="box" onclick="renderProducts('Milchprodukte')">
-            <img src="https://images.unsplash.com/photo-1528750955925-53f58e2c31a9?w=400" alt="Milch">
-            <h2>Milch</h2>
+            <img src="https://images.unsplash.com/photo-1528750955925-53f58e2c31a9?w=400" alt="Milchprodukte">
+            <h2>Milchprodukte</h2>
             <span class="count" id="count-Milchprodukte">0 Produkte</span>
+        </div>
+        <div class="box" onclick="renderProducts('Eier & Honig')">
+            <img src="https://images.unsplash.com/photo-1582284540020-8acbe03f4924?w=400" alt="Eier & Honig">
+            <h2>Eier & Honig</h2>
+            <span class="count" id="count-Eier & Honig">0 Produkte</span>
         </div>
         <div class="box" onclick="renderProducts('Alle')">
             <div style="font-size: 3rem; color: #3cb815; text-align: center;"><i class='bx bx-grid-alt'></i></div>
@@ -77,8 +87,8 @@
             <span class="count" id="count-Alle">0 Produkte</span>
         </div>
     </div>
-</section>  
-<!-- PRODUKTE -->
+</section>
+
 <section class="produkte" id="produkte">
     <div class="heading">
         <h1>Frisch vom Feld</h1>
@@ -87,6 +97,7 @@
         <p class="empty-msg">Keine Produkte verfügbar...</p>
     </div>
 </section>
+
 <section class="about" id="about">
     <div class="about-container">
         <div class="about-img">
@@ -122,25 +133,7 @@
     <div class="copyright"><p>&#169; 2026 Heimatkiste - Regionaler Marktplatz</p></div>
 </footer>
 
-<div class="cart-sidebar" id="cart-sidebar">
-    <div class="cart-header"><h2>Deine Kiste</h2><i class='bx bx-x' id="close-cart"></i></div>
-    <div class="cart-content" id="cart-items-container"></div>
-    <div class="cart-footer">
-        <div class="total"><span>Gesamt:</span><span id="cart-total">0,00€</span></div>
-        <button class="checkout-btn">Zur Kasse</button>
-    </div>
-</div>
-<div class="cart-overlay" id="cart-overlay"></div>
-
-<div class="favorites-sidebar" id="favorites-sidebar">
-    <div class="header"><h2>Favoriten</h2><i class='bx bx-x' id="close-favorites"></i></div>
-    <div class="content" id="favorites-items-container"></div>
-</div>
-<div class="favorites-overlay" id="favorites-overlay"></div>
-
-<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 <script src="products.js"></script>
 <script src="main.js"></script>
-
 </body>
 </html>
