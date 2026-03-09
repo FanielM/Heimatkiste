@@ -1,108 +1,163 @@
-const container = document.getElementById('products-grid');
+// ==============================
+// 1️⃣ ELEMENTE SELEKTIEREN
+// ==============================
+const cartBtn = document.querySelector('#cart-btn');
+const cartSidebar = document.querySelector('#cart-sidebar');
+const cartOverlay = document.querySelector('#cart-overlay');
+const closeCart = document.querySelector('#close-cart');
 
-function renderProducts(filter = 'Alle') {
-    if (!container) return;
+const favBtn = document.querySelector('#favorites-btn');
+const favSidebar = document.querySelector('#favorites-sidebar');
+const favOverlay = document.querySelector('#favorites-overlay');
+const closeFav = document.querySelector('#close-favorites');
 
-    // Produkte aus LocalStorage
-    let farmerProducts = [];
-    try {
-        const localData = JSON.parse(localStorage.getItem('farmerProducts')) || [];
-        farmerProducts = localData.map(p => ({
-            title: p.name || "Unbenannt",
-            price: parseFloat(String(p.price).replace(',', '.')) || 0,
-            farmer: p.farmer || "Lokaler Hof",
-            category: p.category || "Allgemein",
-            img: p.img || "https://via.placeholder.com/400",
-            desc: p.desc || ""
-        }));
-    } catch(e) {
-        console.warn("LocalStorage konnte nicht gelesen werden.");
-    }
+const menuIcon = document.querySelector('#menu-icon');
+const navbar = document.querySelector('.navbar');
 
-    const allProducts = [...window.products, ...farmerProducts];
+const checkoutBtn = document.querySelector('.checkout-btn');
 
-    const filteredProducts = (filter === 'Alle' || filter === 'Alle zeigen') 
-        ? allProducts 
-        : allProducts.filter(p => p.category === filter);
+// ==============================
+// 2️⃣ SIDEBAR STEUERUNG
+// ==============================
 
-    if (filteredProducts.length === 0) {
-        container.innerHTML = '<p class="empty-msg">Aktuell keine Produkte in dieser Kategorie verfügbar.</p>';
-    } else {
-        container.innerHTML = filteredProducts.map(p => `
-            <a href="products-detail.html?title=${encodeURIComponent(p.title)}" class="box">
-                <div class="farmer-tag"><i class='bx bxs-store-alt'></i> ${p.farmer}</div>
-                <img src="${p.img}" alt="${p.title}">
-                <h2>${p.title}</h2>
-                <p class="product-desc">${p.desc}</p>
-                <h3 class="preis">${p.price.toFixed(2).replace('.', ',')}€</h3>
-                <div class="box-icons">
-                    <i class='bx bx-cart-alt' onclick="addToCart('${p.title}', ${p.price}); event.stopPropagation();"></i>
-                    <i class='bx bx-heart' onclick="toggleFavorite('${p.title}'); event.stopPropagation();"></i>
-                </div>
-            </a>
-        `).join('');
-    }
+// Warenkorb öffnen
+cartBtn.onclick = () => {
+    cartSidebar.classList.add('active');
+    cartOverlay.classList.add('active');
+};
 
-    updateCategoryCounts(allProducts);
+// Warenkorb schließen
+const hideCart = () => {
+    cartSidebar.classList.remove('active');
+    cartOverlay.classList.remove('active');
+};
+closeCart.onclick = hideCart;
+cartOverlay.onclick = hideCart;
+
+// Favoriten öffnen
+favBtn.onclick = () => {
+    favSidebar.classList.add('active');
+    favOverlay.classList.add('active');
+};
+
+// Favoriten schließen
+const hideFav = () => {
+    favSidebar.classList.remove('active');
+    favOverlay.classList.remove('active');
+};
+closeFav.onclick = hideFav;
+favOverlay.onclick = hideFav;
+
+// Mobile Menü
+if (menuIcon) {
+    menuIcon.onclick = () => navbar.classList.toggle('active');
 }
 
-function updateCategoryCounts(allProducts) {
-    const categories = ['Frisch vom Feld','Obst','Gemüse','Milchprodukte','Eier & Honig','Fleisch'];
-
-    const totalCount = allProducts.length;
-    const allCountElement = document.getElementById('count-Alle');
-    if(allCountElement) allCountElement.innerText = `${totalCount} Produkte`;
-
-    categories.forEach(cat => {
-        const count = allProducts.filter(p => p.category === cat).length;
-        const element = document.getElementById(`count-${cat}`);
-        if(element) element.innerText = `${count} ${count === 1 ? 'Produkt' : 'Produkte'}`;
+// ==============================
+// 3️⃣ SWIPER INITIALISIERUNG
+// ==============================
+if(document.querySelector('.home.swiper')) {
+    new Swiper(".home", {
+        spaceBetween: 30,
+        centeredSlides: true,
+        autoplay: { delay: 5000, disableOnInteraction: false },
+        pagination: { el: ".swiper-pagination", clickable: true },
     });
 }
 
-// Platzhalter-Funktionen
-function addToCart(title, price) {
-    alert(`"${title}" (${price.toFixed(2)}€) wurde in den Warenkorb gelegt!`);
-}
+// ==============================
+// 4️⃣ WARENKORB LOGIK
+// ==============================
+let cart = JSON.parse(localStorage.getItem('heimatkiste_cart')) || [];
 
-function toggleFavorite(title) {
-    alert(`"${title}" wurde zu deinen Favoriten hinzugefügt!`);
-}
+window.updateCartUI = () => {
+    const container = document.querySelector('#cart-items-container');
+    const totalElement = document.querySelector('#cart-total');
+    const countBadge = document.querySelector('#cart-count');
 
-// Automatisches Rendern beim Laden
-if(document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => renderProducts());
-} else {
-    renderProducts();
-}function renderProducts(category) {
-    const grid = document.getElementById('products-grid');
-    if (!grid) return;
+    countBadge.innerHTML = cart.length;
+    localStorage.setItem('heimatkiste_cart', JSON.stringify(cart));
 
-    // 1. Filtern der Produkte
-    const filtered = category === 'Alle' 
-        ? window.products 
-        : window.products.filter(p => p.category === category);
-
-    // 2. Grid leeren
-    grid.innerHTML = '';
-
-    // 3. Prüfen, ob Produkte gefunden wurden
-    if (filtered.length === 0) {
-        grid.innerHTML = '<p class="empty-msg">Aktuell keine Produkte in dieser Kategorie verfügbar.</p>';
+    if (cart.length === 0) {
+        container.innerHTML = '<p class="empty-msg">Deine Kiste ist leer...</p>';
+        totalElement.innerHTML = '0,00€';
         return;
     }
 
-    // 4. Produkte anzeigen
-    filtered.forEach(p => {
-        const card = `
-            <div class="product-box">
-                <img src="${p.img}" alt="${p.title}">
-                <h3>${p.title}</h3>
-                <p>${p.farmer}</p>
-                <span class="price">${p.price.toFixed(2)}€</span>
-                <i class='bx bx-shopping-bag' onclick="addToCart('${p.title}')"></i>
+    container.innerHTML = cart.map((item, index) => `
+        <div class="cart-item" style="display:flex; justify-content:space-between; align-items:center; padding:10px; border-bottom:1px solid #eee;">
+            <div>
+                <h4 style="font-size:0.9rem; margin:0;">${item.title}</h4>
+                <span style="color:#3cb815; font-weight:600;">${item.price.toFixed(2).replace('.', ',')}€</span>
             </div>
-        `;
-        grid.insertAdjacentHTML('beforeend', card);
-    });
+            <i class='bx bx-trash' style="cursor:pointer; color:#ff4d4d; font-size:1.2rem;" onclick="removeFromCart(${index})"></i>
+        </div>
+    `).join('');
+
+    const total = cart.reduce((sum, item) => sum + item.price, 0);
+    totalElement.innerHTML = total.toFixed(2).replace('.', ',') + '€';
+};
+
+window.addToCart = (title, price) => {
+    cart.push({ title, price: parseFloat(price) });
+    updateCartUI();
+    cartSidebar.classList.add('active');
+    cartOverlay.classList.add('active');
+};
+
+window.removeFromCart = (index) => {
+    cart.splice(index, 1);
+    updateCartUI();
+};
+
+// Checkout
+if(checkoutBtn){
+    checkoutBtn.onclick = () => {
+        if(cart.length === 0){
+            alert("Deine Kiste ist noch leer!");
+            return;
+        }
+        alert("Vielen Dank! Deine Bestellung wurde an die Erzeuger übermittelt.");
+        cart = [];
+        updateCartUI();
+        hideCart();
+    };
 }
+
+// ==============================
+// 5️⃣ FAVORITEN LOGIK
+// ==============================
+let favorites = JSON.parse(localStorage.getItem('heimatkiste_favs')) || [];
+
+window.toggleFavorite = (title) => {
+    const favCountBadge = document.querySelector('#favorites-count');
+    const favContainer = document.querySelector('#favorites-items-container');
+
+    if (favorites.includes(title)) {
+        favorites = favorites.filter(f => f !== title);
+    } else {
+        favorites.push(title);
+    }
+
+    localStorage.setItem('heimatkiste_favs', JSON.stringify(favorites));
+    favCountBadge.innerHTML = favorites.length;
+
+    if(favorites.length === 0){
+        favContainer.innerHTML = '<p class="empty-msg">Keine Favoriten gemerkt...</p>';
+    } else {
+        favContainer.innerHTML = favorites.map((f) => `
+            <div class="cart-item" style="display:flex; justify-content:space-between; padding:10px; border-bottom:1px solid #eee;">
+                <span>${f}</span>
+                <i class='bx bx-trash' style="cursor:pointer;" onclick="toggleFavorite('${f}')"></i>
+            </div>
+        `).join('');
+    }
+};
+
+// ==============================
+// 6️⃣ INITIALISIERUNG
+// ==============================
+document.addEventListener('DOMContentLoaded', () => {
+    updateCartUI();
+    document.querySelector('#favorites-count').innerHTML = favorites.length;
+});
