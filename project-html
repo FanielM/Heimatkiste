@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Produktdetails</title>
+    <link rel="stylesheet" href="style.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+    <!-- HEADER -->
+    <header>
+        <div class="logo"><i class='bx bxs-leaf'></i> Heimatkiste</div>
+        <nav class="navbar">
+            <a href="index.html">Home</a>
+            <a href="index.html#categories">Kategorien</a>
+            <a href="index.html#produkte">Produkte</a>
+        </nav>
+        <div class="header-icons">
+            <div class="favorites-icon">
+                <i class='bx bx-heart'></i>
+                <span id="favorites-count">0</span>
+            </div>
+            <i id="cart-btn" class='bx bx-cart-alt'></i>
+        </div>
+        <i id="menu-icon" class='bx bx-menu'></i>
+    </header>
+
+    <!-- PRODUKT DETAIL -->
+    <div class="product-detail-container">
+        <div class="product-detail">
+            <img id="product-img" src="" alt="Produktbild">
+            <div class="product-info">
+                <h1 id="product-title"></h1>
+                <div class="farmer-tag" id="product-farmer"></div>
+                <p class="product-desc" id="product-desc"></p>
+                <h3 class="preis" id="product-price"></h3>
+                <button id="add-cart-btn">In den Warenkorb</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SIDEBARS -->
+    <div class="cart-sidebar">
+        <div class="cart-header">
+            <h2>Deine Kiste</h2>
+            <i id="close-cart" class='bx bx-x'></i>
+        </div>
+        <div class="cart-content" id="cart-items-container"></div>
+        <div class="cart-footer">
+            <h3 id="cart-total">0,00€</h3>
+            <button class="checkout-btn">Bestellen</button>
+        </div>
+    </div>
+    <div class="cart-overlay" id="cart-overlay"></div>
+
+    <div class="favorites-sidebar">
+        <div class="header">
+            <h2>Favoriten</h2>
+            <i id="close-favorites" class='bx bx-x'></i>
+        </div>
+        <div class="content" id="favorites-items-container"></div>
+    </div>
+    <div class="cart-overlay" id="favorites-overlay"></div>
+
+    <!-- SCRIPTS -->
+    <script src="products.js"></script>
+    <script src="product-detail.js"></script>
+</body>
+</html>
