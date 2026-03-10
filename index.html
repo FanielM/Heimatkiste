@@ -18,57 +18,103 @@
 html{scroll-behavior:smooth;}
 body{background:var(--cream);color:var(--soil);font-family:var(--sans);font-weight:400;line-height:1.65;overflow-x:hidden;}
 img{display:block;max-width:100%;}a{text-decoration:none;color:inherit;}ul{list-style:none;}button{cursor:pointer;border:none;font-family:inherit;}
-body::before{content:'';position:fixed;inset:0;z-index:0;opacity:.025;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");background-size:200px;pointer-events:none;}
 
-/* ── HEADER ── */
-header{position:fixed;top:0;left:0;right:0;z-index:200;transition:background .4s,box-shadow .4s;}
-header.scrolled{background:rgba(250,246,237,.96);backdrop-filter:blur(12px);box-shadow:0 1px 0 rgba(44,26,14,.08);}
-.nav-inner{max-width:1280px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:0 40px;height:72px;gap:32px;}
-.logo{font-family:var(--serif);font-size:1.55rem;font-weight:900;color:var(--soil);display:flex;align-items:center;gap:8px;letter-spacing:-.02em;}
+/* ══ HEADER ══ */
+header{position:fixed;top:0;left:0;right:0;z-index:200;transition:background .5s,box-shadow .5s;}
+header.scrolled{background:rgba(250,246,237,.96);backdrop-filter:blur(16px);box-shadow:0 1px 0 rgba(44,26,14,.08);}
+.nav-inner{max-width:1340px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:0 48px;height:76px;gap:32px;}
+.logo{font-family:var(--serif);font-size:1.55rem;font-weight:900;color:white;display:flex;align-items:center;gap:8px;letter-spacing:-.02em;transition:color .4s;}
+header.scrolled .logo{color:var(--soil);}
 nav ul{display:flex;gap:36px;}
-nav a{font-size:.82rem;font-weight:500;letter-spacing:.02em;color:var(--chalk);transition:color .2s;position:relative;}
+nav a{font-size:.82rem;font-weight:500;letter-spacing:.02em;color:rgba(255,255,255,.75);transition:color .3s;position:relative;}
+header.scrolled nav a{color:var(--chalk);}
 nav a::after{content:'';position:absolute;bottom:-3px;left:0;width:0;height:1.5px;background:var(--moss);transition:width .3s var(--r);}
-nav a:hover{color:var(--soil);}nav a:hover::after{width:100%;}
+nav a:hover{color:white;}header.scrolled nav a:hover{color:var(--soil);}nav a:hover::after{width:100%;}
 .nav-right{display:flex;align-items:center;gap:12px;}
-.btn-farmer{font-size:.75rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--moss);border:1.5px solid rgba(58,90,42,.35);padding:9px 20px;border-radius:100px;transition:all .2s;}
-.btn-farmer:hover{background:var(--moss);color:white;border-color:var(--moss);}
-.icon-btn{width:40px;height:40px;border-radius:50%;background:transparent;border:1.5px solid rgba(44,26,14,.1);display:flex;align-items:center;justify-content:center;font-size:1.1rem;color:var(--soil);transition:background .2s,border-color .2s;position:relative;cursor:pointer;}
-.icon-btn:hover{background:var(--straw);border-color:rgba(44,26,14,.2);}
+.btn-farmer{font-size:.75rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:rgba(255,255,255,.85);border:1.5px solid rgba(255,255,255,.3);padding:9px 20px;border-radius:100px;transition:all .3s;background:transparent;}
+header.scrolled .btn-farmer{color:var(--moss);border-color:rgba(58,90,42,.35);}
+.btn-farmer:hover{background:white;color:var(--moss);}header.scrolled .btn-farmer:hover{background:var(--moss);color:white;border-color:var(--moss);}
+.icon-btn{width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;font-size:1.1rem;color:white;transition:background .2s,border-color .2s;position:relative;cursor:pointer;}
+header.scrolled .icon-btn{background:transparent;border-color:rgba(44,26,14,.1);color:var(--soil);}
+.icon-btn:hover{background:rgba(255,255,255,.2);}header.scrolled .icon-btn:hover{background:var(--straw);}
 .badge{position:absolute;top:-5px;right:-5px;width:18px;height:18px;border-radius:50%;background:var(--rust);color:white;font-size:.62rem;font-weight:700;display:flex;align-items:center;justify-content:center;opacity:0;transform:scale(0);transition:opacity .2s,transform .2s var(--r);}
 .badge.show{opacity:1;transform:scale(1);}
 
-/* ── HERO ── */
-.hero{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;align-items:center;padding-top:72px;overflow:hidden;}
-.hero-left{padding:80px 60px 80px 40px;max-width:640px;margin-left:auto;}
-.hero-tag{display:inline-flex;align-items:center;gap:8px;font-size:.72rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--moss);background:rgba(58,90,42,.08);border:1px solid rgba(58,90,42,.2);padding:6px 16px;border-radius:100px;margin-bottom:32px;animation:fadeUp .8s var(--r) both;}
-.hero-tag-dot{width:6px;height:6px;border-radius:50%;background:var(--moss);animation:pulse 2s infinite;}
+/* ══ CINEMATIC HERO ══ */
+.hero{position:relative;height:100vh;min-height:700px;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;}
+.hero-bg{position:absolute;inset:0;z-index:0;}
+.hero-bg img{width:100%;height:100%;object-fit:cover;transform:scale(1.08);animation:heroZoom 14s ease-out forwards;}
+@keyframes heroZoom{to{transform:scale(1);}}
+.hero-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,rgba(20,10,4,.15) 0%,rgba(20,10,4,.05) 30%,rgba(20,10,4,.48) 65%,rgba(20,10,4,.88) 100%);}
+.hero-bg::before{content:'';position:absolute;inset:0;z-index:1;opacity:.035;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");background-size:180px;pointer-events:none;}
+.hero-content{position:relative;z-index:2;padding:0 80px 78px;max-width:1340px;margin:0 auto;width:100%;}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:.72rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--wheat);margin-bottom:28px;animation:fadeUp .9s .25s var(--r) both;}
+.hero-dot{width:6px;height:6px;border-radius:50%;background:var(--wheat);animation:pulse 2s infinite;}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
-@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-.hero h1{font-family:var(--serif);font-weight:900;font-size:clamp(3rem,5vw,5.2rem);line-height:1.02;letter-spacing:-.03em;color:var(--soil);margin-bottom:24px;animation:fadeUp .8s .1s var(--r) both;}
-.hero h1 em{font-style:italic;color:var(--moss);display:block;}
-.hero p{font-size:1.05rem;color:var(--chalk);line-height:1.7;max-width:420px;margin-bottom:40px;animation:fadeUp .8s .2s var(--r) both;}
-.hero-btns{display:flex;gap:14px;flex-wrap:wrap;animation:fadeUp .8s .3s var(--r) both;}
-.btn-primary{background:var(--moss);color:white;font-weight:600;font-size:.85rem;letter-spacing:.03em;padding:14px 32px;border-radius:100px;transition:all .25s var(--r);display:inline-block;}
-.btn-primary:hover{background:var(--moss2);transform:translateY(-2px);box-shadow:0 12px 32px rgba(58,90,42,.25);}
-.btn-ghost{background:transparent;color:var(--soil);font-weight:600;font-size:.85rem;padding:14px 28px;border-radius:100px;border:1.5px solid rgba(44,26,14,.2);transition:all .25s;display:inline-block;}
-.btn-ghost:hover{border-color:var(--soil);background:var(--straw);}
-.hero-right{position:relative;height:100vh;overflow:hidden;}
-.hero-img{width:100%;height:100%;object-fit:cover;animation:fadeIn 1.2s .15s var(--r) both;}
-@keyframes fadeIn{from{opacity:0}to{opacity:1}}
-.hero-right::before{content:'';position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,var(--cream) 0%,transparent 20%);}
-.hero-chips{position:absolute;z-index:2;bottom:48px;left:32px;display:flex;flex-direction:column;gap:8px;animation:fadeUp .8s .5s var(--r) both;}
-.chip{background:rgba(250,246,237,.92);backdrop-filter:blur(8px);border:1px solid rgba(44,26,14,.1);padding:10px 18px;border-radius:100px;font-size:.75rem;font-weight:500;color:var(--soil);display:flex;align-items:center;gap:8px;}
+.hero h1{font-family:var(--serif);font-weight:900;font-size:clamp(4rem,7vw,7.4rem);line-height:.94;letter-spacing:-.04em;color:white;margin-bottom:28px;animation:fadeUp .9s .4s var(--r) both;}
+.hero h1 em{font-style:italic;color:var(--wheat);display:block;}
+.hero-sub{font-size:1.05rem;color:rgba(255,255,255,.68);line-height:1.7;max-width:480px;margin-bottom:44px;animation:fadeUp .9s .55s var(--r) both;font-weight:300;}
+.hero-actions{display:flex;align-items:center;gap:20px;animation:fadeUp .9s .7s var(--r) both;flex-wrap:wrap;}
+.btn-hero-primary{background:var(--wheat);color:var(--soil);font-weight:700;font-size:.88rem;letter-spacing:.03em;padding:16px 36px;border-radius:100px;transition:all .3s var(--r);display:inline-flex;align-items:center;gap:8px;}
+.btn-hero-primary:hover{background:#e8c05e;transform:translateY(-3px);box-shadow:0 16px 40px rgba(212,168,83,.35);}
+.btn-hero-ghost{color:rgba(255,255,255,.8);font-weight:500;font-size:.88rem;display:inline-flex;align-items:center;gap:8px;border-bottom:1px solid rgba(255,255,255,.28);padding-bottom:2px;transition:all .2s;}
+.btn-hero-ghost:hover{color:white;border-color:white;}
+.hero-trust{position:absolute;z-index:2;bottom:0;left:0;right:0;background:rgba(12,5,1,.58);backdrop-filter:blur(14px);border-top:1px solid rgba(255,255,255,.07);animation:fadeUp .9s .85s var(--r) both;}
+.hero-trust-inner{max-width:1340px;margin:0 auto;padding:0 80px;display:flex;align-items:center;height:70px;}
+.trust-item{display:flex;align-items:center;gap:12px;flex:1;justify-content:center;border-right:1px solid rgba(255,255,255,.07);}
+.trust-item:last-child{border-right:none;}
+.trust-icon{font-size:1.4rem;}
+.trust-text strong{display:block;font-size:.82rem;font-weight:600;color:white;line-height:1.2;}
+.trust-text span{font-size:.68rem;color:rgba(255,255,255,.4);}
+.scroll-hint{position:absolute;right:80px;bottom:100px;z-index:2;display:flex;flex-direction:column;align-items:center;gap:8px;animation:fadeUp .9s 1.05s var(--r) both;}
+.scroll-hint span{font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.35);writing-mode:vertical-rl;}
+.scroll-line{width:1px;height:52px;background:linear-gradient(to bottom,rgba(255,255,255,.3),transparent);animation:scrollPulse 2s ease-in-out infinite;}
+@keyframes scrollPulse{0%,100%{transform:scaleY(1);opacity:.5}50%{transform:scaleY(.5);opacity:1}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
 
-/* ── SECTIONS ── */
+/* ══ SEARCH ══ */
+#search-section{background:var(--soil);padding:28px 48px;}
+.search-inner{max-width:780px;margin:0 auto;}
+.search-wrap{display:flex;align-items:center;background:rgba(240,228,200,.1);border:1.5px solid rgba(240,228,200,.2);border-radius:100px;padding:6px 6px 6px 24px;gap:10px;transition:all .2s;}
+.search-wrap:focus-within{border-color:rgba(240,228,200,.5);background:rgba(240,228,200,.15);}
+.search-wrap input{flex:1;background:none;border:none;outline:none;font-family:var(--sans);font-size:.9rem;color:var(--straw);}
+.search-wrap input::placeholder{color:rgba(240,228,200,.4);}
+.search-icon{font-size:1rem;color:rgba(240,228,200,.45);}
+.search-btn{background:var(--wheat);color:var(--soil);font-weight:600;font-size:.82rem;padding:11px 26px;border-radius:100px;border:none;cursor:pointer;transition:all .2s;}
+.search-btn:hover{background:#e8b85e;}
+.search-tags{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;align-items:center;}
+.search-tags > span{font-size:.7rem;color:rgba(240,228,200,.38);}
+.search-tag{font-size:.7rem;color:rgba(240,228,200,.5);cursor:pointer;padding:4px 12px;border-radius:100px;border:1px solid rgba(240,228,200,.14);transition:all .2s;}
+.search-tag:hover{color:var(--straw);border-color:rgba(240,228,200,.4);background:rgba(240,228,200,.06);}
+
+/* ══ SHARED ══ */
 section{position:relative;z-index:1;}
 .sec-label{font-size:.68rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--sage);margin-bottom:12px;}
 .sec-title{font-family:var(--serif);font-weight:900;font-size:clamp(2rem,3.5vw,3.2rem);line-height:1.1;letter-spacing:-.025em;color:var(--soil);}
 .reveal{opacity:0;transform:translateY(28px);transition:opacity .8s var(--r),transform .8s var(--r);}
 .reveal.vis{opacity:1;transform:translateY(0);}
-.d1{transition-delay:.1s!important}.d2{transition-delay:.2s!important}.d3{transition-delay:.3s!important}
+.d1{transition-delay:.1s!important}.d2{transition-delay:.2s!important}.d3{transition-delay:.3s!important}.d4{transition-delay:.4s!important}
 
-/* ── CATEGORIES ── */
-#categories{background:var(--paper);padding:100px 40px;border-top:1px solid rgba(44,26,14,.06);border-bottom:1px solid rgba(44,26,14,.06);}
+/* ══ HOW IT WORKS ══ */
+#how{background:var(--paper);padding:100px 48px;border-top:1px solid rgba(44,26,14,.06);}
+.how-inner{max-width:1280px;margin:0 auto;}
+.how-head{text-align:center;margin-bottom:64px;}
+.how-head p{color:var(--chalk);margin-top:12px;font-size:.95rem;}
+.how-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:40px;position:relative;}
+.how-steps::before{content:'';position:absolute;top:48px;left:calc(16.67% + 20px);right:calc(16.67% + 20px);height:1.5px;background:linear-gradient(90deg,var(--moss),var(--sage),var(--moss));opacity:.18;z-index:0;}
+.how-step{position:relative;z-index:1;text-align:center;}
+.how-step-num{width:96px;height:96px;border-radius:50%;margin:0 auto 24px;display:flex;align-items:center;justify-content:center;font-size:2.2rem;position:relative;}
+.how-step-num::before{content:'';position:absolute;inset:-6px;border-radius:50%;border:1.5px dashed rgba(58,90,42,.22);animation:spin 24s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg)}}
+.step-bg-1{background:rgba(58,90,42,.08);}
+.step-bg-2{background:rgba(212,168,83,.12);}
+.step-bg-3{background:rgba(184,92,56,.08);}
+.how-step-label{font-size:.62rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--sage);margin-bottom:8px;}
+.how-step h3{font-family:var(--serif);font-weight:700;font-size:1.3rem;letter-spacing:-.015em;color:var(--soil);margin-bottom:10px;}
+.how-step p{font-size:.85rem;color:var(--chalk);line-height:1.7;}
+
+/* ══ CATEGORIES ══ */
+#categories{background:var(--paper);padding:100px 48px;border-top:1px solid rgba(44,26,14,.06);}
 .cats-wrap{max-width:1280px;margin:0 auto;}
 .cats-head{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:52px;flex-wrap:wrap;gap:16px;}
 .cats-head p{font-size:.88rem;color:var(--chalk);max-width:300px;}
@@ -89,8 +135,26 @@ section{position:relative;z-index:1;}
 .cat-all h3{font-family:var(--serif);font-size:1.15rem;font-weight:700;}
 .cat-all span{font-size:.68rem;opacity:.7;letter-spacing:.06em;}
 
-/* ── PRODUCTS ── */
-#produkte{padding:100px 40px;background:var(--cream);}
+/* ══ SEASON ══ */
+#season{background:var(--moss);padding:72px 48px;overflow:hidden;position:relative;}
+#season::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Ccircle cx='30' cy='30' r='1.5' fill='rgba(255,255,255,.06)'/%3E%3C/svg%3E");background-size:60px;}
+.season-inner{max-width:1280px;margin:0 auto;}
+.season-head{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:28px;flex-wrap:wrap;gap:16px;}
+.season-head .sec-label{color:rgba(240,228,200,.6);}
+.season-head .sec-title{color:var(--straw);}
+.season-month-tabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none;}
+.season-month-tabs::-webkit-scrollbar{display:none;}
+.month-tab{flex-shrink:0;font-size:.7rem;font-weight:600;letter-spacing:.04em;padding:7px 14px;border-radius:100px;border:1.5px solid rgba(240,228,200,.2);background:transparent;color:rgba(240,228,200,.55);cursor:pointer;transition:all .2s;}
+.month-tab.active{background:var(--straw);color:var(--moss);border-color:var(--straw);}
+.month-tab:hover:not(.active){border-color:rgba(240,228,200,.5);color:var(--straw);}
+.season-grid{display:flex;gap:12px;flex-wrap:wrap;margin-top:16px;min-height:72px;}
+.season-item{background:rgba(240,228,200,.12);border:1px solid rgba(240,228,200,.2);border-radius:100px;padding:10px 20px;display:flex;align-items:center;gap:10px;animation:fadeUp .5s var(--r) both;}
+.season-item-emoji{font-size:1.3rem;}
+.season-item-name{font-size:.82rem;font-weight:500;color:var(--straw);}
+.season-item-peak{font-size:.62rem;color:rgba(240,228,200,.5);display:block;}
+
+/* ══ PRODUCTS ══ */
+#produkte{padding:100px 48px;background:var(--cream);}
 .prods-wrap{max-width:1280px;margin:0 auto;}
 .prods-head{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:48px;flex-wrap:wrap;gap:20px;}
 .filter-tabs{display:flex;gap:8px;flex-wrap:wrap;}
@@ -105,7 +169,6 @@ section{position:relative;z-index:1;}
 .prod-card:hover .prod-img{transform:scale(1.05);}
 .prod-badge{position:absolute;top:12px;left:12px;font-size:.6rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:4px 10px;border-radius:100px;background:var(--straw);color:var(--soil);border:1px solid rgba(44,26,14,.12);}
 .prod-badge.bio{background:rgba(58,90,42,.12);color:var(--moss);border-color:rgba(58,90,42,.2);}
-.prod-badge.farmer-added{background:rgba(212,168,83,.15);color:#8a6020;border-color:rgba(212,168,83,.3);}
 .prod-fav{position:absolute;top:12px;right:12px;width:32px;height:32px;border-radius:50%;background:white;border:none;display:flex;align-items:center;justify-content:center;font-size:.95rem;color:var(--chalk);box-shadow:0 2px 8px rgba(44,26,14,.1);opacity:0;transition:opacity .2s,color .2s;cursor:pointer;}
 .prod-card:hover .prod-fav{opacity:1;}
 .prod-fav.active,.prod-fav:hover{color:var(--rust);}
@@ -123,8 +186,116 @@ section{position:relative;z-index:1;}
 .empty-state{grid-column:1/-1;text-align:center;padding:80px 20px;color:var(--chalk);font-size:.9rem;}
 .empty-state span{font-size:3rem;display:block;margin-bottom:16px;}
 
-/* ── ABOUT ── */
-#about{background:var(--soil);color:var(--straw);padding:120px 40px;}
+/* ══ FARMERS GRID ══ */
+#bauern{background:var(--straw);padding:100px 48px;border-top:1px solid rgba(44,26,14,.06);}
+.farmers-inner{max-width:1280px;margin:0 auto;}
+.farmers-head{text-align:center;margin-bottom:56px;}
+.farmers-head p{color:var(--chalk);margin-top:12px;font-size:.95rem;max-width:480px;margin-left:auto;margin-right:auto;}
+.farmers-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;}
+.farmer-card{background:white;border-radius:24px;overflow:hidden;border:1px solid rgba(44,26,14,.06);transition:transform .38s var(--r),box-shadow .38s;cursor:pointer;}
+.farmer-card:hover{transform:translateY(-8px);box-shadow:0 30px 70px rgba(44,26,14,.15);}
+.farmer-card:hover .farmer-btn{background:var(--moss);color:white;border-color:var(--moss);}
+.farmer-banner{height:160px;overflow:hidden;position:relative;background:var(--paper);}
+.farmer-banner img{width:100%;height:100%;object-fit:cover;transition:transform .7s var(--r);}
+.farmer-card:hover .farmer-banner img{transform:scale(1.08);}
+.farmer-banner-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,transparent 40%,rgba(44,26,14,.38));}
+.farmer-avatar{width:72px;height:72px;border-radius:50%;border:3px solid white;position:absolute;bottom:-36px;left:24px;overflow:hidden;background:var(--straw);box-shadow:0 4px 16px rgba(44,26,14,.14);}
+.farmer-avatar img{width:100%;height:100%;object-fit:cover;}
+.farmer-body{padding:48px 24px 24px;}
+.farmer-name{font-family:var(--serif);font-weight:700;font-size:1.2rem;letter-spacing:-.01em;color:var(--soil);margin-bottom:3px;}
+.farmer-location{font-size:.72rem;color:var(--chalk);margin-bottom:10px;display:flex;align-items:center;gap:4px;}
+.farmer-bio{font-size:.82rem;color:var(--chalk);line-height:1.75;margin-bottom:16px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;}
+.farmer-tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px;}
+.farmer-tag{font-size:.62rem;font-weight:600;letter-spacing:.06em;padding:4px 10px;border-radius:100px;background:rgba(58,90,42,.07);color:var(--moss);border:1px solid rgba(58,90,42,.15);}
+.farmer-footer{display:flex;align-items:center;justify-content:space-between;padding-top:14px;border-top:1px solid rgba(44,26,14,.06);}
+.farmer-prod-count{font-size:.72rem;color:var(--chalk);}
+.farmer-btn{font-size:.72rem;font-weight:600;color:var(--moss);border:1.5px solid rgba(58,90,42,.3);padding:8px 18px;border-radius:100px;transition:all .25s;cursor:pointer;background:transparent;}
+
+/* ══ HOF PROFILE OVERLAY ══ */
+.hof-overlay{position:fixed;inset:0;z-index:500;background:rgba(15,6,2,.65);backdrop-filter:blur(8px);opacity:0;pointer-events:none;transition:opacity .4s;}
+.hof-overlay.show{opacity:1;pointer-events:all;}
+.hof-panel{position:fixed;top:0;right:0;bottom:0;z-index:501;width:780px;max-width:100vw;background:var(--cream);display:flex;flex-direction:column;transform:translateX(100%);transition:transform .48s var(--r);box-shadow:-20px 0 80px rgba(15,6,2,.22);overflow:hidden;}
+.hof-panel.open{transform:translateX(0);}
+
+/* Hero image in panel */
+.hof-hero{position:relative;height:320px;flex-shrink:0;overflow:hidden;}
+.hof-hero img{width:100%;height:100%;object-fit:cover;}
+.hof-hero-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(15,6,2,.08) 0%,rgba(15,6,2,.65) 100%);}
+.hof-close{position:absolute;top:18px;right:18px;z-index:2;width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.14);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.28);display:flex;align-items:center;justify-content:center;font-size:1rem;color:white;cursor:pointer;transition:all .2s;}
+.hof-close:hover{background:rgba(255,255,255,.28);}
+.hof-identity{position:absolute;bottom:0;left:0;right:0;padding:0 32px;display:flex;align-items:flex-end;gap:18px;}
+.hof-avatar-lg{width:88px;height:88px;border-radius:50%;border:4px solid var(--cream);overflow:hidden;flex-shrink:0;transform:translateY(28px);box-shadow:0 8px 24px rgba(15,6,2,.22);}
+.hof-avatar-lg img{width:100%;height:100%;object-fit:cover;}
+.hof-name-wrap{padding-bottom:14px;}
+.hof-name-wrap h2{font-family:var(--serif);font-size:1.9rem;font-weight:900;color:white;letter-spacing:-.03em;line-height:1.05;}
+.hof-name-wrap p{font-size:.78rem;color:rgba(255,255,255,.6);margin-top:4px;}
+
+/* Panel body */
+.hof-body{flex:1;overflow-y:auto;padding:48px 32px 40px;}
+.hof-body::-webkit-scrollbar{width:4px;}
+.hof-body::-webkit-scrollbar-thumb{background:rgba(44,26,14,.15);border-radius:4px;}
+.hof-section{margin-bottom:36px;}
+.hof-section-title{font-family:var(--serif);font-weight:700;font-size:1.1rem;color:var(--soil);margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid rgba(44,26,14,.08);display:flex;align-items:center;gap:8px;}
+.hof-bio{font-size:.9rem;color:var(--chalk);line-height:1.85;}
+
+/* Stats grid */
+.hof-facts{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:18px;}
+.hof-fact{background:white;border-radius:14px;padding:16px 12px;border:1px solid rgba(44,26,14,.07);text-align:center;}
+.hof-fact-val{font-family:var(--serif);font-size:1.5rem;font-weight:900;color:var(--soil);line-height:1;}
+.hof-fact-label{font-size:.62rem;color:var(--chalk);margin-top:5px;line-height:1.3;}
+
+/* Gallery */
+.hof-gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+.hof-gal-img{border-radius:12px;overflow:hidden;aspect-ratio:1;background:var(--paper);}
+.hof-gal-img img{width:100%;height:100%;object-fit:cover;transition:transform .4s var(--r);}
+.hof-gal-img:hover img{transform:scale(1.08);}
+
+/* Products inside hof */
+.hof-products{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.hof-product{background:white;border-radius:16px;display:flex;gap:12px;align-items:center;padding:12px;border:1px solid rgba(44,26,14,.07);cursor:pointer;transition:all .2s;}
+.hof-product:hover{box-shadow:0 6px 20px rgba(44,26,14,.08);transform:translateY(-2px);}
+.hof-product-img{width:52px;height:52px;border-radius:10px;object-fit:cover;flex-shrink:0;background:var(--paper);}
+.hof-product-info{flex:1;min-width:0;}
+.hof-product-name{font-weight:600;font-size:.82rem;color:var(--soil);margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.hof-product-price{font-family:var(--serif);font-size:.9rem;font-weight:700;color:var(--moss);}
+.hof-product-unit{font-size:.62rem;color:var(--chalk);}
+.hof-add{margin-left:auto;width:30px;height:30px;border-radius:50%;background:var(--moss);color:white;border:none;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;transition:all .2s;cursor:pointer;}
+.hof-add:hover{background:var(--moss2);transform:scale(1.1);}
+
+/* Values */
+.hof-values{display:flex;flex-wrap:wrap;gap:8px;}
+.hof-value{font-size:.75rem;font-weight:600;padding:8px 16px;border-radius:100px;background:rgba(58,90,42,.08);color:var(--moss);border:1px solid rgba(58,90,42,.18);}
+
+/* CTA bar */
+.hof-cta{background:var(--soil);border-radius:20px;padding:24px 28px;display:flex;align-items:center;justify-content:space-between;gap:20px;}
+.hof-cta-text strong{font-family:var(--serif);font-size:1.1rem;color:var(--straw);display:block;margin-bottom:4px;}
+.hof-cta-text p{font-size:.82rem;color:rgba(240,228,200,.6);line-height:1.5;max-width:300px;}
+.hof-cta-btn{background:var(--wheat);color:var(--soil);font-weight:700;font-size:.8rem;padding:13px 24px;border-radius:100px;white-space:nowrap;flex-shrink:0;border:none;cursor:pointer;transition:all .2s;}
+.hof-cta-btn:hover{background:#e8c05e;transform:translateY(-1px);}
+
+/* ══ REVIEWS ══ */
+#reviews{background:var(--cream);padding:100px 48px;border-top:1px solid rgba(44,26,14,.06);}
+.reviews-inner{max-width:1280px;margin:0 auto;}
+.reviews-head{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:52px;flex-wrap:wrap;gap:16px;}
+.reviews-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+.review-card{background:white;border-radius:20px;padding:28px;border:1px solid rgba(44,26,14,.06);transition:transform .3s var(--r),box-shadow .3s;position:relative;overflow:hidden;}
+.review-card::before{content:'"';font-family:var(--serif);font-size:8rem;color:rgba(58,90,42,.04);position:absolute;top:-20px;left:10px;line-height:1;pointer-events:none;}
+.review-card:hover{transform:translateY(-4px);box-shadow:0 16px 48px rgba(44,26,14,.08);}
+.review-stars{display:flex;gap:3px;margin-bottom:14px;}
+.star{color:var(--wheat);font-size:1rem;}
+.review-text{font-size:.9rem;color:var(--soil);line-height:1.75;margin-bottom:20px;font-style:italic;}
+.review-author{display:flex;align-items:center;gap:12px;}
+.review-avatar{width:40px;height:40px;border-radius:50%;background:var(--straw);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;}
+.review-name{font-weight:600;font-size:.82rem;color:var(--soil);}
+.review-place{font-size:.7rem;color:var(--chalk);}
+.reviews-summary{background:var(--moss);border-radius:20px;padding:28px;color:white;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;gap:8px;}
+.summary-score{font-family:var(--serif);font-size:4rem;font-weight:900;line-height:1;letter-spacing:-.04em;}
+.summary-stars{display:flex;gap:4px;font-size:1.1rem;}
+.summary-label{font-size:.78rem;opacity:.7;margin-top:4px;}
+.summary-count{font-size:.72rem;opacity:.5;}
+
+/* ══ ABOUT ══ */
+#about{background:var(--soil);color:var(--straw);padding:120px 48px;}
 .about-inner{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;}
 .about-img-wrap{position:relative;border-radius:24px;overflow:hidden;aspect-ratio:4/5;}
 .about-img{width:100%;height:100%;object-fit:cover;}
@@ -139,8 +310,22 @@ section{position:relative;z-index:1;}
 .btn-light{background:var(--straw);color:var(--soil);font-weight:600;font-size:.85rem;padding:14px 32px;border-radius:100px;display:inline-block;transition:all .25s;}
 .btn-light:hover{background:var(--cream);transform:translateY(-2px);}
 
-/* ── FOOTER ── */
-footer{background:var(--bark);padding:60px 40px 32px;border-top:1px solid rgba(240,228,200,.05);}
+/* ══ NEWSLETTER ══ */
+#newsletter{background:var(--paper);padding:100px 48px;border-top:1px solid rgba(44,26,14,.06);}
+.newsletter-inner{max-width:640px;margin:0 auto;text-align:center;}
+.newsletter-icon{font-size:3rem;margin-bottom:20px;display:block;}
+.newsletter-inner .sec-title{margin-bottom:14px;}
+.newsletter-inner > p{color:var(--chalk);font-size:.95rem;margin-bottom:36px;line-height:1.7;}
+.newsletter-form{display:flex;gap:10px;max-width:480px;margin:0 auto;}
+.newsletter-form input{flex:1;background:white;border:1.5px solid rgba(44,26,14,.12);border-radius:100px;padding:14px 22px;font-family:var(--sans);font-size:.88rem;color:var(--soil);outline:none;transition:border-color .2s;}
+.newsletter-form input::placeholder{color:var(--chalk);}
+.newsletter-form input:focus{border-color:var(--moss);}
+.newsletter-form button{background:var(--moss);color:white;font-weight:600;font-size:.82rem;padding:14px 26px;border-radius:100px;border:none;cursor:pointer;transition:all .2s;white-space:nowrap;}
+.newsletter-form button:hover{background:var(--moss2);}
+.newsletter-note{font-size:.68rem;color:var(--chalk);margin-top:14px;opacity:.7;}
+
+/* ══ FOOTER ══ */
+footer{background:var(--bark);padding:60px 48px 32px;border-top:1px solid rgba(240,228,200,.05);}
 .footer-inner{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr;gap:60px;padding-bottom:44px;border-bottom:1px solid rgba(240,228,200,.07);margin-bottom:28px;}
 .footer-logo{font-family:var(--serif);font-size:1.5rem;font-weight:900;color:var(--straw);display:flex;align-items:center;gap:8px;margin-bottom:14px;}
 .footer-desc{font-size:.85rem;color:rgba(240,228,200,.45);line-height:1.75;max-width:280px;margin-bottom:24px;}
@@ -153,7 +338,7 @@ footer{background:var(--bark);padding:60px 40px 32px;border-top:1px solid rgba(2
 .footer-col a:hover{color:var(--straw);}
 .footer-copy{max-width:1280px;margin:0 auto;font-size:.72rem;color:rgba(240,228,200,.25);letter-spacing:.04em;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;}
 
-/* ── SIDEBARS ── */
+/* ══ SIDEBARS ══ */
 .overlay{position:fixed;inset:0;z-index:300;background:rgba(44,26,14,.4);backdrop-filter:blur(3px);opacity:0;pointer-events:none;transition:opacity .3s;}
 .overlay.show{opacity:1;pointer-events:all;}
 .sidebar{position:fixed;top:0;right:0;bottom:0;z-index:301;width:420px;max-width:100vw;background:white;display:flex;flex-direction:column;transform:translateX(100%);transition:transform .4s var(--r);box-shadow:-8px 0 48px rgba(44,26,14,.12);}
@@ -191,33 +376,41 @@ footer{background:var(--bark);padding:60px 40px 32px;border-top:1px solid rgba(2
 .fav-remove{background:none;border:none;color:var(--chalk);cursor:pointer;font-size:.8rem;transition:color .2s;}
 .fav-remove:hover{color:var(--rust);}
 
-/* ── TOAST ── */
+/* ══ TOAST ══ */
 .toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--soil);color:var(--straw);font-size:.82rem;font-weight:500;padding:12px 24px;border-radius:100px;z-index:999;transition:transform .35s var(--r),opacity .35s;opacity:0;white-space:nowrap;display:flex;align-items:center;gap:8px;pointer-events:none;}
 .toast.show{transform:translateX(-50%) translateY(0);opacity:1;}
 
-/* ── DIVIDER ── */
-hr.divider{height:1px;background:linear-gradient(90deg,transparent,rgba(44,26,14,.12),transparent);border:none;margin:0;}
-
-/* ── RESPONSIVE ── */
+/* ══ RESPONSIVE ══ */
 @media(max-width:1100px){
   .cats-grid{grid-template-columns:repeat(3,1fr);}
+  .farmers-grid{grid-template-columns:1fr 1fr;}
+  .reviews-grid{grid-template-columns:1fr 1fr;}
+  .hof-panel{width:640px;}
+  .hof-facts{grid-template-columns:1fr 1fr;}
 }
 @media(max-width:1024px){
-  .hero{grid-template-columns:1fr;min-height:auto;}
-  .hero-left{padding:60px 40px;max-width:100%;}
-  .hero-right{display:none;}
   .about-inner{grid-template-columns:1fr;gap:48px;}
   .footer-inner{grid-template-columns:1fr 1fr;}
+  .how-steps::before{display:none;}
 }
 @media(max-width:768px){
-  .nav-inner{padding:0 20px;}
-  nav ul{display:none;}
-  .hero-left,.about-inner{padding:40px 20px;}
-  #categories,#produkte,#about{padding:72px 20px;}
+  .nav-inner{padding:0 20px;}nav ul{display:none;}
+  .hero-content{padding:0 24px 78px;}
+  .hero-trust-inner{padding:0 16px;}
+  .trust-text span{display:none;}
+  .scroll-hint{display:none;}
+  #how,#categories,#produkte,#about,#bauern,#reviews,#newsletter{padding:72px 20px;}
+  #season{padding:56px 20px;}
+  #search-section{padding:20px;}
   footer{padding:48px 20px 28px;}
   .footer-inner{grid-template-columns:1fr;gap:36px;}
   .cats-grid{grid-template-columns:1fr 1fr;gap:10px;}
-  .sidebar{width:100vw;}
+  .farmers-grid,.reviews-grid,.how-steps{grid-template-columns:1fr;}
+  .sidebar,.hof-panel{width:100vw;}
+  .hof-products{grid-template-columns:1fr;}
+  .newsletter-form{flex-direction:column;}
+  .about-inner{padding:40px 20px;}
+  .hof-facts{grid-template-columns:1fr 1fr;}
 }
 </style>
 </head>
@@ -226,36 +419,74 @@ hr.divider{height:1px;background:linear-gradient(90deg,transparent,rgba(44,26,14
 <!-- HEADER -->
 <header id="header">
   <div class="nav-inner">
-    <a href="heimatkiste.html" class="logo">🧺 Heimatkiste</a>
+    <a href="#" class="logo">🧺 Heimatkiste</a>
     <nav><ul>
+      <li><a href="#how">Wie's geht</a></li>
       <li><a href="#categories">Kategorien</a></li>
       <li><a href="#produkte">Marktplatz</a></li>
+      <li><a href="#bauern">Unsere Höfe</a></li>
       <li><a href="#about">Über uns</a></li>
     </ul></nav>
     <div class="nav-right">
-      <a href="heimatkiste-farmer.html" class="btn-farmer">Für Bauern</a>
+      <button class="btn-farmer">Für Bauern</button>
       <button class="icon-btn" id="favBtn">♡<span class="badge" id="favBadge">0</span></button>
       <button class="icon-btn" id="cartBtn">🛒<span class="badge" id="cartBadge">0</span></button>
     </div>
   </div>
 </header>
 
-<!-- HERO -->
+<!-- ══════════ CINEMATIC HERO ══════════ -->
 <section class="hero" id="home">
-  <div class="hero-left">
-    <div class="hero-tag"><span class="hero-tag-dot"></span> Direkt vom Hof · Regional & Fair</div>
-    <h1>Dein digitaler<br>Hofladen der<br><em>Region.</em></h1>
-    <p>Frische Produkte direkt vom Erzeuger — ohne Zwischenhändler, ohne Kompromisse, mit vollem Geschmack.</p>
-    <div class="hero-btns">
-      <a href="#produkte" class="btn-primary">Zum Marktplatz</a>
-      <a href="#about" class="btn-ghost">Unsere Vision</a>
+  <div class="hero-bg">
+    <img src="https://images.unsplash.com/photo-1464226184884-fa280b87c399?auto=format&fit=crop&w=1800&q=90" alt="Frischer Bauernhof im Morgenlicht">
+  </div>
+  <div class="hero-content">
+    <div class="hero-eyebrow"><span class="hero-dot"></span>Direkt vom Hof · Regional &amp; Saisonal</div>
+    <h1>Frisch.<br>Regional.<br><em>Ehrlich.</em></h1>
+    <p class="hero-sub">Vom Feld direkt auf deinen Tisch — ohne Umwege, ohne Kompromisse. Entdecke Produkte von Höfen in deiner Region.</p>
+    <div class="hero-actions">
+      <a href="#produkte" class="btn-hero-primary">Zum Marktplatz →</a>
+      <a href="#bauern" class="btn-hero-ghost">Unsere Höfe kennenlernen</a>
     </div>
   </div>
-  <div class="hero-right">
-    <img class="hero-img" src="https://images.unsplash.com/photo-1595113316349-9fa4ee24f884?auto=format&fit=crop&w=1000&q=80" alt="Lokaler Bauer">
-    <div class="hero-chips">
-      <div class="chip">🌿 100% Regional angebaut</div>
-      <div class="chip">📍 Aus deiner Umgebung</div>
+  <div class="hero-trust">
+    <div class="hero-trust-inner">
+      <div class="trust-item"><span class="trust-icon">🌿</span><div class="trust-text"><strong>100% Regional</strong><span>Direkt vom Erzeuger</span></div></div>
+      <div class="trust-item"><span class="trust-icon">🧑‍🌾</span><div class="trust-text"><strong>120+ Betriebe</strong><span>In deiner Umgebung</span></div></div>
+      <div class="trust-item"><span class="trust-icon">🚐</span><div class="trust-text"><strong>Frische Lieferung</strong><span>Nachhaltig verpackt</span></div></div>
+      <div class="trust-item"><span class="trust-icon">⭐</span><div class="trust-text"><strong>4.8 / 5 Sterne</strong><span>1.240+ Bewertungen</span></div></div>
+    </div>
+  </div>
+  <div class="scroll-hint"><span>Scroll</span><div class="scroll-line"></div></div>
+</section>
+
+<!-- SEARCH -->
+<div id="search-section">
+  <div class="search-inner">
+    <div class="search-wrap">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="searchInput" placeholder="Produkt, Hof oder Kategorie suchen…">
+      <button class="search-btn" onclick="doSearch()">Suchen</button>
+    </div>
+    <div class="search-tags">
+      <span>Beliebt:</span>
+      <span class="search-tag" onclick="quickSearch('Honig')">🍯 Honig</span>
+      <span class="search-tag" onclick="quickSearch('Eier')">🥚 Eier</span>
+      <span class="search-tag" onclick="quickSearch('Käse')">🧀 Käse</span>
+      <span class="search-tag" onclick="quickSearch('Erdbeeren')">🍓 Erdbeeren</span>
+      <span class="search-tag" onclick="quickSearch('Milch')">🥛 Milch</span>
+    </div>
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<section id="how">
+  <div class="how-inner">
+    <div class="how-head reveal"><div class="sec-label">In 3 Schritten</div><h2 class="sec-title">So einfach geht's</h2><p>Von der Bestellung bis zur Haustür — direkt, frisch und ehrlich.</p></div>
+    <div class="how-steps">
+      <div class="how-step reveal d1"><div class="how-step-num step-bg-1">🔍</div><div class="how-step-label">Schritt 1</div><h3>Entdecken</h3><p>Stöbere durch hunderte regionale Produkte von Höfen in deiner Nähe — nach Kategorie oder Saison filtern.</p></div>
+      <div class="how-step reveal d2"><div class="how-step-num step-bg-2">🧺</div><div class="how-step-label">Schritt 2</div><h3>Kiste befüllen</h3><p>Lege deine Lieblingsprodukte in die Kiste. Direkt beim Erzeuger bestellen — kein Umweg.</p></div>
+      <div class="how-step reveal d3"><div class="how-step-num step-bg-3">🚐</div><div class="how-step-label">Schritt 3</div><h3>Genießen</h3><p>Deine Frischkiste kommt direkt vom Hof — pünktlich, nachhaltig verpackt und absolut frisch.</p></div>
     </div>
   </div>
 </section>
@@ -263,31 +494,54 @@ hr.divider{height:1px;background:linear-gradient(90deg,transparent,rgba(44,26,14
 <!-- CATEGORIES -->
 <section id="categories">
   <div class="cats-wrap">
-    <div class="cats-head reveal">
-      <div><div class="sec-label">Sortiment</div><h2 class="sec-title">Was suchst du heute?</h2></div>
-      <p>Von frischen Früchten bis zu regionalen Milchprodukten — direkt vom Erzeuger.</p>
-    </div>
+    <div class="cats-head reveal"><div><div class="sec-label">Sortiment</div><h2 class="sec-title">Was suchst du heute?</h2></div><p>Von frischen Früchten bis zu regionalen Milchprodukten — direkt vom Erzeuger.</p></div>
     <div class="cats-grid reveal d1" id="catsGrid"></div>
+  </div>
+</section>
+
+<!-- SEASON -->
+<section id="season">
+  <div class="season-inner">
+    <div class="season-head reveal">
+      <div><div class="sec-label">Saisonkalender</div><h2 class="sec-title" style="color:var(--straw)">Was ist jetzt frisch?</h2></div>
+      <div class="season-month-tabs" id="monthTabs"></div>
+    </div>
+    <div class="season-grid reveal d1" id="seasonGrid"></div>
   </div>
 </section>
 
 <!-- PRODUCTS -->
 <section id="produkte">
   <div class="prods-wrap">
-    <div class="prods-head reveal">
-      <div><div class="sec-label">Frisch verfügbar</div><h2 class="sec-title">Direkt vom Feld.</h2></div>
-      <div class="filter-tabs" id="filterTabs"></div>
-    </div>
+    <div class="prods-head reveal"><div><div class="sec-label">Frisch verfügbar</div><h2 class="sec-title">Direkt vom Feld.</h2></div><div class="filter-tabs" id="filterTabs"></div></div>
     <div class="products-grid" id="productsGrid"></div>
+  </div>
+</section>
+
+<!-- FARMERS -->
+<section id="bauern">
+  <div class="farmers-inner">
+    <div class="farmers-head reveal">
+      <div class="sec-label">Unsere Partner</div>
+      <h2 class="sec-title">Die Gesichter hinter deiner Kiste</h2>
+      <p>Echte Menschen, echte Höfe — klick auf eine Karte für das vollständige Hofprofil.</p>
+    </div>
+    <div class="farmers-grid" id="farmersGrid"></div>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section id="reviews">
+  <div class="reviews-inner">
+    <div class="reviews-head reveal"><div><div class="sec-label">Was Kunden sagen</div><h2 class="sec-title">Echte Stimmen.</h2></div></div>
+    <div class="reviews-grid" id="reviewsGrid"></div>
   </div>
 </section>
 
 <!-- ABOUT -->
 <section id="about">
   <div class="about-inner">
-    <div class="about-img-wrap reveal">
-      <img class="about-img" src="https://images.unsplash.com/photo-1500651230702-0e2d8a49d4ad?auto=format&fit=crop&w=900&q=80" alt="Unser Hof">
-    </div>
+    <div class="about-img-wrap reveal"><img class="about-img" src="https://images.unsplash.com/photo-1500651230702-0e2d8a49d4ad?auto=format&fit=crop&w=900&q=80" alt="Unser Hof"></div>
     <div class="about-text reveal d1">
       <div class="sec-label">Über uns</div>
       <h2>Frische,<br>die <em>verbindet.</em></h2>
@@ -299,8 +553,23 @@ hr.divider{height:1px;background:linear-gradient(90deg,transparent,rgba(44,26,14
         <div class="about-stat"><div class="about-stat-val">0 km</div><div class="about-stat-label">Zwischenhändler</div></div>
         <div class="about-stat"><div class="about-stat-val">Bio</div><div class="about-stat-label">Zertifiziert</div></div>
       </div>
-      <a href="heimatkiste-farmer.html" class="btn-light">Partner werden →</a>
+      <a href="#" class="btn-light">Partner werden →</a>
     </div>
+  </div>
+</section>
+
+<!-- NEWSLETTER -->
+<section id="newsletter">
+  <div class="newsletter-inner reveal">
+    <span class="newsletter-icon">🌿</span>
+    <div class="sec-label" style="text-align:center">Bleib frisch informiert</div>
+    <h2 class="sec-title">Saisonales &amp; Angebote<br>direkt ins Postfach.</h2>
+    <p>Kein Spam — nur das Beste aus der Region: neue Produkte, Rezepte, Hofgeschichten und saisonale Angebote.</p>
+    <div class="newsletter-form">
+      <input type="email" id="nlEmail" placeholder="deine@email.de">
+      <button onclick="subscribeNewsletter()">Anmelden</button>
+    </div>
+    <p class="newsletter-note">✓ Kein Spam · ✓ Jederzeit abmeldbar · ✓ Datenschutz</p>
   </div>
 </section>
 
@@ -311,34 +580,18 @@ hr.divider{height:1px;background:linear-gradient(90deg,transparent,rgba(44,26,14
       <div class="footer-logo">🧺 Heimatkiste</div>
       <p class="footer-desc">Dein Marktplatz für regionalen, nachhaltigen Genuss — direkt vom Erzeuger.</p>
       <div class="social-row">
-        <a href="#" class="social-btn">𝕏</a>
-        <a href="#" class="social-btn">in</a>
-        <a href="#" class="social-btn">📸</a>
+        <a href="#" class="social-btn">𝕏</a><a href="#" class="social-btn">in</a><a href="#" class="social-btn">📸</a>
       </div>
     </div>
-    <div class="footer-col">
-      <h4>Marktplatz</h4>
-      <ul>
-        <li><a href="#produkte">Alle Produkte</a></li>
-        <li><a href="#categories">Kategorien</a></li>
-        <li><a href="heimatkiste-farmer.html">Für Bauern</a></li>
-      </ul>
-    </div>
-    <div class="footer-col">
-      <h4>Kontakt</h4>
-      <ul>
-        <li><a href="#">hallo@heimatkiste.de</a></li>
-        <li><a href="#">+49 123 45678</a></li>
-        <li><a href="#">Impressum</a></li>
-        <li><a href="#">Datenschutz</a></li>
-      </ul>
-    </div>
+    <div class="footer-col"><h4>Marktplatz</h4><ul><li><a href="#produkte">Alle Produkte</a></li><li><a href="#categories">Kategorien</a></li><li><a href="#bauern">Unsere Höfe</a></li></ul></div>
+    <div class="footer-col"><h4>Kontakt</h4><ul><li><a href="#">hallo@heimatkiste.de</a></li><li><a href="#">+49 123 45678</a></li><li><a href="#">Impressum</a></li><li><a href="#">Datenschutz</a></li></ul></div>
   </div>
-  <div class="footer-copy">
-    <span>© 2026 Heimatkiste — Regionaler Marktplatz</span>
-    <span>Datenschutz · AGB · Impressum</span>
-  </div>
+  <div class="footer-copy"><span>© 2026 Heimatkiste — Regionaler Marktplatz</span><span>Datenschutz · AGB · Impressum</span></div>
 </footer>
+
+<!-- HOF PROFILE OVERLAY -->
+<div class="hof-overlay" id="hofOverlay" onclick="closeHof()"></div>
+<div class="hof-panel" id="hofPanel"><div id="hofContent"></div></div>
 
 <!-- CART SIDEBAR -->
 <div class="overlay" id="cartOverlay"></div>
@@ -363,18 +616,16 @@ hr.divider{height:1px;background:linear-gradient(90deg,transparent,rgba(44,26,14
 <div class="toast" id="toast"></div>
 
 <script>
-/* ══════════════════════════════
-   SHARED DATA
-══════════════════════════════ */
-const DEFAULT_PRODUCTS = [
-  {id:'d1',name:'Bio-Äpfel Elstar',farm:'Obsthof Meyer',cat:'Obst',price:2.80,unit:'1 kg',badge:'bio',img:'https://images.unsplash.com/photo-1560806887-1e4cd0b6bcd6?w=600&q=80',desc:'Knackige Bio-Äpfel aus der Region. Frisch vom Baum, frei von Pestiziden.'},
-  {id:'d2',name:'Erdbeeren',farm:'Hof Metzger',cat:'Obst',price:3.49,unit:'500g',badge:'bio',img:'https://images.unsplash.com/photo-1464965911861-746a04b4bca6?w=600&q=80',desc:'Süße Erdbeeren direkt vom Feld. Im Sommer täglich frisch gepflückt.'},
-  {id:'d3',name:'Bunte Karotten',farm:'Gemüsebau Lang',cat:'Gemüse',price:1.90,unit:'500g',badge:'regional',img:'https://images.unsplash.com/photo-1598170845058-32b9d6a5da37?w=600&q=80',desc:'Süße, knackige Karotten in verschiedenen Farben direkt vom Feld.'},
-  {id:'d4',name:'Bunte Tomaten',farm:'Gärtnerei Schuster',cat:'Gemüse',price:2.90,unit:'500g',badge:'bio',img:'https://images.unsplash.com/photo-1546094096-0df4bcaaa337?w=600&q=80',desc:'Aromatische Tomaten in verschiedenen Sorten und Farben.'},
-  {id:'d5',name:'Heumilch',farm:'Hof Sonnenschein',cat:'Milchprodukte',price:1.45,unit:'1 L',badge:'regional',img:'https://images.unsplash.com/photo-1550583724-125581f77833?w=600&q=80',desc:'Frische Heumilch von glücklichen Kühen. Direkt vom Hof.'},
-  {id:'d6',name:'Bergkäse',farm:'Sennerei Alm',cat:'Milchprodukte',price:5.80,unit:'250g',badge:'bio',img:'https://images.unsplash.com/photo-1486297678162-eb2a19b0a32d?w=600&q=80',desc:'Würziger Bergkäse aus traditioneller Almsennerei.'},
-  {id:'d7',name:'Freiland-Eier',farm:'Geflügelhof Weber',cat:'Eier & Honig',price:3.90,unit:'10 Stk.',badge:'regional',img:'https://images.unsplash.com/photo-1582284540020-8acbe03f4924?w=600&q=80',desc:'Frische Freiland-Eier aus regionaler, artgerechter Haltung.'},
-  {id:'d8',name:'Waldhonig',farm:'Imkerei Schmidt',cat:'Eier & Honig',price:6.50,unit:'500g',badge:'bio',img:'https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=600&q=80',desc:'Naturbelassener Waldhonig aus nachhaltiger Imkerei.'},
+/* ══ DATA ══ */
+const PRODUCTS = [
+  {id:'d1',name:'Bio-Äpfel Elstar',farm:'Obsthof Meyer',cat:'Obst',price:2.80,unit:'1 kg',badge:'bio',img:'https://images.unsplash.com/photo-1560806887-1e4cd0b6bcd6?w=600&q=80'},
+  {id:'d2',name:'Erdbeeren',farm:'Obsthof Meyer',cat:'Obst',price:3.49,unit:'500g',badge:'bio',img:'https://images.unsplash.com/photo-1464965911861-746a04b4bca6?w=600&q=80'},
+  {id:'d3',name:'Bunte Karotten',farm:'Gemüsebau Lang',cat:'Gemüse',price:1.90,unit:'500g',badge:'regional',img:'https://images.unsplash.com/photo-1598170845058-32b9d6a5da37?w=600&q=80'},
+  {id:'d4',name:'Bunte Tomaten',farm:'Gärtnerei Schuster',cat:'Gemüse',price:2.90,unit:'500g',badge:'bio',img:'https://images.unsplash.com/photo-1546094096-0df4bcaaa337?w=600&q=80'},
+  {id:'d5',name:'Heumilch',farm:'Sennerei Alm',cat:'Milchprodukte',price:1.45,unit:'1 L',badge:'regional',img:'https://images.unsplash.com/photo-1550583724-125581f77833?w=600&q=80'},
+  {id:'d6',name:'Bergkäse',farm:'Sennerei Alm',cat:'Milchprodukte',price:5.80,unit:'250g',badge:'bio',img:'https://images.unsplash.com/photo-1486297678162-eb2a19b0a32d?w=600&q=80'},
+  {id:'d7',name:'Freiland-Eier',farm:'Imkerei Schmidt',cat:'Eier & Honig',price:3.90,unit:'10 Stk.',badge:'regional',img:'https://images.unsplash.com/photo-1582284540020-8acbe03f4924?w=600&q=80'},
+  {id:'d8',name:'Waldhonig',farm:'Imkerei Schmidt',cat:'Eier & Honig',price:6.50,unit:'500g',badge:'bio',img:'https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=600&q=80'},
 ];
 
 const CATS_CONFIG = [
@@ -384,270 +635,214 @@ const CATS_CONFIG = [
   {name:'Eier & Honig',img:'https://images.unsplash.com/photo-1582284540020-8acbe03f4924?w=600&q=80'},
 ];
 
-function getAllProducts() {
-  const farmer = JSON.parse(localStorage.getItem('farmerProducts') || '[]')
-    .map((p,i) => ({
-      id:'f'+i, name:p.name||'Produkt', farm:p.farmer||'Lokaler Hof',
-      cat:p.category||'Sonstiges', price:parseFloat(p.price)||0,
-      unit:p.unit||'Stk.', badge:'farmer', img:p.img||'https://images.unsplash.com/photo-1535914254981-b5012eebbd15?w=600&q=80',
-      desc:p.desc||''
-    }));
-  return [...DEFAULT_PRODUCTS, ...farmer];
-}
+const FARMERS = [
+  {
+    id:'f1',name:'Familie Meyer',subtitle:'Obstbau · Bodenseekreis',
+    location:'Obstweg 12, 88069 Tettnang',
+    bio:'Seit vier Generationen bauen wir Äpfel, Birnen und Erdbeeren an. Unser Hof liegt direkt am Bodensee — das milde Klima sorgt für besonders aromatische Früchte. Wir wirtschaften zu 100% biologisch, ohne Kunstdünger und ohne Pestizide.',
+    tags:['Bio-zertifiziert','Obstbau','Direktverkauf'],
+    values:['🌿 Biologisch','☀️ Familiengeführt','🏔️ Bodenseeregion','♻️ Nachhaltig'],
+    productIds:['d1','d2'],
+    facts:[{val:'80+',label:'Jahre Erfahrung'},{val:'12 ha',label:'Anbaufläche'},{val:'Bio',label:'Seit 2002'},{val:'4.9★',label:'Bewertung'}],
+    gallery:['https://images.unsplash.com/photo-1471986873439-c57d5d09c566?w=500&q=80','https://images.unsplash.com/photo-1523348837708-15d4a09cfac2?w=500&q=80','https://images.unsplash.com/photo-1504253163759-c23fccaebb55?w=500&q=80'],
+    banner:'https://images.unsplash.com/photo-1500651230702-0e2d8a49d4ad?w=900&q=80',
+    avatar:'https://images.unsplash.com/photo-1607631568010-a87245c0daf6?w=200&q=80',
+  },
+  {
+    id:'f2',name:'Sennerei Alm',subtitle:'Käserei & Molkerei · Allgäu',
+    location:'Almstraße 3, 87561 Oberstdorf',
+    bio:'In unserem kleinen Familienbetrieb verarbeiten wir täglich frische Heumilch von glücklichen Kühen zu handgemachten Käsespezialitäten nach traditionellen Allgäuer Rezepten. Jeder Laib reift mindestens 6 Wochen in unserem Naturkeller.',
+    tags:['Heumilch','Handkäse','Traditionell'],
+    values:['🐄 Weidehaltung','🧀 Handgemacht','🏔️ Allgäu','🌾 Heumilch'],
+    productIds:['d5','d6'],
+    facts:[{val:'35',label:'Milchkühe'},{val:'6 Wo.',label:'Mindest­reife'},{val:'1.200m',label:'Almhöhe'},{val:'4.8★',label:'Bewertung'}],
+    gallery:['https://images.unsplash.com/photo-1476124369491-e7addf5db371?w=500&q=80','https://images.unsplash.com/photo-1486297678162-eb2a19b0a32d?w=500&q=80','https://images.unsplash.com/photo-1550583724-b2692b85b150?w=500&q=80'],
+    banner:'https://images.unsplash.com/photo-1476124369491-e7addf5db371?w=900&q=80',
+    avatar:'https://images.unsplash.com/photo-1559718062-361155fad299?w=200&q=80',
+  },
+  {
+    id:'f3',name:'Imkerei Schmidt',subtitle:'Naturhonig & Eier · Schwarzwald',
+    location:'Waldweg 7, 79270 St. Peter',
+    bio:'Mit über 60 Bienenvölkern und einem kleinen Freilandgeflügelbetrieb produzieren wir naturreine Honige und frische Freilandeier aus dem tiefen Schwarzwald. Unser Honig wird kalt geschleudert und nie erhitzt — so bleibt alles drin.',
+    tags:['Naturhonig','Freilandeier','Schwarzwald'],
+    values:['🐝 60+ Völker','🥚 Freilandhaltung','🌲 Schwarzwald','🍯 Kalt geschleudert'],
+    productIds:['d7','d8'],
+    facts:[{val:'60+',label:'Bienenvölker'},{val:'0°C',label:'Erhitzung'},{val:'12',label:'Honigsorten'},{val:'4.9★',label:'Bewertung'}],
+    gallery:['https://images.unsplash.com/photo-1558642452-9d2a7deb7f62?w=500&q=80','https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=500&q=80','https://images.unsplash.com/photo-1582284540020-8acbe03f4924?w=500&q=80'],
+    banner:'https://images.unsplash.com/photo-1558642452-9d2a7deb7f62?w=900&q=80',
+    avatar:'https://images.unsplash.com/photo-1542838132-92c53300491e?w=200&q=80',
+  },
+];
 
-/* ══════════════════════════════
-   CART & FAVS STATE
-══════════════════════════════ */
-let cart = JSON.parse(localStorage.getItem('hk_cart') || '{}');
-let favs = new Set(JSON.parse(localStorage.getItem('hk_favs') || '[]'));
-let activeFilter = 'Alle';
+const REVIEWS = [
+  {stars:5,text:'Seit ich bei Heimatkiste bestelle, gehe ich kaum noch zum Supermarkt. Die Qualität ist unglaublich — man schmeckt den Unterschied sofort.',name:'Lena K.',place:'Stuttgart',emoji:'🌸'},
+  {stars:5,text:'Die Erdbeeren von Obsthof Meyer sind sensationell! Süß, aromatisch — ganz anders als aus dem Supermarkt. Ich bestelle jetzt jede Woche.',name:'Thomas B.',place:'Freiburg',emoji:'🌿'},
+  {stars:5,text:'Endlich weiß ich, woher mein Essen kommt. Die Transparenz und Frische begeistern mich. Auch meine Kinder lieben das Gemüse!',name:'Maria S.',place:'Konstanz',emoji:'👩‍🍳'},
+];
 
+const SEASON_DATA = {
+  Jan:{items:[{e:'🥬',n:'Grünkohl',p:'Hochsaison'},{e:'🥕',n:'Lagerkarotten',p:'Lagerernte'},{e:'🍎',n:'Lageräpfel',p:'Lagerernte'}]},
+  Feb:{items:[{e:'🥬',n:'Feldsalat',p:'Hochsaison'},{e:'🧅',n:'Zwiebeln',p:'Lager'},{e:'🥦',n:'Rosenkohl',p:'Saisonende'}]},
+  Mär:{items:[{e:'🌱',n:'Spinat',p:'Frühsaison'},{e:'🥬',n:'Rucola',p:'Frühsaison'},{e:'🥕',n:'Frühkarotten',p:'Frühsaison'}]},
+  Apr:{items:[{e:'🌿',n:'Bärlauch',p:'Hochsaison'},{e:'🥗',n:'Radieschen',p:'Frühsaison'},{e:'🥦',n:'Spargel',p:'Beginn'}]},
+  Mai:{items:[{e:'🌱',n:'Spargel',p:'Hochsaison'},{e:'🍓',n:'Erdbeeren',p:'Frühsaison'},{e:'🥬',n:'Kopfsalat',p:'Saison'},{e:'🌿',n:'Kräuter',p:'Frisch'}]},
+  Jun:{items:[{e:'🍓',n:'Erdbeeren',p:'Hochsaison'},{e:'🍒',n:'Kirschen',p:'Hochsaison'},{e:'🥒',n:'Gurken',p:'Frühsaison'},{e:'🫛',n:'Erbsen',p:'Hochsaison'}]},
+  Jul:{items:[{e:'🍑',n:'Aprikosen',p:'Hochsaison'},{e:'🍅',n:'Tomaten',p:'Frühsaison'},{e:'🫐',n:'Heidelbeeren',p:'Hochsaison'},{e:'🥒',n:'Zucchini',p:'Hochsaison'}]},
+  Aug:{items:[{e:'🍅',n:'Tomaten',p:'Hochsaison'},{e:'🫐',n:'Brombeeren',p:'Hochsaison'},{e:'🌽',n:'Mais',p:'Hochsaison'},{e:'🍑',n:'Pfirsiche',p:'Hochsaison'}]},
+  Sep:{items:[{e:'🍎',n:'Äpfel',p:'Hochsaison'},{e:'🍇',n:'Weintrauben',p:'Hochsaison'},{e:'🎃',n:'Kürbis',p:'Frühsaison'},{e:'🥦',n:'Brokkoli',p:'Herbst'}]},
+  Okt:{items:[{e:'🎃',n:'Kürbis',p:'Hochsaison'},{e:'🍎',n:'Lageräpfel',p:'Ernte'},{e:'🥕',n:'Herbstkarotten',p:'Hochsaison'},{e:'🌰',n:'Kastanien',p:'Hochsaison'}]},
+  Nov:{items:[{e:'🥬',n:'Grünkohl',p:'Hochsaison'},{e:'🥕',n:'Lagerkarotten',p:'Lagerung'},{e:'🧅',n:'Zwiebeln',p:'Lagerung'}]},
+  Dez:{items:[{e:'🥬',n:'Feldsalat',p:'Hochsaison'},{e:'🌿',n:'Grünkohl',p:'Wintergemüse'},{e:'🍎',n:'Lageräpfel',p:'Lagerung'}]},
+};
+const MONTHS = ['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'];
+
+/* ══ STATE ══ */
+let cart = JSON.parse(localStorage.getItem('hk_cart')||'{}');
+let favs = new Set(JSON.parse(localStorage.getItem('hk_favs')||'[]'));
+let activeFilter = 'Alle', searchQuery = '', activeMonth = MONTHS[new Date().getMonth()];
 const fmt = n => n.toFixed(2).replace('.',',') + ' €';
+function save(){localStorage.setItem('hk_cart',JSON.stringify(cart));localStorage.setItem('hk_favs',JSON.stringify([...favs]));}
 
-function saveState() {
-  localStorage.setItem('hk_cart', JSON.stringify(cart));
-  localStorage.setItem('hk_favs', JSON.stringify([...favs]));
+/* ══ TOAST ══ */
+function toast(msg,icon='✓'){const t=document.getElementById('toast');t.innerHTML=`<span>${icon}</span> ${msg}`;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),2600);}
+
+/* ══ SEARCH ══ */
+function doSearch(){const q=document.getElementById('searchInput').value.trim();if(!q)return;searchQuery=q;activeFilter='Alle';renderFilterTabs();renderProducts();document.getElementById('produkte').scrollIntoView({behavior:'smooth',block:'start'});}
+function quickSearch(t){document.getElementById('searchInput').value=t;doSearch();}
+document.getElementById('searchInput').addEventListener('keydown',e=>{if(e.key==='Enter')doSearch();});
+
+/* ══ CATS ══ */
+function renderCats(){
+  const grid=document.getElementById('catsGrid');grid.innerHTML='';
+  CATS_CONFIG.forEach(c=>{const count=PRODUCTS.filter(p=>p.cat===c.name).length;grid.innerHTML+=`<div class="cat-card" onclick="setFilter('${c.name}')"><img class="cat-img" src="${c.img}" alt="${c.name}" loading="lazy"><div class="cat-overlay"></div><div class="cat-arrow">↗</div><div class="cat-body"><h3>${c.name}</h3><div class="cat-count">${count} Produkte</div></div></div>`;});
+  grid.innerHTML+=`<div class="cat-all" onclick="setFilter('Alle')"><div class="cat-all-icon">🌾</div><h3>Alle zeigen</h3><span>${PRODUCTS.length} Produkte</span></div>`;
 }
 
-/* ══════════════════════════════
-   TOAST
-══════════════════════════════ */
-function toast(msg, icon='✓') {
-  const t = document.getElementById('toast');
-  t.innerHTML = `<span>${icon}</span> ${msg}`;
-  t.classList.add('show');
-  clearTimeout(t._t);
-  t._t = setTimeout(() => t.classList.remove('show'), 2600);
+/* ══ SEASON ══ */
+function renderMonthTabs(){document.getElementById('monthTabs').innerHTML=MONTHS.map(m=>`<button class="month-tab ${m===activeMonth?'active':''}" onclick="setMonth('${m}')">${m}</button>`).join('');}
+function setMonth(m){activeMonth=m;renderMonthTabs();renderSeasonGrid();}
+function renderSeasonGrid(){const grid=document.getElementById('seasonGrid');const d=SEASON_DATA[activeMonth];if(!d){return;}grid.innerHTML=d.items.map((it,i)=>`<div class="season-item" style="animation-delay:${i*.07}s"><span class="season-item-emoji">${it.e}</span><div><div class="season-item-name">${it.n}</div><span class="season-item-peak">${it.p}</span></div></div>`).join('');}
+
+/* ══ FILTER TABS ══ */
+function renderFilterTabs(){const cats=['Alle',...new Set(PRODUCTS.map(p=>p.cat))];document.getElementById('filterTabs').innerHTML=cats.map(c=>`<button class="filter-tab ${c===activeFilter?'active':''}" onclick="setFilter('${c}')">${c}</button>`).join('');}
+function setFilter(cat){activeFilter=cat;searchQuery='';document.getElementById('searchInput').value='';renderFilterTabs();renderProducts();if(cat!=='Alle')setTimeout(()=>document.getElementById('produkte').scrollIntoView({behavior:'smooth',block:'start'}),50);}
+
+/* ══ PRODUCTS ══ */
+function renderProducts(){
+  let filtered=activeFilter==='Alle'?PRODUCTS:PRODUCTS.filter(p=>p.cat===activeFilter);
+  if(searchQuery){const q=searchQuery.toLowerCase();filtered=PRODUCTS.filter(p=>p.name.toLowerCase().includes(q)||p.farm.toLowerCase().includes(q)||p.cat.toLowerCase().includes(q));}
+  const grid=document.getElementById('productsGrid');
+  if(!filtered.length){grid.innerHTML=`<div class="empty-state"><span>🔍</span><p>Keine Produkte gefunden.</p></div>`;return;}
+  grid.innerHTML=filtered.map(p=>`<div class="prod-card reveal"><div class="prod-img-wrap"><img class="prod-img" src="${p.img}" alt="${p.name}" loading="lazy"><span class="prod-badge ${p.badge==='bio'?'bio':''}">${p.badge==='bio'?'🌿 Bio':'📍 Regional'}</span><button class="prod-fav ${favs.has(p.id)?'active':''}" onclick="toggleFav('${p.id}',event)">${favs.has(p.id)?'♥':'♡'}</button></div><div class="prod-body"><div class="prod-meta">${p.cat}</div><div class="prod-name">${p.name}</div><div class="prod-farm">von ${p.farm}</div><div class="prod-footer"><div><div class="prod-price">${fmt(p.price)}</div><div class="prod-unit">pro ${p.unit}</div></div><button class="add-btn" onclick="addToCart('${p.id}',event)">+</button></div></div></div>`).join('');
+  grid.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
 }
 
-/* ══════════════════════════════
-   CATEGORIES
-══════════════════════════════ */
-function renderCats() {
-  const all = getAllProducts();
-  const grid = document.getElementById('catsGrid');
-  grid.innerHTML = '';
-  CATS_CONFIG.forEach(c => {
-    const count = all.filter(p => p.cat === c.name).length;
-    grid.innerHTML += `
-      <div class="cat-card" onclick="setFilter('${c.name}')">
-        <img class="cat-img" src="${c.img}" alt="${c.name}" loading="lazy">
-        <div class="cat-overlay"></div>
-        <div class="cat-arrow">↗</div>
-        <div class="cat-body"><h3>${c.name}</h3><div class="cat-count">${count} Produkte</div></div>
-      </div>`;
-  });
-  const farmerCats = [...new Set(all.map(p=>p.cat))].filter(c => !CATS_CONFIG.find(x=>x.name===c));
-  farmerCats.forEach(c => {
-    const count = all.filter(p=>p.cat===c).length;
-    grid.innerHTML += `
-      <div class="cat-card" onclick="setFilter('${c}')" style="background:var(--straw)">
-        <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:3rem;">🌾</div>
-        <div class="cat-overlay"></div>
-        <div class="cat-arrow">↗</div>
-        <div class="cat-body"><h3>${c}</h3><div class="cat-count">${count} Produkte</div></div>
-      </div>`;
-  });
-  grid.innerHTML += `
-    <div class="cat-all" onclick="setFilter('Alle')">
-      <div class="cat-all-icon">🌾</div>
-      <h3>Alle zeigen</h3>
-      <span>${all.length} Produkte</span>
+/* ══ FARMERS GRID ══ */
+function renderFarmers(){
+  const grid=document.getElementById('farmersGrid');
+  grid.innerHTML=FARMERS.map((f,i)=>`<div class="farmer-card reveal" style="transition-delay:${i*.12}s" onclick="openHof('${f.id}')"><div class="farmer-banner"><img src="${f.banner}" alt="${f.name}" loading="lazy"><div class="farmer-banner-overlay"></div></div><div class="farmer-avatar"><img src="${f.avatar}" alt="${f.name}"></div><div class="farmer-body"><div class="farmer-name">${f.name}</div><div class="farmer-location">📍 ${f.location}</div><p class="farmer-bio">${f.bio}</p><div class="farmer-tags">${f.tags.map(t=>`<span class="farmer-tag">${t}</span>`).join('')}</div><div class="farmer-footer"><span class="farmer-prod-count">🌾 ${f.productIds.length} Produkte</span><button class="farmer-btn">Hofprofil ansehen →</button></div></div></div>`).join('');
+  grid.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+}
+
+/* ══ HOF PROFILE ══ */
+function openHof(id){
+  const f=FARMERS.find(x=>x.id===id); if(!f)return;
+  const prods=PRODUCTS.filter(p=>f.productIds.includes(p.id));
+  document.getElementById('hofContent').innerHTML=`
+    <div class="hof-hero">
+      <img src="${f.banner}" alt="${f.name}">
+      <div class="hof-hero-overlay"></div>
+      <button class="hof-close" onclick="closeHof()">✕</button>
+      <div class="hof-identity">
+        <div class="hof-avatar-lg"><img src="${f.avatar}" alt="${f.name}"></div>
+        <div class="hof-name-wrap"><h2>${f.name}</h2><p>📍 ${f.subtitle}</p></div>
+      </div>
+    </div>
+    <div class="hof-body">
+
+      <div class="hof-section">
+        <div class="hof-section-title">🌾 Über den Hof</div>
+        <p class="hof-bio">${f.bio}</p>
+        <div class="hof-facts">${f.facts.map(fc=>`<div class="hof-fact"><div class="hof-fact-val">${fc.val}</div><div class="hof-fact-label">${fc.label}</div></div>`).join('')}</div>
+      </div>
+
+      <div class="hof-section">
+        <div class="hof-section-title">📸 Eindrücke vom Hof</div>
+        <div class="hof-gallery">${f.gallery.map(g=>`<div class="hof-gal-img"><img src="${g}" alt="Hofbild" loading="lazy"></div>`).join('')}</div>
+      </div>
+
+      <div class="hof-section">
+        <div class="hof-section-title">🛒 Produkte von diesem Hof</div>
+        <div class="hof-products">${prods.map(p=>`<div class="hof-product"><img class="hof-product-img" src="${p.img}" alt="${p.name}"><div class="hof-product-info"><div class="hof-product-name">${p.name}</div><div class="hof-product-price">${fmt(p.price)} <span class="hof-product-unit">/ ${p.unit}</span></div></div><button class="hof-add" onclick="addToCart('${p.id}',event)">+</button></div>`).join('')}</div>
+      </div>
+
+      <div class="hof-section">
+        <div class="hof-section-title">✅ Unsere Werte</div>
+        <div class="hof-values">${f.values.map(v=>`<span class="hof-value">${v}</span>`).join('')}</div>
+      </div>
+
+      <div class="hof-cta">
+        <div class="hof-cta-text"><strong>Diesem Hof folgen</strong><p>Erhalte eine Benachrichtigung, wenn ${f.name} neue Produkte listet oder saisonale Angebote hat.</p></div>
+        <button class="hof-cta-btn" onclick="toast('${f.name} abonniert!','🌿')">Hof folgen</button>
+      </div>
+
     </div>`;
+  document.getElementById('hofOverlay').classList.add('show');
+  document.getElementById('hofPanel').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeHof(){document.getElementById('hofOverlay').classList.remove('show');document.getElementById('hofPanel').classList.remove('open');document.body.style.overflow='';}
+
+/* ══ REVIEWS ══ */
+function renderReviews(){
+  const grid=document.getElementById('reviewsGrid');
+  grid.innerHTML=REVIEWS.map((r,i)=>`<div class="review-card reveal" style="transition-delay:${i*.12}s"><div class="review-stars">${'<span class="star">★</span>'.repeat(r.stars)}</div><p class="review-text">${r.text}</p><div class="review-author"><div class="review-avatar">${r.emoji}</div><div><div class="review-name">${r.name}</div><div class="review-place">${r.place}</div></div></div></div>`).join('')+`<div class="reviews-summary reveal d3"><div class="summary-score">4.8</div><div class="summary-stars">★★★★★</div><div class="summary-label">Durchschnittliche Bewertung</div><div class="summary-count">1.240+ Bewertungen</div></div>`;
+  grid.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
 }
 
-/* ══════════════════════════════
-   FILTER TABS
-══════════════════════════════ */
-function renderFilterTabs() {
-  const all = getAllProducts();
-  const cats = ['Alle', ...new Set(all.map(p=>p.cat))];
-  document.getElementById('filterTabs').innerHTML = cats.map(c =>
-    `<button class="filter-tab ${c===activeFilter?'active':''}" onclick="setFilter('${c}')">${c}</button>`
-  ).join('');
+/* ══ NEWSLETTER ══ */
+function subscribeNewsletter(){const e=document.getElementById('nlEmail').value.trim();if(!e||!e.includes('@')){toast('Bitte gültige E-Mail eingeben.','⚠️');return;}document.getElementById('nlEmail').value='';toast('Willkommen! Du erhältst bald Post von uns.','🌿');}
+
+/* ══ CART ══ */
+function addToCart(id,e){if(e)e.stopPropagation();cart[id]=(cart[id]||0)+1;save();updateCartBadge();const p=PRODUCTS.find(x=>x.id===id);toast(`${p.name} zur Kiste hinzugefügt`,'🧺');}
+function changeQty(id,d){cart[id]=(cart[id]||0)+d;if(cart[id]<=0)delete cart[id];save();updateCartBadge();renderCartBody();}
+function removeCartItem(id){delete cart[id];save();updateCartBadge();renderCartBody();}
+function updateCartBadge(){const t=Object.values(cart).reduce((a,b)=>a+b,0);const b=document.getElementById('cartBadge');b.textContent=t;b.classList.toggle('show',t>0);}
+function renderCartBody(){
+  const ids=Object.keys(cart),body=document.getElementById('cartBody'),footer=document.getElementById('cartFooter');
+  if(!ids.length){body.innerHTML=`<div class="sidebar-empty"><span>🧺</span><p>Deine Kiste ist noch leer.</p></div>`;footer.style.display='none';return;}
+  footer.style.display='';
+  body.innerHTML=ids.map(id=>{const p=PRODUCTS.find(x=>x.id===id)||{name:'Produkt',farm:'',img:'',price:0};return `<div class="cart-item-row"><img class="cart-item-img" src="${p.img}" alt="${p.name}"><div class="cart-item-info"><div class="cart-item-name">${p.name}</div><div class="cart-item-farm">${p.farm}</div><div class="cart-item-controls"><button class="qty-btn" onclick="changeQty('${id}',-1)">−</button><span class="qty-val">${cart[id]}</span><button class="qty-btn" onclick="changeQty('${id}',1)">+</button><button class="cart-item-remove" onclick="removeCartItem('${id}')">✕</button></div></div><div class="cart-item-price">${fmt(p.price*cart[id])}</div></div>`;}).join('');
+  const sum=ids.reduce((a,id)=>{const p=PRODUCTS.find(x=>x.id===id);return a+(p?p.price*cart[id]:0);},0);
+  document.getElementById('subtotal').textContent=fmt(sum);document.getElementById('cartTotal').textContent=fmt(sum);
 }
 
-function setFilter(cat) {
-  activeFilter = cat;
-  renderFilterTabs();
-  renderProducts();
-  if (cat !== 'Alle') {
-    setTimeout(() => document.getElementById('produkte').scrollIntoView({behavior:'smooth',block:'start'}), 50);
-  }
-}
+/* ══ FAVS ══ */
+function toggleFav(id,e){if(e)e.stopPropagation();if(favs.has(id)){favs.delete(id);toast('Aus Favoriten entfernt','♡');}else{favs.add(id);const p=PRODUCTS.find(x=>x.id===id);toast(`${p.name} gemerkt`,'♥');}save();updateFavBadge();renderProducts();}
+function updateFavBadge(){const b=document.getElementById('favBadge');b.textContent=favs.size;b.classList.toggle('show',favs.size>0);}
+function renderFavBody(){const body=document.getElementById('favBody');if(!favs.size){body.innerHTML=`<div class="sidebar-empty"><span>♡</span><p>Noch keine Favoriten.</p></div>`;return;}body.innerHTML=[...favs].map(id=>{const p=PRODUCTS.find(x=>x.id===id);if(!p)return'';return `<div class="fav-item-row"><img class="fav-item-img" src="${p.img}" alt="${p.name}"><div class="fav-item-info"><div class="fav-item-name">${p.name}</div><div class="fav-item-price">${fmt(p.price)} · ${p.farm}</div></div><button class="fav-remove" onclick="toggleFav('${id}',event)">✕</button></div>`;}).join('');}
 
-/* ══════════════════════════════
-   PRODUCTS
-══════════════════════════════ */
-function renderProducts() {
-  const all = getAllProducts();
-  const filtered = activeFilter === 'Alle' ? all : all.filter(p => p.cat === activeFilter);
-  const grid = document.getElementById('productsGrid');
-  if (!filtered.length) {
-    grid.innerHTML = `<div class="empty-state"><span>🔍</span><p>Keine Produkte in dieser Kategorie.</p></div>`;
-    return;
-  }
-  grid.innerHTML = filtered.map(p => `
-    <div class="prod-card reveal" onclick="goDetail('${p.id}')">
-      <div class="prod-img-wrap">
-        <img class="prod-img" src="${p.img}" alt="${p.name}" loading="lazy">
-        <span class="prod-badge ${p.badge==='bio'?'bio':p.badge==='farmer'?'farmer-added':''}">${p.badge==='bio'?'🌿 Bio':p.badge==='farmer'?'🧑‍🌾 Neu':'📍 Regional'}</span>
-        <button class="prod-fav ${favs.has(p.id)?'active':''}" onclick="toggleFav('${p.id}',event)">${favs.has(p.id)?'♥':'♡'}</button>
-      </div>
-      <div class="prod-body">
-        <div class="prod-meta">${p.cat}</div>
-        <div class="prod-name">${p.name}</div>
-        <div class="prod-farm">von ${p.farm}</div>
-        <div class="prod-footer">
-          <div><div class="prod-price">${fmt(p.price)}</div><div class="prod-unit">pro ${p.unit}</div></div>
-          <button class="add-btn" onclick="addToCart('${p.id}',event)" title="In die Kiste">+</button>
-        </div>
-      </div>
-    </div>`).join('');
-  grid.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-}
-
-/* ══════════════════════════════
-   DETAIL NAVIGATION
-══════════════════════════════ */
-function goDetail(id) {
-  localStorage.setItem('hk_detail_id', id);
-  window.location.href = 'heimatkiste-detail.html';
-}
-
-/* ══════════════════════════════
-   CART LOGIC
-══════════════════════════════ */
-function addToCart(id, e) {
-  if(e) e.stopPropagation();
-  cart[id] = (cart[id]||0) + 1;
-  saveState();
-  updateCartBadge();
-  const p = getAllProducts().find(x=>x.id===id);
-  toast(`${p.name} zur Kiste hinzugefügt`, '🧺');
-}
-function changeQty(id, delta) {
-  cart[id] = (cart[id]||0) + delta;
-  if (cart[id] <= 0) delete cart[id];
-  saveState();
-  updateCartBadge();
-  renderCartBody();
-}
-function removeCartItem(id) {
-  delete cart[id];
-  saveState();
-  updateCartBadge();
-  renderCartBody();
-}
-function updateCartBadge() {
-  const total = Object.values(cart).reduce((a,b)=>a+b,0);
-  const b = document.getElementById('cartBadge');
-  b.textContent = total;
-  b.classList.toggle('show', total > 0);
-}
-function renderCartBody() {
-  const ids = Object.keys(cart);
-  const body = document.getElementById('cartBody');
-  const footer = document.getElementById('cartFooter');
-  const all = getAllProducts();
-  if (!ids.length) {
-    body.innerHTML = `<div class="sidebar-empty"><span>🧺</span><p>Deine Kiste ist noch leer.</p></div>`;
-    footer.style.display = 'none'; return;
-  }
-  footer.style.display = '';
-  body.innerHTML = ids.map(id => {
-    const p = all.find(x=>x.id===id) || {name:'Produkt',farm:'',img:'',price:0};
-    return `
-      <div class="cart-item-row">
-        <img class="cart-item-img" src="${p.img}" alt="${p.name}">
-        <div class="cart-item-info">
-          <div class="cart-item-name">${p.name}</div>
-          <div class="cart-item-farm">${p.farm}</div>
-          <div class="cart-item-controls">
-            <button class="qty-btn" onclick="changeQty('${id}',-1)">−</button>
-            <span class="qty-val">${cart[id]}</span>
-            <button class="qty-btn" onclick="changeQty('${id}',1)">+</button>
-            <button class="cart-item-remove" onclick="removeCartItem('${id}')">✕</button>
-          </div>
-        </div>
-        <div class="cart-item-price">${fmt(p.price*cart[id])}</div>
-      </div>`;
-  }).join('');
-  const sum = ids.reduce((a,id)=>{const p=all.find(x=>x.id===id);return a+(p?p.price*cart[id]:0);},0);
-  document.getElementById('subtotal').textContent = fmt(sum);
-  document.getElementById('cartTotal').textContent = fmt(sum);
-}
-
-/* ══════════════════════════════
-   FAVS LOGIC
-══════════════════════════════ */
-function toggleFav(id, e) {
-  if(e) e.stopPropagation();
-  if(favs.has(id)) { favs.delete(id); toast('Aus Favoriten entfernt','♡'); }
-  else { favs.add(id); const p=getAllProducts().find(x=>x.id===id); toast(`${p.name} gemerkt`,'♥'); }
-  saveState();
-  updateFavBadge();
-  renderProducts();
-}
-function updateFavBadge() {
-  const b = document.getElementById('favBadge');
-  b.textContent = favs.size;
-  b.classList.toggle('show', favs.size > 0);
-}
-function renderFavBody() {
-  const body = document.getElementById('favBody');
-  const all = getAllProducts();
-  if (!favs.size) {
-    body.innerHTML = `<div class="sidebar-empty"><span>♡</span><p>Noch keine Favoriten gespeichert.</p></div>`;
-    return;
-  }
-  body.innerHTML = [...favs].map(id => {
-    const p = all.find(x=>x.id===id);
-    if(!p) return '';
-    return `
-      <div class="fav-item-row">
-        <img class="fav-item-img" src="${p.img}" alt="${p.name}">
-        <div class="fav-item-info">
-          <div class="fav-item-name">${p.name}</div>
-          <div class="fav-item-price">${fmt(p.price)} · ${p.farm}</div>
-        </div>
-        <button class="fav-remove" onclick="toggleFav('${id}',event)">✕</button>
-      </div>`;
-  }).join('');
-}
-
-/* ══════════════════════════════
-   SIDEBAR TOGGLES
-══════════════════════════════ */
-function openSidebar(sid,oid){document.getElementById(sid).classList.add('open');document.getElementById(oid).classList.add('show');document.body.style.overflow='hidden';}
-function closeSidebar(sid,oid){document.getElementById(sid).classList.remove('open');document.getElementById(oid).classList.remove('show');document.body.style.overflow='';}
+/* ══ SIDEBARS ══ */
+function openSidebar(s,o){document.getElementById(s).classList.add('open');document.getElementById(o).classList.add('show');document.body.style.overflow='hidden';}
+function closeSidebar(s,o){document.getElementById(s).classList.remove('open');document.getElementById(o).classList.remove('show');document.body.style.overflow='';}
 document.getElementById('cartBtn').onclick=()=>{renderCartBody();openSidebar('cartSidebar','cartOverlay');};
 document.getElementById('cartClose').onclick=()=>closeSidebar('cartSidebar','cartOverlay');
 document.getElementById('cartOverlay').onclick=()=>closeSidebar('cartSidebar','cartOverlay');
 document.getElementById('favBtn').onclick=()=>{renderFavBody();openSidebar('favSidebar','favOverlay');};
 document.getElementById('favClose').onclick=()=>closeSidebar('favSidebar','favOverlay');
 document.getElementById('favOverlay').onclick=()=>closeSidebar('favSidebar','favOverlay');
-document.getElementById('checkoutBtn').onclick=()=>{
-  if(!Object.keys(cart).length){toast('Deine Kiste ist leer!','⚠️');return;}
-  cart={};saveState();updateCartBadge();renderCartBody();closeSidebar('cartSidebar','cartOverlay');
-  toast('Bestellung erfolgreich! Danke!','🎉');
-};
+document.getElementById('checkoutBtn').onclick=()=>{if(!Object.keys(cart).length){toast('Deine Kiste ist leer!','⚠️');return;}cart={};save();updateCartBadge();renderCartBody();closeSidebar('cartSidebar','cartOverlay');toast('Bestellung erfolgreich! Danke!','🎉');};
 
-/* ══════════════════════════════
-   NAVBAR + REVEAL
-══════════════════════════════ */
-window.addEventListener('scroll',()=>document.getElementById('header').classList.toggle('scrolled',scrollY>40));
+/* ══ SCROLL + REVEAL ══ */
+window.addEventListener('scroll',()=>document.getElementById('header').classList.toggle('scrolled',scrollY>60));
 const observer=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis');}),{threshold:.1,rootMargin:'0px 0px -30px 0px'});
 document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
 
-/* ══════════════════════════════
-   INIT
-══════════════════════════════ */
-renderCats();
-renderFilterTabs();
-renderProducts();
-updateCartBadge();
-updateFavBadge();
+/* ══ INIT ══ */
+renderCats();renderMonthTabs();renderSeasonGrid();
+renderFilterTabs();renderProducts();
+renderFarmers();renderReviews();
+updateCartBadge();updateFavBadge();
 </script>
 </body>
 </html>
