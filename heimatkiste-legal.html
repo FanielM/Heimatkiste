@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Heimatkiste | Impressum & Datenschutz</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400;1,9..144,700&family=Instrument+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ══ EXACT SAME DESIGN SYSTEM AS HEIMATKISTE.HTML ══ */
+:root {
+  --soil:#2c1a0e;--bark:#3d2b1a;--moss:#3a5a2a;--moss2:#4e7a3a;
+  --sage:#7a9e6a;--straw:#f0e4c8;--cream:#faf6ed;--paper:#f5efe0;
+  --wheat:#d4a853;--rust:#b85c38;--chalk:#8a7a66;
+  --serif:'Fraunces',Georgia,serif;--sans:'Instrument Sans',sans-serif;
+  --r:cubic-bezier(0.16,1,0.3,1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--cream);color:var(--soil);font-family:var(--sans);font-weight:400;line-height:1.65;overflow-x:hidden;}
+img{display:block;max-width:100%;}a{text-decoration:none;color:inherit;}ul{list-style:none;}button{cursor:pointer;border:none;font-family:inherit;}
+
+/* ══ HEADER — identical to heimatkiste.html ══ */
+header{position:fixed;top:0;left:0;right:0;z-index:200;transition:background .5s,box-shadow .5s;}
+header.scrolled{background:rgba(250,246,237,.96);backdrop-filter:blur(16px);box-shadow:0 1px 0 rgba(44,26,14,.08);}
+.nav-inner{max-width:1340px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:0 48px;height:76px;gap:32px;}
+.logo{font-family:var(--serif);font-size:1.55rem;font-weight:900;color:white;display:flex;align-items:center;gap:8px;letter-spacing:-.02em;transition:color .4s;}
+header.scrolled .logo{color:var(--soil);}
+nav ul{display:flex;gap:36px;}
+nav a{font-size:.82rem;font-weight:500;letter-spacing:.02em;color:rgba(255,255,255,.75);transition:color .3s;position:relative;}
+header.scrolled nav a{color:var(--chalk);}
+nav a::after{content:'';position:absolute;bottom:-3px;left:0;width:0;height:1.5px;background:var(--moss);transition:width .3s var(--r);}
+nav a:hover{color:white;}header.scrolled nav a:hover{color:var(--soil);}nav a:hover::after{width:100%;}
+.nav-right{display:flex;align-items:center;gap:12px;}
+.btn-farmer{font-size:.75rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:rgba(255,255,255,.85);border:1.5px solid rgba(255,255,255,.3);padding:9px 20px;border-radius:100px;transition:all .3s;background:transparent;}
+header.scrolled .btn-farmer{color:var(--moss);border-color:rgba(58,90,42,.35);}
+.btn-farmer:hover{background:white;color:var(--moss);}header.scrolled .btn-farmer:hover{background:var(--moss);color:white;border-color:var(--moss);}
+
+/* ══ HERO — same pattern ══ */
+.hero{position:relative;height:52vh;min-height:420px;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;}
+.hero-bg{position:absolute;inset:0;z-index:0;}
+.hero-bg img{width:100%;height:100%;object-fit:cover;}
+.hero-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,rgba(20,10,4,.25) 0%,rgba(20,10,4,.6) 55%,rgba(20,10,4,.92) 100%);}
+.hero-bg::before{content:'';position:absolute;inset:0;z-index:1;opacity:.03;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");background-size:180px;pointer-events:none;}
+.hero-content{position:relative;z-index:2;padding:0 80px 60px;max-width:1340px;margin:0 auto;width:100%;}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:.72rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--wheat);margin-bottom:20px;animation:fadeUp .9s .2s var(--r) both;}
+.hero-dot{width:6px;height:6px;border-radius:50%;background:var(--wheat);animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.hero h1{font-family:var(--serif);font-weight:900;font-size:clamp(2.8rem,5vw,5rem);line-height:.96;letter-spacing:-.04em;color:white;margin-bottom:16px;animation:fadeUp .9s .35s var(--r) both;}
+.hero h1 em{font-style:italic;color:var(--wheat);}
+.hero-sub{font-size:.95rem;color:rgba(255,255,255,.6);line-height:1.7;max-width:520px;animation:fadeUp .9s .5s var(--r) both;font-weight:300;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+
+/* ══ LEGAL TABS — same pill style as original ══ */
+.legal-tabs-bar{background:var(--soil);padding:0 48px;}
+.legal-tabs-inner{max-width:1280px;margin:0 auto;display:flex;gap:4px;padding:14px 0;}
+.ltab{font-size:.78rem;font-weight:600;letter-spacing:.03em;padding:9px 22px;border-radius:100px;color:rgba(240,228,200,.5);cursor:pointer;transition:all .22s;border:1.5px solid transparent;}
+.ltab:hover{color:rgba(240,228,200,.85);border-color:rgba(240,228,200,.2);}
+.ltab.active{background:var(--wheat);color:var(--soil);border-color:var(--wheat);}
+
+/* ══ PAGE LAYOUT ══ */
+.page-wrap{max-width:1280px;margin:0 auto;padding:72px 48px 100px;display:grid;grid-template-columns:220px 1fr;gap:72px;align-items:start;}
+
+/* ── Sticky sidebar ── same sec-label style */
+.side-nav{position:sticky;top:96px;}
+.side-section{margin-bottom:32px;}
+.side-sec-label{font-size:.68rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--sage);margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid rgba(44,26,14,.08);}
+.side-links{display:flex;flex-direction:column;gap:2px;}
+.side-link{font-size:.8rem;color:var(--chalk);padding:7px 12px;border-radius:8px;transition:all .2s;cursor:pointer;display:flex;align-items:center;gap:9px;border-left:2px solid transparent;}
+.side-link::before{content:'';width:4px;height:4px;border-radius:50%;background:currentColor;opacity:.4;flex-shrink:0;}
+.side-link:hover{color:var(--soil);background:var(--paper);}
+.side-link.on{color:var(--moss);font-weight:600;background:rgba(58,90,42,.07);border-left-color:var(--moss);}
+.side-section[hidden]{display:none;}
+
+/* ── Content area ── */
+.legal-sec{display:none;}
+.legal-sec.on{display:block;animation:fadeUp .4s var(--r) both;}
+
+.updated{display:inline-flex;align-items:center;gap:7px;font-size:.68rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--chalk);border:1px solid rgba(44,26,14,.1);padding:6px 14px;border-radius:100px;margin-bottom:40px;}
+.updated::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--moss);}
+
+/* Chapters — using same sec-label/sec-title rhythm */
+.ch{scroll-margin-top:110px;margin-bottom:56px;}
+.ch:last-child{margin-bottom:0;}
+.ch-num{font-size:.68rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--sage);margin-bottom:8px;}
+.ch h2{font-family:var(--serif);font-size:1.8rem;font-weight:700;letter-spacing:-.02em;color:var(--soil);margin-bottom:20px;line-height:1.15;}
+.ch h3{font-family:var(--serif);font-size:1.05rem;font-weight:700;color:var(--soil);margin:26px 0 10px;letter-spacing:-.01em;}
+.ch p{font-size:.9rem;color:var(--chalk);line-height:1.85;margin-bottom:14px;}
+.ch p:last-child{margin-bottom:0;}
+.ch ul,.ch ol{display:flex;flex-direction:column;gap:9px;margin:12px 0 16px;}
+.ch li{font-size:.88rem;color:var(--chalk);line-height:1.75;padding-left:18px;position:relative;}
+.ch li::before{content:'—';position:absolute;left:0;color:var(--sage);}
+.ch ol{counter-reset:li;}
+.ch ol li{counter-increment:li;}
+.ch ol li::before{content:counter(li)'.';font-family:var(--serif);font-weight:700;color:var(--moss);}
+
+/* Info/warn boxes */
+.info-box{background:var(--paper);border-left:3px solid var(--moss);border-radius:0 12px 12px 0;padding:18px 22px;margin:18px 0;}
+.info-box p{font-size:.87rem;color:var(--chalk);margin:0;line-height:1.8;}
+.info-box strong{color:var(--soil);}
+.warn-box{background:rgba(184,92,56,.05);border-left:3px solid var(--rust);border-radius:0 12px 12px 0;padding:18px 22px;margin:18px 0;}
+.warn-box p{font-size:.87rem;color:var(--chalk);margin:0;line-height:1.8;}
+
+/* Contact cards — same dark card style */
+.contact-card{background:var(--bark);border-radius:20px;padding:32px;margin:24px 0;display:grid;grid-template-columns:1fr 1fr;gap:26px;}
+.cc-label{font-size:.62rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:rgba(240,228,200,.38);margin-bottom:7px;}
+.cc-val{font-size:.9rem;color:var(--straw);line-height:1.7;}
+.cc-val a{color:var(--wheat);transition:opacity .2s;}
+.cc-val a:hover{opacity:.7;}
+
+/* Tables */
+.ltable{width:100%;border-collapse:collapse;margin:18px 0;font-size:.84rem;}
+.ltable th{text-align:left;font-size:.64rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--chalk);background:var(--paper);padding:10px 16px;border-bottom:1px solid rgba(44,26,14,.1);}
+.ltable td{padding:11px 16px;border-bottom:1px solid rgba(44,26,14,.07);color:var(--chalk);vertical-align:top;line-height:1.65;}
+.ltable tr:last-child td{border-bottom:none;}
+.ltable tr:hover td{background:var(--paper);}
+.ltable code{font-family:monospace;font-size:.82rem;background:var(--paper);padding:2px 6px;border-radius:4px;color:var(--soil);}
+
+/* Cookie toggles */
+.ck-row{display:flex;align-items:center;justify-content:space-between;padding:15px 0;border-bottom:1px solid rgba(44,26,14,.07);}
+.ck-row:last-child{border-bottom:none;}
+.ck-info h4{font-size:.88rem;font-weight:600;color:var(--soil);margin-bottom:3px;}
+.ck-info p{font-size:.78rem;color:var(--chalk);line-height:1.5;}
+.tog{position:relative;width:42px;height:24px;flex-shrink:0;}
+.tog input{opacity:0;width:0;height:0;}
+.tog-track{position:absolute;inset:0;border-radius:100px;background:rgba(44,26,14,.14);transition:background .2s;cursor:pointer;}
+.tog input:checked+.tog-track{background:var(--moss);}
+.tog-thumb{position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:white;transition:transform .2s var(--r);box-shadow:0 1px 4px rgba(0,0,0,.15);pointer-events:none;}
+.tog input:checked~.tog-thumb{transform:translateX(18px);}
+.tog-req .tog-track{background:var(--moss)!important;cursor:not-allowed;}
+
+/* Action buttons — reusing btn-hero-primary style */
+.action-btns{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px;}
+.btn-danger{background:var(--rust);color:white;font-weight:600;font-size:.82rem;padding:11px 24px;border-radius:100px;transition:all .25s var(--r);}
+.btn-danger:hover{opacity:.85;transform:translateY(-1px);}
+.btn-secondary{background:var(--paper);color:var(--soil);font-weight:600;font-size:.82rem;padding:11px 24px;border-radius:100px;border:1.5px solid rgba(44,26,14,.14);transition:all .2s;}
+.btn-secondary:hover{background:var(--straw);}
+
+/* Storage debug */
+.storage-debug{display:none;margin-top:14px;background:var(--soil);border-radius:14px;padding:18px 22px;font-size:.78rem;color:rgba(240,228,200,.6);font-family:monospace;line-height:1.9;}
+.storage-debug.on{display:block;}
+
+/* ══ FOOTER — identical to heimatkiste.html ══ */
+footer{background:var(--bark);padding:60px 48px 32px;border-top:1px solid rgba(240,228,200,.05);}
+.footer-inner{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr;gap:60px;padding-bottom:44px;border-bottom:1px solid rgba(240,228,200,.07);margin-bottom:28px;}
+.footer-logo{font-family:var(--serif);font-size:1.5rem;font-weight:900;color:var(--straw);display:flex;align-items:center;gap:8px;margin-bottom:14px;}
+.footer-desc{font-size:.85rem;color:rgba(240,228,200,.45);line-height:1.75;max-width:280px;margin-bottom:24px;}
+.social-row{display:flex;gap:10px;}
+.social-btn{width:36px;height:36px;border-radius:50%;background:rgba(240,228,200,.06);border:1px solid rgba(240,228,200,.1);display:flex;align-items:center;justify-content:center;font-size:1rem;color:rgba(240,228,200,.5);transition:all .2s;cursor:pointer;text-decoration:none;}
+.social-btn:hover{background:var(--moss);border-color:var(--moss);color:white;}
+.footer-col h4{font-size:.7rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--straw);margin-bottom:18px;}
+.footer-col ul{display:flex;flex-direction:column;gap:10px;}
+.footer-col a{font-size:.82rem;color:rgba(240,228,200,.45);transition:color .2s;}
+.footer-col a:hover{color:var(--straw);}
+.footer-copy{max-width:1280px;margin:0 auto;font-size:.72rem;color:rgba(240,228,200,.25);letter-spacing:.04em;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+
+/* ══ RESPONSIVE ══ */
+@media(max-width:1024px){
+  .footer-inner{grid-template-columns:1fr 1fr;}
+  .page-wrap{grid-template-columns:1fr;gap:32px;padding:48px 24px 80px;}
+  .side-nav{position:static;display:flex;flex-wrap:wrap;gap:8px;}
+  .side-section{margin-bottom:0;}
+  .side-sec-label{display:none;}
+  .side-links{flex-direction:row;flex-wrap:wrap;}
+  .side-link{border-left:none;border-radius:100px;padding:6px 14px;font-size:.76rem;}
+  .side-link.on{background:rgba(58,90,42,.1);border-left:none;}
+}
+@media(max-width:768px){
+  .nav-inner{padding:0 20px;}
+  nav ul{display:none;}
+  .hero-content{padding:0 24px 52px;}
+  .legal-tabs-bar{padding:0 20px;}
+  footer{padding:48px 20px 28px;}
+  .footer-inner{grid-template-columns:1fr;gap:36px;}
+  .contact-card{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER — same as heimatkiste.html -->
+<header id="header">
+  <div class="nav-inner">
+    <a href="heimatkiste.html" class="logo">🧺 Heimatkiste</a>
+    <nav><ul>
+      <li><a href="heimatkiste.html#how">Wie's geht</a></li>
+      <li><a href="heimatkiste.html#categories">Kategorien</a></li>
+      <li><a href="heimatkiste.html#produkte">Marktplatz</a></li>
+      <li><a href="heimatkiste.html#bauern">Unsere Höfe</a></li>
+      <li><a href="heimatkiste.html#about">Über uns</a></li>
+    </ul></nav>
+    <div class="nav-right">
+      <a href="heimatkiste-farmer.html" class="btn-farmer">Für Bauern</a>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg">
+    <img src="https://images.unsplash.com/photo-1500937386664-56d1dfef3854?auto=format&fit=crop&w=1800&q=80" alt="Heimatkiste Rechtliches">
+  </div>
+  <div class="hero-content">
+    <div class="hero-eyebrow"><span class="hero-dot"></span>Transparenz · Vertrauen · Klarheit</div>
+    <h1>Rechtliches &amp;<br><em>Datenschutz.</em></h1>
+    <p class="hero-sub">Alle rechtlichen Informationen zu Heimatkiste — klar, vollständig und immer aktuell.</p>
+  </div>
+</section>
+
+<!-- TAB BAR -->
+<div class="legal-tabs-bar">
+  <div class="legal-tabs-inner">
+    <div class="ltab active" onclick="showSec('impressum',this)">📋 Impressum</div>
+    <div class="ltab" onclick="showSec('datenschutz',this)">🔒 Datenschutz</div>
+    <div class="ltab" onclick="showSec('agb',this)">📄 AGB</div>
+    <div class="ltab" onclick="showSec('cookies',this)">🍪 Cookies</div>
+  </div>
+</div>
+
+<!-- PAGE BODY -->
+<div class="page-wrap">
+
+  <!-- STICKY SIDEBAR -->
+  <aside class="side-nav">
+    <div class="side-section" id="nav-impressum">
+      <div class="side-sec-label">Impressum</div>
+      <div class="side-links">
+        <div class="side-link on" onclick="jumpTo('imp-1',this)">Angaben § 5 TMG</div>
+        <div class="side-link" onclick="jumpTo('imp-2',this)">Kontakt</div>
+        <div class="side-link" onclick="jumpTo('imp-3',this)">Haftung</div>
+        <div class="side-link" onclick="jumpTo('imp-4',this)">Urheberrecht</div>
+      </div>
+    </div>
+    <div class="side-section" id="nav-datenschutz" hidden>
+      <div class="side-sec-label">Datenschutz</div>
+      <div class="side-links">
+        <div class="side-link on" onclick="jumpTo('ds-1',this)">Verantwortlicher</div>
+        <div class="side-link" onclick="jumpTo('ds-2',this)">Erhobene Daten</div>
+        <div class="side-link" onclick="jumpTo('ds-3',this)">Verwendungszwecke</div>
+        <div class="side-link" onclick="jumpTo('ds-4',this)">Deine Rechte</div>
+        <div class="side-link" onclick="jumpTo('ds-5',this)">Datensicherheit</div>
+        <div class="side-link" onclick="jumpTo('ds-6',this)">localStorage</div>
+      </div>
+    </div>
+    <div class="side-section" id="nav-agb" hidden>
+      <div class="side-sec-label">AGB</div>
+      <div class="side-links">
+        <div class="side-link on" onclick="jumpTo('agb-1',this)">Geltungsbereich</div>
+        <div class="side-link" onclick="jumpTo('agb-2',this)">Vertragsschluss</div>
+        <div class="side-link" onclick="jumpTo('agb-3',this)">Preise & Zahlung</div>
+        <div class="side-link" onclick="jumpTo('agb-4',this)">Lieferung</div>
+        <div class="side-link" onclick="jumpTo('agb-5',this)">Widerrufsrecht</div>
+        <div class="side-link" onclick="jumpTo('agb-6',this)">Haftungsbeschränkung</div>
+      </div>
+    </div>
+    <div class="side-section" id="nav-cookies" hidden>
+      <div class="side-sec-label">Cookies</div>
+      <div class="side-links">
+        <div class="side-link on" onclick="jumpTo('ck-1',this)">Was sind Cookies?</div>
+        <div class="side-link" onclick="jumpTo('ck-2',this)">Welche wir nutzen</div>
+        <div class="side-link" onclick="jumpTo('ck-3',this)">Einstellungen</div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- CONTENT -->
+  <main>
+
+    <!-- ══ IMPRESSUM ══ -->
+    <div class="legal-sec on" id="sec-impressum">
+      <div class="updated">Zuletzt aktualisiert: Januar 2026</div>
+
+      <div class="ch" id="imp-1">
+        <div class="ch-num">§ 01 — Angaben gemäß § 5 TMG</div>
+        <h2>Pflichtangaben</h2>
+        <div class="contact-card">
+          <div><div class="cc-label">Betreiber</div><div class="cc-val">Heimatkiste GmbH<br>Max Mustermann</div></div>
+          <div><div class="cc-label">Adresse</div><div class="cc-val">Musterstraße 12<br>74821 Mosbach<br>Baden-Württemberg, DE</div></div>
+          <div><div class="cc-label">Handelsregister</div><div class="cc-val">HRB 123456<br>Amtsgericht Mosbach</div></div>
+          <div><div class="cc-label">USt-IdNr.</div><div class="cc-val">DE 123 456 789<br>(§ 27a UStG)</div></div>
+        </div>
+      </div>
+
+      <div class="ch" id="imp-2">
+        <div class="ch-num">§ 02 — Kontakt</div>
+        <h2>So erreichst du uns</h2>
+        <div class="contact-card">
+          <div><div class="cc-label">E-Mail</div><div class="cc-val"><a href="mailto:hallo@heimatkiste.de">hallo@heimatkiste.de</a></div></div>
+          <div><div class="cc-label">Telefon</div><div class="cc-val"><a href="tel:+4912345678">+49 (0)1234 / 56 78 90</a></div></div>
+          <div><div class="cc-label">Postanschrift</div><div class="cc-val">Heimatkiste GmbH<br>Musterstraße 12, 74821 Mosbach</div></div>
+          <div><div class="cc-label">V.i.S.d. § 55 Abs. 2 RStV</div><div class="cc-val">Max Mustermann<br>Musterstraße 12, 74821 Mosbach</div></div>
+        </div>
+        <div class="info-box"><p>Anfragen werden in der Regel innerhalb von <strong>2 Werktagen</strong> beantwortet.</p></div>
+      </div>
+
+      <div class="ch" id="imp-3">
+        <div class="ch-num">§ 03 — Haftungsausschluss</div>
+        <h2>Haftung für Inhalte & Links</h2>
+        <p>Als Diensteanbieter sind wir gemäß § 7 Abs. 1 TMG für eigene Inhalte verantwortlich. Nach §§ 8–10 TMG sind wir nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen zu überwachen oder nach Umständen zu forschen, die auf eine rechtswidrige Tätigkeit hinweisen.</p>
+        <p>Verpflichtungen zur Entfernung oder Sperrung nach allgemeinen Gesetzen bleiben unberührt. Eine Haftung ist erst ab dem Zeitpunkt der Kenntnis einer konkreten Rechtsverletzung möglich.</p>
+        <h3>Externe Links</h3>
+        <p>Unser Angebot enthält Links zu externen Webseiten, auf deren Inhalte wir keinen Einfluss haben. Für die Inhalte verlinkter Seiten ist stets der jeweilige Anbieter verantwortlich. Rechtswidrige Inhalte waren zum Zeitpunkt der Verlinkung nicht erkennbar.</p>
+      </div>
+
+      <div class="ch" id="imp-4">
+        <div class="ch-num">§ 04 — Urheberrecht</div>
+        <h2>Geistiges Eigentum</h2>
+        <p>Die durch die Seitenbetreiber erstellten Inhalte unterliegen dem deutschen Urheberrecht. Vervielfältigung, Bearbeitung und Verbreitung außerhalb der Urheberrechtsgrenzen bedürfen schriftlicher Zustimmung.</p>
+        <div class="info-box"><p>Produktbilder der Erzeuger bleiben deren Eigentum. Durch das Hochladen räumen sie uns eine nicht-exklusive Nutzungslizenz für die Darstellung auf der Plattform ein.</p></div>
+      </div>
+    </div>
+
+    <!-- ══ DATENSCHUTZ ══ -->
+    <div class="legal-sec" id="sec-datenschutz">
+      <div class="updated">Zuletzt aktualisiert: Januar 2026</div>
+
+      <div class="ch" id="ds-1">
+        <div class="ch-num">§ 01 — Verantwortlicher</div>
+        <h2>Datenschutz bei Heimatkiste</h2>
+        <p>Der Schutz deiner persönlichen Daten ist uns ein besonderes Anliegen. Wir verarbeiten deine Daten ausschließlich auf Grundlage der gesetzlichen Bestimmungen (DSGVO, BDSG).</p>
+        <div class="contact-card">
+          <div><div class="cc-label">Verantwortlich i.S.d. DSGVO</div><div class="cc-val">Heimatkiste GmbH<br>Musterstraße 12, 74821 Mosbach</div></div>
+          <div><div class="cc-label">Datenschutzbeauftragter</div><div class="cc-val"><a href="mailto:datenschutz@heimatkiste.de">datenschutz@heimatkiste.de</a></div></div>
+        </div>
+      </div>
+
+      <div class="ch" id="ds-2">
+        <div class="ch-num">§ 02 — Datenarten</div>
+        <h2>Welche Daten wir erheben</h2>
+        <table class="ltable">
+          <thead><tr><th>Kategorie</th><th>Beispiele</th><th>Rechtsgrundlage</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Kontaktdaten</strong></td><td>Name, E-Mail bei Registrierung</td><td>Art. 6 Abs. 1 lit. b DSGVO</td></tr>
+            <tr><td><strong>Nutzungsdaten</strong></td><td>IP-Adresse, Browsertyp, Seitenaufrufe</td><td>Art. 6 Abs. 1 lit. f DSGVO</td></tr>
+            <tr><td><strong>Lokale Daten</strong></td><td>Warenkorb, Favoriten (localStorage)</td><td>Art. 6 Abs. 1 lit. b — nur auf deinem Gerät</td></tr>
+            <tr><td><strong>Produktdaten</strong></td><td>Bilder, Preise (nur Erzeuger)</td><td>Art. 6 Abs. 1 lit. b DSGVO</td></tr>
+          </tbody>
+        </table>
+        <div class="info-box"><p><strong>Wichtig:</strong> Warenkorb, Favoriten und Erzeugerdaten werden ausschließlich lokal in deinem Browser gespeichert und verlassen dein Gerät nicht.</p></div>
+      </div>
+
+      <div class="ch" id="ds-3">
+        <div class="ch-num">§ 03 — Verwendungszwecke</div>
+        <h2>Wofür wir Daten nutzen</h2>
+        <h3>Besuch der Webseite</h3>
+        <p>Beim Aufrufen werden technisch notwendige Daten erfasst, die dein Browser übermittelt (Browsertyp, Betriebssystem, Referrer, Uhrzeit). Diese werden nicht mit anderen Quellen zusammengeführt.</p>
+        <h3>Erzeuger-Registrierung</h3>
+        <p>Bei der Registrierung speichern wir Name, E-Mail und Hofname, um dir Plattformzugang zu ermöglichen und Produkte zuzuordnen. Das Passwort wird als Hash gespeichert — für uns nicht lesbar.</p>
+        <h3>Bestellabwicklung</h3>
+        <p>Zur Auftragsabwicklung werden Name, Lieferadresse und Zahlungsdaten verarbeitet. Diese werden danach entsprechend den gesetzlichen Aufbewahrungsfristen archiviert.</p>
+      </div>
+
+      <div class="ch" id="ds-4">
+        <div class="ch-num">§ 04 — Deine Rechte</div>
+        <h2>Rechte nach DSGVO</h2>
+        <ul>
+          <li><strong>Auskunftsrecht (Art. 15)</strong> — Auskunft über gespeicherte Daten verlangen</li>
+          <li><strong>Berichtigung (Art. 16)</strong> — Korrektur unrichtiger Daten fordern</li>
+          <li><strong>Löschung (Art. 17)</strong> — Löschung deiner Daten verlangen ("Recht auf Vergessenwerden")</li>
+          <li><strong>Einschränkung (Art. 18)</strong> — Einschränkung der Verarbeitung beantragen</li>
+          <li><strong>Datenübertragbarkeit (Art. 20)</strong> — Daten in maschinenlesbarem Format erhalten</li>
+          <li><strong>Widerspruch (Art. 21)</strong> — Der Verarbeitung deiner Daten widersprechen</li>
+          <li><strong>Beschwerde</strong> — Bei der zuständigen Datenschutzbehörde beschweren</li>
+        </ul>
+        <div class="warn-box"><p>Anfragen an: <strong>datenschutz@heimatkiste.de</strong>. Bearbeitungszeit: bis zu 30 Tage (ggf. 90 Tage bei komplexen Anfragen).</p></div>
+        <h3>Aufsichtsbehörde</h3>
+        <p>Landesbeauftragter für den Datenschutz und die Informationsfreiheit Baden-Württemberg (LfDI BW), Lautenschlagerstraße 20, 70173 Stuttgart.</p>
+      </div>
+
+      <div class="ch" id="ds-5">
+        <div class="ch-num">§ 05 — Datensicherheit</div>
+        <h2>Wie wir deine Daten schützen</h2>
+        <ul>
+          <li>SSL/TLS-Verschlüsselung für alle Datenübertragungen</li>
+          <li>Passwörter werden gehashed gespeichert — kein Klartext</li>
+          <li>Regelmäßige Sicherheitsüberprüfungen und Penetrationstests</li>
+          <li>Zugriff auf personenbezogene Daten nur durch autorisiertes Personal</li>
+          <li>Keine Weitergabe an Dritte ohne ausdrückliche Einwilligung</li>
+        </ul>
+      </div>
+
+      <div class="ch" id="ds-6">
+        <div class="ch-num">§ 06 — localStorage & sessionStorage</div>
+        <h2>Lokale Datenspeicherung</h2>
+        <p>Heimatkiste nutzt die Web-Storage-Technologien deines Browsers. Diese Daten verbleiben ausschließlich auf deinem Gerät und werden nicht an uns übermittelt.</p>
+        <table class="ltable">
+          <thead><tr><th>Schlüssel</th><th>Inhalt</th><th>Speicherort</th><th>Lebensdauer</th></tr></thead>
+          <tbody>
+            <tr><td><code>hk_cart</code></td><td>Warenkorb (Produkt-IDs & Mengen)</td><td>localStorage</td><td>Bis zur manuellen Löschung</td></tr>
+            <tr><td><code>hk_favs</code></td><td>Favoriten-Liste</td><td>localStorage</td><td>Bis zur manuellen Löschung</td></tr>
+            <tr><td><code>farmerProducts</code></td><td>Eingestellte Produkte</td><td>localStorage</td><td>Bis zur Löschung durch Erzeuger</td></tr>
+            <tr><td><code>hk_users</code></td><td>Erzeuger-Konten (Passwort-Hash)</td><td>localStorage</td><td>Bis zur manuellen Löschung</td></tr>
+            <tr><td><code>hk_sess</code></td><td>Aktive Anmelde-Session</td><td>sessionStorage</td><td>Bis zum Schließen des Browsers</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ══ AGB ══ -->
+    <div class="legal-sec" id="sec-agb">
+      <div class="updated">Zuletzt aktualisiert: Januar 2026</div>
+
+      <div class="ch" id="agb-1">
+        <div class="ch-num">§ 01 — Geltungsbereich</div>
+        <h2>Allgemeine Geschäftsbedingungen</h2>
+        <p>Diese AGB gelten für alle Verträge zwischen Heimatkiste GmbH und Nutzern (Käufern) sowie Erzeugern (Verkäufern) über die Plattform heimatkiste.de. Abweichende Bedingungen werden nicht anerkannt.</p>
+        <div class="info-box"><p>Heimatkiste ist ein <strong>Marktplatz</strong>, der Erzeuger und Käufer zusammenbringt. Kaufverträge kommen direkt zwischen Käufer und Erzeuger zustande — Heimatkiste ist nicht Vertragspartei.</p></div>
+      </div>
+
+      <div class="ch" id="agb-2">
+        <div class="ch-num">§ 02 — Vertragsschluss</div>
+        <h2>Wie ein Kauf zustande kommt</h2>
+        <h3>Für Käufer</h3>
+        <p>Die Produktdarstellung ist keine verbindliche Offerte, sondern eine Aufforderung zur Abgabe eines Angebots. Der Vertrag kommt mit Absendung der Auftragsbestätigungs-E-Mail zustande.</p>
+        <ol>
+          <li>Produkte auswählen und in die Kiste legen</li>
+          <li>Auf "Zur Kasse gehen" klicken und Daten eingeben</li>
+          <li>Bestellung bestätigen — du erhältst eine Bestätigungs-E-Mail</li>
+        </ol>
+        <h3>Für Erzeuger</h3>
+        <p>Durch Registrierung und Einstellen von Produkten akzeptierst du diese AGB. Du sicherst zu, dass alle eingestellten Produkte deinen Angaben entsprechen und den gesetzlichen Anforderungen genügen.</p>
+      </div>
+
+      <div class="ch" id="agb-3">
+        <div class="ch-num">§ 03 — Preise & Zahlung</div>
+        <h2>Preise und Zahlungsmethoden</h2>
+        <p>Alle Preise sind Endpreise inkl. gesetzlicher MwSt. Versandkosten werden vor dem Kaufabschluss ausgewiesen.</p>
+        <ul>
+          <li>Zahlungsmethoden: PayPal, Kreditkarte, SEPA-Lastschrift, Vorkasse</li>
+          <li>Preisänderungen der Erzeuger gelten ab dem Änderungszeitpunkt für neue Bestellungen</li>
+          <li>Bei Vorkasse wird die Lieferzeit ggf. angepasst</li>
+        </ul>
+      </div>
+
+      <div class="ch" id="agb-4">
+        <div class="ch-num">§ 04 — Lieferung</div>
+        <h2>Lieferbedingungen</h2>
+        <ul>
+          <li>Lieferzeiten werden vom jeweiligen Erzeuger angegeben, ab Zahlungseingang</li>
+          <li>Frische Produkte: 1–3 Werktage als Kühlware</li>
+          <li>Liefergebiet: Deutschland (soweit nicht anders angegeben)</li>
+          <li>Mindestbestellwert: 10 € (kann je Erzeuger variieren)</li>
+          <li>Versandkostenfrei ab 50 € Bestellwert</li>
+          <li>Bei Nichtverfügbarkeit wirst du unverzüglich informiert</li>
+        </ul>
+      </div>
+
+      <div class="ch" id="agb-5">
+        <div class="ch-num">§ 05 — Widerrufsrecht</div>
+        <h2>Rückgabe & Widerruf</h2>
+        <div class="warn-box"><p><strong>Hinweis:</strong> Bei frischen Lebensmitteln und schnell verderblichen Waren entfällt das Widerrufsrecht gemäß § 312g Abs. 2 Nr. 2 BGB. Das betrifft die Mehrzahl der Heimatkiste-Produkte.</p></div>
+        <p>Für nicht verderbliche Waren gilt ein <strong>14-tägiges Widerrufsrecht</strong> ab Erhalt der Ware, ohne Angabe von Gründen.</p>
+        <h3>Widerruf per E-Mail</h3>
+        <p>An: hallo@heimatkiste.de — Bitte Bestellnummer, Produkt, Bestelldatum und Namen angeben.</p>
+      </div>
+
+      <div class="ch" id="agb-6">
+        <div class="ch-num">§ 06 — Haftung & Schlussbestimmungen</div>
+        <h2>Haftungsbeschränkung</h2>
+        <p>Heimatkiste haftet unbegrenzt bei Vorsatz oder grober Fahrlässigkeit sowie bei Verletzung von Leben, Körper oder Gesundheit. Bei leichter Fahrlässigkeit nur bei Verletzung einer wesentlichen Vertragspflicht.</p>
+        <p>Heimatkiste übernimmt keine Haftung für die Richtigkeit von Erzeuger-Produktbeschreibungen. Erzeuger sind für die Richtigkeit ihrer Angaben selbst verantwortlich.</p>
+        <div class="info-box"><p>Es gilt <strong>deutsches Recht</strong>. Gerichtsstand: Mosbach (Baden-Württemberg), soweit gesetzlich zulässig. Einzelne unwirksame Bestimmungen berühren die übrigen nicht.</p></div>
+      </div>
+    </div>
+
+    <!-- ══ COOKIES ══ -->
+    <div class="legal-sec" id="sec-cookies">
+      <div class="updated">Zuletzt aktualisiert: Januar 2026</div>
+
+      <div class="ch" id="ck-1">
+        <div class="ch-num">§ 01 — Cookies & Web Storage</div>
+        <h2>Was sind Cookies?</h2>
+        <p>Cookies sind kleine Dateien, die von Webseiten auf deinem Gerät gespeichert werden. Heimatkiste nutzt daneben auch <strong>localStorage</strong> und <strong>sessionStorage</strong> — ähnlich wie Cookies, aber die Daten verbleiben ausschließlich in deinem Browser.</p>
+        <div class="info-box"><p>Heimatkiste setzt <strong>keine Tracking-Cookies</strong> und keine Cookies von Drittanbietern zu Werbezwecken ein. Alle gespeicherten Daten dienen ausschließlich der Funktionalität der Plattform.</p></div>
+      </div>
+
+      <div class="ch" id="ck-2">
+        <div class="ch-num">§ 02 — Welche wir nutzen</div>
+        <h2>Übersicht aller Speicher-Einträge</h2>
+        <table class="ltable">
+          <thead><tr><th>Name</th><th>Zweck</th><th>Typ</th><th>Notwendig</th></tr></thead>
+          <tbody>
+            <tr><td><code>hk_cart</code></td><td>Warenkorb-Inhalt</td><td>localStorage</td><td>✅ Ja</td></tr>
+            <tr><td><code>hk_favs</code></td><td>Favoriten-Liste</td><td>localStorage</td><td>✅ Ja</td></tr>
+            <tr><td><code>hk_users</code></td><td>Erzeuger-Konten</td><td>localStorage</td><td>✅ Ja (Erzeuger)</td></tr>
+            <tr><td><code>hk_sess</code></td><td>Aktive Login-Session</td><td>sessionStorage</td><td>✅ Ja (Erzeuger)</td></tr>
+            <tr><td><code>farmerProducts</code></td><td>Eingestellte Produkte</td><td>localStorage</td><td>✅ Ja (Erzeuger)</td></tr>
+          </tbody>
+        </table>
+        <p>Wir verwenden <strong>keine</strong> Analyse-Tools (z.B. Google Analytics), <strong>keine</strong> Social-Media-Plugins und <strong>keine</strong> Werbenetzwerke.</p>
+      </div>
+
+      <div class="ch" id="ck-3">
+        <div class="ch-num">§ 03 — Deine Einstellungen</div>
+        <h2>Cookie-Einstellungen</h2>
+        <p>Da Heimatkiste ausschließlich technisch notwendige Speicherung nutzt, gibt es keine optionalen Kategorien. Du kannst aber alle lokal gespeicherten Daten jederzeit löschen:</p>
+
+        <div style="background:white;border-radius:16px;border:1px solid rgba(44,26,14,.08);padding:24px 26px;margin:20px 0;">
+          <div class="ck-row">
+            <div class="ck-info"><h4>Technisch notwendig</h4><p>Warenkorb, Favoriten, Anmeldung — ohne diese funktioniert die App nicht</p></div>
+            <label class="tog tog-req"><input type="checkbox" checked disabled><div class="tog-track"></div><div class="tog-thumb"></div></label>
+          </div>
+          <div class="ck-row">
+            <div class="ck-info"><h4>Analyse & Statistiken</h4><p>Werden von Heimatkiste nicht verwendet</p></div>
+            <label class="tog"><input type="checkbox" disabled><div class="tog-track"></div><div class="tog-thumb"></div></label>
+          </div>
+          <div class="ck-row">
+            <div class="ck-info"><h4>Marketing & Werbung</h4><p>Werden von Heimatkiste nicht verwendet</p></div>
+            <label class="tog"><input type="checkbox" disabled><div class="tog-track"></div><div class="tog-thumb"></div></label>
+          </div>
+        </div>
+
+        <div class="action-btns">
+          <button class="btn-danger" onclick="clearAll()">🗑 Alle lokalen Daten löschen</button>
+          <button class="btn-secondary" onclick="toggleStorageInfo()">🔍 Gespeicherte Daten anzeigen</button>
+        </div>
+        <div class="storage-debug" id="storageDebug"></div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- FOOTER — identical to heimatkiste.html -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-logo">🧺 Heimatkiste</div>
+      <p class="footer-desc">Dein Marktplatz für regionalen, nachhaltigen Genuss — direkt vom Erzeuger.</p>
+      <div class="social-row">
+        <a href="#" class="social-btn">𝕏</a>
+        <a href="#" class="social-btn">in</a>
+        <a href="#" class="social-btn">📸</a>
+      </div>
+    </div>
+    <div class="footer-col"><h4>Marktplatz</h4><ul>
+      <li><a href="heimatkiste.html#produkte">Alle Produkte</a></li>
+      <li><a href="heimatkiste.html#categories">Kategorien</a></li>
+      <li><a href="heimatkiste.html#bauern">Unsere Höfe</a></li>
+      <li><a href="heimatkiste-farmer.html">Erzeuger-Portal</a></li>
+    </ul></div>
+    <div class="footer-col"><h4>Rechtliches</h4><ul>
+      <li><a href="heimatkiste-legal.html" onclick="showSec('impressum')">Impressum</a></li>
+      <li><a href="heimatkiste-legal.html" onclick="showSec('datenschutz')">Datenschutz</a></li>
+      <li><a href="heimatkiste-legal.html" onclick="showSec('agb')">AGB</a></li>
+      <li><a href="heimatkiste-legal.html" onclick="showSec('cookies')">Cookies</a></li>
+      <li><a href="mailto:hallo@heimatkiste.de">hallo@heimatkiste.de</a></li>
+    </ul></div>
+  </div>
+  <div class="footer-copy">
+    <span>© 2026 Heimatkiste — Regionaler Marktplatz</span>
+    <span>Datenschutz · AGB · Impressum</span>
+  </div>
+</footer>
+
+<script>
+/* ── Header scroll — same as heimatkiste.html ── */
+const hdr = document.getElementById('header');
+window.addEventListener('scroll', () => {
+  hdr.classList.toggle('scrolled', window.scrollY > 20);
+}, { passive: true });
+// Start scrolled since hero has dark bg initially
+hdr.classList.add('scrolled');
+
+/* ── Section switching ── */
+function showSec(id, tabEl) {
+  document.querySelectorAll('.legal-sec').forEach(s => s.classList.remove('on'));
+  document.querySelectorAll('.ltab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.side-section').forEach(n => n.hidden = true);
+  document.querySelectorAll('.side-link').forEach(l => l.classList.remove('on'));
+
+  document.getElementById('sec-' + id).classList.add('on');
+  document.getElementById('nav-' + id).hidden = false;
+  document.querySelector('#nav-' + id + ' .side-link').classList.add('on');
+
+  if (tabEl) tabEl.classList.add('active');
+  else document.querySelectorAll('.ltab').forEach(t => { if(t.onclick?.toString().includes("'" + id + "'")) t.classList.add('active'); });
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function jumpTo(id, linkEl) {
+  document.querySelectorAll('.side-link').forEach(l => l.classList.remove('on'));
+  if (linkEl) linkEl.classList.add('on');
+  const el = document.getElementById(id);
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+/* ── URL hash on load ── */
+window.addEventListener('DOMContentLoaded', () => {
+  const h = location.hash.replace('#','');
+  if (['impressum','datenschutz','agb','cookies'].includes(h)) showSec(h);
+});
+
+/* ── Cookie tools ── */
+function clearAll() {
+  if (!confirm('Alle lokalen Heimatkiste-Daten löschen?\n\nDas betrifft: Warenkorb, Favoriten, Produkte und Erzeuger-Konto.\n\nDiese Aktion kann nicht rückgängig gemacht werden.')) return;
+  ['hk_cart','hk_favs','farmerProducts','hk_users','hk_detail_id'].forEach(k => localStorage.removeItem(k));
+  sessionStorage.removeItem('hk_sess');
+  alert('✓ Alle lokalen Daten wurden gelöscht.');
+}
+
+function toggleStorageInfo() {
+  const box = document.getElementById('storageDebug');
+  if (box.classList.toggle('on')) {
+    const keys = ['hk_cart','hk_favs','farmerProducts','hk_users','hk_sess','hk_detail_id'];
+    let html = '';
+    keys.forEach(k => {
+      const ls = localStorage.getItem(k), ss = sessionStorage.getItem(k);
+      const val = ls || ss;
+      if (val) {
+        const size = (val.length / 1024).toFixed(1);
+        html += `<div style="margin-bottom:7px"><span style="color:#d4a853">${k}</span><span style="color:rgba(240,228,200,.35)"> · ${size} KB · ${ls ? 'localStorage' : 'sessionStorage'}</span></div>`;
+      } else {
+        html += `<div style="margin-bottom:7px;opacity:.3">${k} · leer</div>`;
+      }
+    });
+    box.innerHTML = html || '<div style="opacity:.4">Keine lokalen Daten vorhanden.</div>';
+  }
+}
+</script>
+</body>
+</html>
