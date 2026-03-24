@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Heimatkiste — Kasse</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=Syne:wght@400;500;600;700;800&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink:#0d1a0f; --forest:#1a3822; --leaf:#2d5c3a; --moss:#3d6b47;
+  --sage:#6a9e78; --mint:#c4dbc9; --amber:#c9863a; --amber2:#e8a84e;
+  --cream:#f7f0e2; --parch:#ede4d0; --wheat:#d6c5a0; --chalk:#8a7a62;
+  --rust:#b84c2a; --white:#fffdf8; --red:#c93a2a;
+  --display:'Cormorant Garamond',Georgia,serif;
+  --ui:'Syne',sans-serif; --body:'Jost',sans-serif;
+  --ease:cubic-bezier(0.16,1,0.3,1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;font-size:16px;}
+body{background:var(--parch);color:var(--ink);font-family:var(--body);font-weight:400;line-height:1.65;overflow-x:hidden;min-height:100vh;}
+img{display:block;max-width:100%;}a{text-decoration:none;color:inherit;}
+button{cursor:pointer;border:none;font-family:inherit;background:none;}
+input,select,textarea{font-family:var(--body);}
+body::before{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;opacity:.024;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");background-size:150px;}
+
+/* HEADER */
+header{background:rgba(247,240,226,.97);backdrop-filter:blur(20px);border-bottom:1px solid rgba(13,26,15,.07);position:sticky;top:0;z-index:200;box-shadow:0 2px 24px rgba(13,26,15,.04);}
+.nav{max-width:1320px;margin:0 auto;padding:0 48px;height:72px;display:flex;align-items:center;justify-content:space-between;gap:24px;}
+.logo{font-family:var(--display);font-size:1.6rem;font-weight:700;color:var(--ink);display:flex;align-items:center;gap:8px;letter-spacing:-.01em;}
+.logo-sub{font-family:var(--ui);font-size:.58rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--chalk);margin-top:1px;}
+.nav-secure{display:flex;align-items:center;gap:6px;font-family:var(--ui);font-size:.65rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--sage);}
+.nav-back{font-family:var(--ui);font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--chalk);display:flex;align-items:center;gap:6px;transition:color .2s;padding:8px 18px;border-radius:100px;border:1.5px solid rgba(13,26,15,.1);}
+.nav-back:hover{color:var(--leaf);border-color:rgba(45,92,58,.25);}
+
+/* PROGRESS */
+.progress-wrap{background:var(--cream);border-bottom:1px solid rgba(13,26,15,.07);padding:0 48px;}
+.progress-inner{max-width:1320px;margin:0 auto;padding:24px 0;}
+.progress-steps{display:flex;align-items:center;}
+.ps-item{display:flex;align-items:center;gap:12px;flex:1;}
+.ps-item:last-child{flex:none;}
+.ps-num{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--ui);font-size:.72rem;font-weight:800;flex-shrink:0;transition:all .4s var(--ease);}
+.ps-item.done .ps-num{background:var(--leaf);color:white;}
+.ps-item.active .ps-num{background:var(--forest);color:white;box-shadow:0 4px 18px rgba(26,56,34,.3);}
+.ps-item.pending .ps-num{background:rgba(13,26,15,.07);color:var(--chalk);}
+.ps-label{font-family:var(--ui);font-size:.68rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;transition:color .4s;}
+.ps-item.active .ps-label{color:var(--ink);}
+.ps-item.done .ps-label{color:var(--leaf);}
+.ps-item.pending .ps-label{color:var(--chalk);}
+.ps-sub{font-size:.62rem;color:var(--chalk);font-weight:300;margin-top:1px;}
+.ps-connector{height:1px;flex:1;margin:0 12px;transition:background .5s;}
+.ps-connector.done{background:var(--leaf);}
+.ps-connector.pending{background:rgba(13,26,15,.1);}
+
+/* LAYOUT */
+.checkout-layout{max-width:1320px;margin:0 auto;padding:48px 48px 100px;display:grid;grid-template-columns:1fr 400px;gap:48px;align-items:start;}
+
+/* PANELS */
+.form-panel{display:none;animation:panelIn .5s var(--ease) both;}
+.form-panel.active{display:block;}
+@keyframes panelIn{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
+.panel-header{margin-bottom:36px;}
+.panel-eyebrow{font-family:var(--ui);font-size:.62rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--sage);display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+.panel-eyebrow::before{content:'';width:18px;height:1px;background:var(--sage);}
+.panel-title{font-family:var(--display);font-size:clamp(2rem,3.5vw,2.8rem);font-weight:700;line-height:1.05;letter-spacing:-.025em;}
+.panel-title em{font-style:italic;color:var(--leaf);}
+
+/* FORM SECTIONS */
+.form-section{background:white;border-radius:20px;border:1px solid rgba(13,26,15,.07);padding:30px;margin-bottom:18px;box-shadow:0 2px 16px rgba(13,26,15,.03);}
+.form-section-title{font-family:var(--ui);font-size:.62rem;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--chalk);margin-bottom:22px;display:flex;align-items:center;gap:10px;}
+.form-section-title::after{content:'';flex:1;height:1px;background:rgba(13,26,15,.07);}
+.form-row{display:grid;gap:14px;margin-bottom:14px;}
+.form-row.cols2{grid-template-columns:1fr 1fr;}
+.form-row.cols3{grid-template-columns:2fr 1fr;}
+.form-row:last-child{margin-bottom:0;}
+.ff{display:flex;flex-direction:column;gap:5px;}
+.ff label{font-family:var(--ui);font-size:.61rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--chalk);}
+.ff .req{color:var(--amber);}
+.fi{background:var(--parch);border:1.5px solid rgba(13,26,15,.1);color:var(--ink);font-size:.9rem;padding:13px 15px;border-radius:12px;outline:none;transition:all .22s;width:100%;appearance:none;}
+.fi:focus{border-color:var(--leaf);background:white;box-shadow:0 0 0 3px rgba(45,92,58,.06);}
+.fi::placeholder{color:rgba(13,26,15,.28);}
+.fi.err{border-color:var(--red);}
+.fi.ok{border-color:rgba(45,92,58,.35);}
+.fi-note{font-size:.7rem;color:var(--chalk);font-weight:300;}
+select.fi{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='7'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238a7a62' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:40px;cursor:pointer;}
+.chk-row{display:flex;align-items:flex-start;gap:10px;cursor:pointer;}
+.chk-row input[type=checkbox]{width:16px;height:16px;accent-color:var(--leaf);cursor:pointer;flex-shrink:0;margin-top:2px;}
+.chk-label{font-size:.83rem;color:var(--ink);font-weight:300;line-height:1.65;}
+
+/* PLZ HINT */
+.plz-hint{font-size:.72rem;color:var(--sage);font-weight:500;margin-top:3px;display:none;}
+.plz-hint.show{display:block;}
+.zone-pill{display:inline-flex;align-items:center;background:rgba(45,92,58,.1);color:var(--leaf);font-family:var(--ui);font-size:.58rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:2px 9px;border-radius:100px;margin-left:6px;}
+.zone-pill.b{background:rgba(201,134,58,.12);color:var(--amber);}
+.zone-pill.c{background:rgba(201,58,42,.08);color:var(--red);}
+
+/* DELIVERY OPTS */
+.delivery-opts{display:flex;flex-direction:column;gap:10px;}
+.dopt{display:flex;align-items:flex-start;gap:14px;padding:18px 20px;border-radius:14px;border:2px solid rgba(13,26,15,.1);cursor:pointer;transition:all .22s;background:var(--parch);}
+.dopt:hover{border-color:rgba(45,92,58,.3);}
+.dopt.sel{border-color:var(--leaf);background:rgba(45,92,58,.04);}
+.dopt input[type=radio]{position:absolute;opacity:0;width:0;height:0;}
+.radio-dot{width:20px;height:20px;border-radius:50%;border:2px solid rgba(13,26,15,.2);flex-shrink:0;margin-top:3px;display:flex;align-items:center;justify-content:center;transition:all .2s;}
+.dopt.sel .radio-dot{border-color:var(--leaf);background:var(--leaf);}
+.radio-dot::after{content:'';width:7px;height:7px;border-radius:50%;background:white;opacity:0;transition:opacity .2s;}
+.dopt.sel .radio-dot::after{opacity:1;}
+.dopt-icon{font-size:1.5rem;flex-shrink:0;}
+.dopt-body{flex:1;}
+.dopt-name{font-family:var(--ui);font-size:.76rem;font-weight:700;color:var(--ink);margin-bottom:2px;}
+.dopt-desc{font-size:.76rem;color:var(--chalk);font-weight:300;line-height:1.5;}
+.dopt-tag{font-family:var(--ui);font-size:.58rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:2px 9px;border-radius:100px;margin-top:5px;display:inline-block;}
+.tag-free{background:rgba(45,92,58,.1);color:var(--leaf);}
+.tag-exp{background:rgba(201,134,58,.12);color:var(--amber);}
+.dopt-price{font-family:var(--display);font-size:1.1rem;font-weight:700;flex-shrink:0;color:var(--ink);}
+.dopt-price.free{font-family:var(--ui);font-size:.76rem;color:var(--leaf);font-weight:700;}
+
+/* PAY TABS */
+.pay-tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:22px;}
+.ptab{padding:14px 8px;border-radius:12px;border:2px solid rgba(13,26,15,.09);cursor:pointer;text-align:center;transition:all .2s;background:var(--parch);}
+.ptab:hover{border-color:rgba(45,92,58,.25);}
+.ptab.sel{border-color:var(--leaf);background:rgba(45,92,58,.04);}
+.ptab-icon{font-size:1.5rem;margin-bottom:5px;}
+.ptab-name{font-family:var(--ui);font-size:.6rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--ink);}
+.pf{display:none;}
+.pf.active{display:block;animation:panelIn .3s var(--ease) both;}
+.card-brands{display:flex;gap:7px;margin-bottom:16px;}
+.card-brand{background:white;border:1px solid rgba(13,26,15,.1);border-radius:6px;padding:3px 10px;font-size:.68rem;font-family:var(--ui);font-weight:700;color:var(--chalk);}
+.fi-card{padding-left:46px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='22' viewBox='0 0 24 24' fill='none'%3E%3Crect x='2' y='5' width='20' height='14' rx='2' stroke='%238a7a62' stroke-width='1.5'/%3E%3Cline x1='2' y1='10' x2='22' y2='10' stroke='%238a7a62' stroke-width='1.5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:13px center;}
+.info-box{background:rgba(45,92,58,.05);border:1px solid rgba(45,92,58,.14);border-radius:14px;padding:18px 20px;display:flex;gap:12px;align-items:flex-start;}
+.info-box-icon{font-size:1.5rem;flex-shrink:0;}
+.info-box-text{font-size:.82rem;color:var(--chalk);line-height:1.65;font-weight:300;}
+.info-box-text strong{color:var(--ink);font-weight:500;}
+.err-box{background:rgba(201,58,42,.06);border:1px solid rgba(201,58,42,.18);border-radius:10px;padding:10px 14px;font-size:.78rem;color:var(--red);font-weight:500;display:none;margin-top:8px;}
+.err-box.show{display:block;}
+
+/* COUPON */
+.coupon-row{display:flex;gap:8px;}
+.coupon-row .fi{flex:1;}
+.coupon-btn{background:var(--forest);color:white;font-family:var(--ui);font-size:.66rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:13px 20px;border-radius:10px;transition:all .2s;white-space:nowrap;}
+.coupon-btn:hover{background:var(--leaf);}
+.coupon-ok{display:none;align-items:center;gap:7px;color:var(--leaf);font-size:.8rem;font-weight:500;margin-top:8px;}
+.coupon-ok.show{display:flex;}
+
+/* NAV BUTTONS */
+.form-nav{display:flex;align-items:center;justify-content:space-between;margin-top:28px;gap:16px;}
+.btn-back-step{font-family:var(--ui);font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--chalk);display:flex;align-items:center;gap:6px;padding:13px 20px;border-radius:100px;border:1.5px solid rgba(13,26,15,.12);transition:all .2s;}
+.btn-back-step:hover{color:var(--ink);border-color:rgba(13,26,15,.25);}
+.btn-next{background:var(--forest);color:white;font-family:var(--ui);font-size:.74rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:15px 38px;border-radius:100px;transition:all .3s var(--ease);display:inline-flex;align-items:center;gap:10px;}
+.btn-next:hover{background:var(--leaf);transform:translateY(-2px);box-shadow:0 14px 36px rgba(26,56,34,.22);}
+.btn-next:disabled{opacity:.45;cursor:not-allowed;transform:none!important;box-shadow:none!important;}
+.btn-next.amber-btn{background:var(--amber);}
+.btn-next.amber-btn:hover{background:var(--amber2);}
+
+/* ORDER SUMMARY */
+.order-summary{background:white;border-radius:24px;border:1px solid rgba(13,26,15,.07);position:sticky;top:100px;box-shadow:0 4px 32px rgba(13,26,15,.06);overflow:hidden;}
+.os-head{background:var(--forest);padding:22px 26px;display:flex;align-items:center;justify-content:space-between;}
+.os-title{font-family:var(--display);font-size:1.25rem;font-weight:700;color:white;letter-spacing:-.01em;}
+.os-toggle{font-family:var(--ui);font-size:.6rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.5);background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);padding:4px 12px;border-radius:100px;transition:all .2s;cursor:pointer;}
+.os-toggle:hover{color:white;}
+.os-items{padding:18px 22px;border-bottom:1px solid rgba(13,26,15,.06);max-height:300px;overflow-y:auto;}
+.os-items::-webkit-scrollbar{width:3px;}.os-items::-webkit-scrollbar-thumb{background:var(--wheat);border-radius:2px;}
+.os-item{display:flex;gap:11px;align-items:center;padding:9px 0;border-bottom:1px solid rgba(13,26,15,.04);}
+.os-item:last-child{border-bottom:none;}
+.oi-img{width:48px;height:48px;border-radius:9px;object-fit:cover;background:var(--parch);flex-shrink:0;}
+.oi-info{flex:1;min-width:0;}
+.oi-name{font-family:var(--display);font-size:.88rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.oi-farm{font-size:.68rem;color:var(--chalk);font-weight:300;}
+.oi-qty{font-family:var(--ui);font-size:.6rem;font-weight:700;color:var(--sage);background:rgba(106,158,120,.1);padding:1px 7px;border-radius:100px;display:inline-block;margin-top:3px;}
+.oi-price{font-family:var(--display);font-size:.92rem;font-weight:700;flex-shrink:0;}
+.os-empty{text-align:center;padding:28px;color:var(--chalk);}
+.oe-icon{font-size:2rem;margin-bottom:8px;}
+.oe-txt{font-family:var(--ui);font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;}
+.os-coupon{padding:14px 22px 0;}
+.os-coupon-title{font-family:var(--ui);font-size:.6rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--chalk);margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+.os-coupon-title::after{content:'';flex:1;height:1px;background:rgba(13,26,15,.07);}
+.os-totals{padding:16px 22px 0;}
+.os-row{display:flex;justify-content:space-between;align-items:center;padding:5px 0;font-size:.83rem;}
+.os-row .lbl{color:var(--chalk);font-weight:300;}
+.os-row .val{font-weight:500;}
+.val-green{color:var(--leaf)!important;font-weight:600!important;}
+.val-amber{color:var(--amber)!important;font-weight:600!important;}
+.os-divider{height:1px;background:rgba(13,26,15,.06);margin:10px 0;}
+.os-total-row{display:flex;justify-content:space-between;align-items:baseline;padding:8px 0 0;}
+.os-total-lbl{font-family:var(--ui);font-size:.68rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--chalk);}
+.os-total-val{font-family:var(--display);font-size:1.9rem;font-weight:700;letter-spacing:-.02em;}
+.os-footer{padding:16px 22px 22px;}
+.os-trust{display:flex;flex-direction:column;gap:7px;padding-top:14px;border-top:1px solid rgba(13,26,15,.05);}
+.ot-item{display:flex;align-items:center;gap:7px;font-size:.73rem;color:var(--chalk);font-weight:300;}
+.ot-item::before{content:'✓';color:var(--leaf);font-weight:700;font-size:.78rem;flex-shrink:0;}
+
+/* CONFIRM */
+#panel-3{text-align:center;}
+.confirm-anim{width:88px;height:88px;border-radius:50%;background:var(--leaf);display:flex;align-items:center;justify-content:center;font-size:2.2rem;margin:0 auto 26px;animation:confirmPop .65s .1s var(--ease) both;}
+@keyframes confirmPop{from{opacity:0;transform:scale(.4) rotate(-20deg)}to{opacity:1;transform:scale(1) rotate(0)}}
+.confirm-order-num{font-family:var(--ui);font-size:.65rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--sage);margin-bottom:8px;}
+.confirm-title{font-family:var(--display);font-size:clamp(2.2rem,4vw,3rem);font-weight:700;letter-spacing:-.025em;margin-bottom:10px;line-height:1.1;}
+.confirm-title em{font-style:italic;color:var(--leaf);}
+.confirm-sub{font-size:.93rem;color:var(--chalk);font-weight:300;line-height:1.75;max-width:460px;margin:0 auto 36px;}
+.confirm-boxes{display:grid;grid-template-columns:1fr 1fr;gap:14px;text-align:left;margin-bottom:28px;}
+.cbox{background:white;border-radius:14px;padding:20px 22px;border:1px solid rgba(13,26,15,.07);}
+.cbox-lbl{font-family:var(--ui);font-size:.58rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--sage);margin-bottom:8px;}
+.cbox-val{font-size:.85rem;color:var(--ink);font-weight:300;line-height:1.65;}
+.cbox-val strong{font-weight:500;}
+.confirm-items{background:white;border-radius:14px;border:1px solid rgba(13,26,15,.07);overflow:hidden;margin-bottom:24px;text-align:left;}
+.ci-row{display:flex;gap:11px;align-items:center;padding:12px 18px;border-bottom:1px solid rgba(13,26,15,.05);}
+.ci-row:last-child{border-bottom:none;}
+.ci-img{width:42px;height:42px;border-radius:7px;object-fit:cover;background:var(--parch);}
+.ci-name{font-family:var(--display);font-size:.88rem;font-weight:700;flex:1;}
+.ci-qty{font-size:.72rem;color:var(--chalk);}
+.ci-price{font-family:var(--display);font-size:.92rem;font-weight:700;}
+.confirm-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+.btn-continue{background:var(--forest);color:white;font-family:var(--ui);font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:14px 34px;border-radius:100px;transition:all .3s var(--ease);display:inline-flex;align-items:center;gap:8px;}
+.btn-continue:hover{background:var(--leaf);transform:translateY(-2px);box-shadow:0 14px 36px rgba(26,56,34,.2);}
+.btn-secondary{font-family:var(--ui);font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:14px 24px;border-radius:100px;border:1.5px solid rgba(13,26,15,.12);color:var(--chalk);transition:all .2s;display:inline-flex;align-items:center;gap:8px;}
+.btn-secondary:hover{color:var(--ink);border-color:rgba(13,26,15,.25);}
+
+/* LOADING SPINNER */
+.spinner-wrap{display:none;align-items:center;justify-content:center;gap:12px;padding:12px 0;}
+.spinner-wrap.show{display:flex;}
+.spinner{width:20px;height:20px;border:2.5px solid rgba(45,92,58,.15);border-top-color:var(--leaf);border-radius:50%;animation:spin 1s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg)}}
+.spinner-txt{font-family:var(--ui);font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--chalk);animation:blink 1.2s ease-in-out infinite;}
+@keyframes blink{0%,100%{opacity:.4}50%{opacity:1}}
+
+/* FARM PICKUP CARDS */
+.pickup-wrap{margin-top:20px;animation:panelIn .4s var(--ease) both;}
+.pickup-intro{font-size:.82rem;color:var(--chalk);font-weight:300;line-height:1.65;margin-bottom:16px;display:flex;align-items:flex-start;gap:9px;}
+.pickup-intro-icon{font-size:1.2rem;flex-shrink:0;margin-top:1px;}
+.farm-card{background:var(--cream);border:2px solid rgba(13,26,15,.08);border-radius:16px;overflow:hidden;margin-bottom:12px;transition:border-color .2s;}
+.farm-card:last-child{margin-bottom:0;}
+.fc-head{display:flex;align-items:center;gap:14px;padding:16px 18px;cursor:pointer;user-select:none;}
+.fc-icon{width:44px;height:44px;border-radius:11px;background:var(--forest);display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;}
+.fc-info{flex:1;min-width:0;}
+.fc-name{font-family:var(--display);font-size:1rem;font-weight:700;letter-spacing:-.01em;}
+.fc-meta{font-size:.7rem;color:var(--chalk);font-weight:300;margin-top:2px;}
+.fc-badge{font-family:var(--ui);font-size:.57rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:rgba(45,92,58,.1);color:var(--leaf);padding:3px 9px;border-radius:100px;white-space:nowrap;}
+.fc-toggle{font-size:.9rem;color:var(--chalk);transition:transform .3s;flex-shrink:0;}
+.fc-toggle.open{transform:rotate(180deg);}
+.fc-body{display:none;padding:0 18px 18px;}
+.fc-body.open{display:block;}
+.fc-details{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;}
+.fc-detail{background:white;border-radius:10px;padding:11px 13px;}
+.fc-detail-lbl{font-family:var(--ui);font-size:.55rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--chalk);margin-bottom:4px;}
+.fc-detail-val{font-size:.77rem;color:var(--ink);font-weight:400;line-height:1.55;}
+.fc-detail-val a{color:var(--leaf);font-weight:500;}
+.fc-products{border-top:1px solid rgba(13,26,15,.06);padding-top:13px;margin-bottom:14px;}
+.fc-prod-title{font-family:var(--ui);font-size:.58rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--chalk);margin-bottom:9px;}
+.fc-prod-item{display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid rgba(13,26,15,.04);}
+.fc-prod-item:last-child{border-bottom:none;}
+.fc-prod-img{width:34px;height:34px;border-radius:7px;object-fit:cover;background:var(--parch);flex-shrink:0;}
+.fc-prod-name{flex:1;font-size:.81rem;font-weight:400;}
+.fc-prod-qty{font-family:var(--ui);font-size:.63rem;font-weight:700;color:var(--sage);}
+.fc-timeslot{background:white;border-radius:10px;padding:13px;}
+.fc-timeslot-lbl{font-family:var(--ui);font-size:.58rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--chalk);margin-bottom:9px;}
+.ts-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;}
+.ts-btn{padding:8px 5px;border-radius:8px;border:1.5px solid rgba(13,26,15,.1);font-family:var(--ui);font-size:.6rem;font-weight:700;text-align:center;cursor:pointer;transition:all .2s;background:var(--parch);color:var(--ink);line-height:1.4;}
+.ts-btn:hover{border-color:rgba(45,92,58,.3);}
+.ts-btn.sel{border-color:var(--leaf);background:rgba(45,92,58,.08);color:var(--leaf);}
+.ts-btn.full{opacity:.38;cursor:not-allowed;text-decoration:line-through;color:var(--chalk);}
+
+/* TOAST */
+.toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--ink);color:var(--cream);font-family:var(--ui);font-size:.73rem;font-weight:600;letter-spacing:.06em;padding:13px 26px;border-radius:100px;z-index:9998;transition:transform .4s var(--ease),opacity .4s;opacity:0;white-space:nowrap;display:flex;align-items:center;gap:9px;pointer-events:none;box-shadow:0 8px 32px rgba(13,26,15,.2);}
+.toast.on{transform:translateX(-50%) translateY(0);opacity:1;}
+
+/* RESPONSIVE */
+@media(max-width:1060px){
+  .checkout-layout{grid-template-columns:1fr;max-width:680px;}
+  .order-summary{position:relative;top:0;order:-1;}
+}
+@media(max-width:680px){
+  .nav{padding:0 20px;}.nav-secure{display:none;}
+  .checkout-layout{padding:24px 20px 72px;}
+  .progress-wrap{padding:0 20px;}
+  .form-row.cols2{grid-template-columns:1fr;}
+  .form-row.cols3{grid-template-columns:1fr 1fr;}
+  .confirm-boxes{grid-template-columns:1fr;}
+  .pay-tabs{grid-template-columns:1fr 1fr;}
+  .ps-sub{display:none;}
+  .ps-label{font-size:.58rem;}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="nav">
+    <a href="heimatkiste.html" class="logo">
+      <span>🧺</span>
+      <div><div>Heimatkiste</div><div class="logo-sub">Regionaler Marktplatz</div></div>
+    </a>
+    <div class="nav-secure">🔒 Sichere & verschlüsselte Zahlung</div>
+    <a href="heimatkiste.html" class="nav-back">← Zurück</a>
+  </div>
+</header>
+
+<!-- PROGRESS -->
+<div class="progress-wrap">
+  <div class="progress-inner">
+    <div class="progress-steps">
+      <div class="ps-item active" id="ps1">
+        <div class="ps-num" id="pn1">01</div>
+        <div><div class="ps-label">Lieferadresse</div><div class="ps-sub">Wohin?</div></div>
+      </div>
+      <div class="ps-connector pending" id="pc1"></div>
+      <div class="ps-item pending" id="ps2">
+        <div class="ps-num" id="pn2">02</div>
+        <div><div class="ps-label">Versand & Zahlung</div><div class="ps-sub">Wie & womit?</div></div>
+      </div>
+      <div class="ps-connector pending" id="pc2"></div>
+      <div class="ps-item pending" id="ps3">
+        <div class="ps-num" id="pn3">03</div>
+        <div><div class="ps-label">Bestätigung</div><div class="ps-sub">Fertig!</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="checkout-layout">
+
+  <!-- LEFT: FORMS -->
+  <div>
+
+    <!--  STEP 1: ADRESSE  -->
+    <div class="form-panel active" id="panel-1">
+      <div class="panel-header">
+        <div class="panel-eyebrow">Schritt 1 von 3</div>
+        <h1 class="panel-title">Wohin darf die <em>Kiste?</em></h1>
+      </div>
+
+      <div class="form-section">
+        <div class="form-section-title">Persönliche Daten</div>
+        <div class="form-row cols2">
+          <div class="ff"><label>Vorname <span class="req">*</span></label><input class="fi" type="text" id="f_vn" placeholder="Max" autocomplete="given-name"></div>
+          <div class="ff"><label>Nachname <span class="req">*</span></label><input class="fi" type="text" id="f_nn" placeholder="Mustermann" autocomplete="family-name"></div>
+        </div>
+        <div class="form-row cols2">
+          <div class="ff"><label>E-Mail <span class="req">*</span></label><input class="fi" type="email" id="f_em" placeholder="max@beispiel.de" autocomplete="email"></div>
+          <div class="ff"><label>Telefon</label><input class="fi" type="tel" id="f_tel" placeholder="+49 176 12345678" autocomplete="tel"><span class="fi-note">Für Lieferrückfragen</span></div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <div class="form-section-title">Lieferadresse</div>
+        <div class="form-row cols3">
+          <div class="ff" style="grid-column:1"><label>Straße <span class="req">*</span></label><input class="fi" type="text" id="f_str" placeholder="Musterstraße" autocomplete="address-line1"></div>
+          <div class="ff" style="grid-column:2"><label>Nr. <span class="req">*</span></label><input class="fi" type="text" id="f_hnr" placeholder="12a"></div>
+        </div>
+        <div class="form-row cols2">
+          <div class="ff">
+            <label>PLZ <span class="req">*</span></label>
+            <input class="fi" type="text" id="f_plz" placeholder="74821" maxlength="5" autocomplete="postal-code" oninput="checkPlz(this.value)">
+            <div class="plz-hint" id="plzHint"></div>
+          </div>
+          <div class="ff"><label>Ort <span class="req">*</span></label><input class="fi" type="text" id="f_ort" placeholder="Mosbach" autocomplete="address-level2"></div>
+        </div>
+        <div class="form-row">
+          <div class="ff"><label>Adresszusatz</label><input class="fi" type="text" id="f_add" placeholder="2. OG, Apartment 5 …"></div>
+        </div>
+        <div class="form-row">
+          <div class="ff"><label>Lieferhinweis</label><input class="fi" type="text" id="f_hint" placeholder="z.B. Bitte beim Nachbarn abgeben"></div>
+        </div>
+      </div>
+
+      <div class="form-section" style="padding:20px 26px;">
+        <label class="chk-row">
+          <input type="checkbox" id="sameAddr" checked onchange="toggleBillAddr(this.checked)">
+          <span class="chk-label">Rechnungsadresse ist identisch mit der Lieferadresse</span>
+        </label>
+        <div id="billAddrFields" style="display:none;margin-top:18px;">
+          <div class="form-section-title" style="margin-bottom:16px;">Rechnungsadresse</div>
+          <div class="form-row cols2">
+            <div class="ff"><label>Vorname <span class="req">*</span></label><input class="fi" type="text" id="b_vn" placeholder="Max"></div>
+            <div class="ff"><label>Nachname <span class="req">*</span></label><input class="fi" type="text" id="b_nn" placeholder="Mustermann"></div>
+          </div>
+          <div class="form-row cols3">
+            <div class="ff"><label>Straße <span class="req">*</span></label><input class="fi" type="text" id="b_str" placeholder="Rechnungsstraße"></div>
+            <div class="ff"><label>Nr.</label><input class="fi" type="text" id="b_hnr" placeholder="1"></div>
+          </div>
+          <div class="form-row cols2">
+            <div class="ff"><label>PLZ <span class="req">*</span></label><input class="fi" type="text" id="b_plz" placeholder="74821" maxlength="5"></div>
+            <div class="ff"><label>Ort <span class="req">*</span></label><input class="fi" type="text" id="b_ort" placeholder="Mosbach"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-nav">
+        <a href="heimatkiste.html" class="btn-back-step">← Zurück zum Marktplatz</a>
+        <button class="btn-next" onclick="goStep(2)">Weiter zu Versand & Zahlung →</button>
+      </div>
+    </div>
+
+
+    <!--  STEP 2: VERSAND & ZAHLUNG  -->
+    <div class="form-panel" id="panel-2">
+      <div class="panel-header">
+        <div class="panel-eyebrow">Schritt 2 von 3</div>
+        <h1 class="panel-title">Versand &amp; <em>Zahlung.</em></h1>
+      </div>
+
+      <div class="form-section">
+        <div class="form-section-title">Versandmethode</div>
+        <div class="delivery-opts">
+
+          <label class="dopt sel" id="do-std" onclick="selDelivery('std',0)">
+            <input type="radio" name="del" value="std" checked>
+            <div class="radio-dot"></div>
+            <div class="dopt-icon">📦</div>
+            <div class="dopt-body">
+              <div class="dopt-name">Standard — Direkt vom Hof</div>
+              <div class="dopt-desc">3–5 Werktage · Klimaneutral verpackt · Sendungsverfolgung inklusive</div>
+              <div class="dopt-tag tag-free">✓ Kostenlos</div>
+            </div>
+            <div class="dopt-price free">Kostenlos</div>
+          </label>
+
+          <label class="dopt" id="do-exp" onclick="selDelivery('exp',4.99)">
+            <input type="radio" name="del" value="exp">
+            <div class="radio-dot"></div>
+            <div class="dopt-icon">⚡</div>
+            <div class="dopt-body">
+              <div class="dopt-name">Express — Schnelllieferung</div>
+              <div class="dopt-desc">1–2 Werktage · Wunschzeitfenster wählbar · Priorität beim Erzeuger</div>
+              <div class="dopt-tag tag-exp">⚡ Express</div>
+            </div>
+            <div class="dopt-price">4,99 €</div>
+          </label>
+
+          <label class="dopt" id="do-pick" onclick="selDelivery('pick',0)">
+            <input type="radio" name="del" value="pick">
+            <div class="radio-dot"></div>
+            <div class="dopt-icon">🏡</div>
+            <div class="dopt-body">
+              <div class="dopt-name">Abholung direkt beim Erzeuger</div>
+              <div class="dopt-desc">Wunschtermin wählen · Frischer geht's nicht · Hof persönlich kennenlernen</div>
+              <div class="dopt-tag tag-free">✓ Kostenlos</div>
+            </div>
+            <div class="dopt-price free">Kostenlos</div>
+          </label>
+
+        </div>
+
+        <!-- FARM PICKUP CARDS -->
+        <div id="pickupWrap" class="pickup-wrap" style="display:none;">
+          <div class="pickup-intro">
+            <span class="pickup-intro-icon">ℹ️</span>
+            <span>Deine Artikel kommen von verschiedenen Höfen. Wähle pro Betrieb deinen Wunschtermin — du erhältst eine Bestätigung per E-Mail.</span>
+          </div>
+          <div id="farmCardsContainer"></div>
+        </div>
+
+        <div id="dateWrap" style="margin-top:18px;">
+          <div class="ff">
+            <label>Gewünschtes Lieferdatum (optional)</label>
+            <input class="fi" type="date" id="f_date" min="">
+            <span class="fi-note">Wir bestätigen per E-Mail sobald deine Kiste unterwegs ist</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <div class="form-section-title">Zahlungsmethode</div>
+
+        <div class="pay-tabs">
+          <div class="ptab sel" id="ptab-card" onclick="selPay('card')"><div class="ptab-icon">💳</div><div class="ptab-name">Kreditkarte</div></div>
+          <div class="ptab" id="ptab-paypal" onclick="selPay('paypal')"><div class="ptab-icon">🅿️</div><div class="ptab-name">PayPal</div></div>
+          <div class="ptab" id="ptab-invoice" onclick="selPay('invoice')"><div class="ptab-icon">📄</div><div class="ptab-name">Rechnung</div></div>
+          <div class="ptab" id="ptab-sofort" onclick="selPay('sofort')"><div class="ptab-icon">⚡</div><div class="ptab-name">Sofort</div></div>
+        </div>
+
+        <!-- Kreditkarte -->
+        <div class="pf active" id="pf-card">
+          <div class="card-brands"><span class="card-brand">VISA</span><span class="card-brand">MC</span><span class="card-brand">AMEX</span></div>
+          <div class="form-row">
+            <div class="ff"><label>Karteninhaber <span class="req">*</span></label><input class="fi" type="text" id="c_name" placeholder="Max Mustermann" autocomplete="cc-name"></div>
+          </div>
+          <div class="form-row">
+            <div class="ff"><label>Kartennummer <span class="req">*</span></label><input class="fi fi-card" type="text" id="c_num" placeholder="1234  5678  9012  3456" maxlength="22" oninput="fmtCard(this)"></div>
+          </div>
+          <div class="form-row cols2">
+            <div class="ff"><label>Gültig bis <span class="req">*</span></label><input class="fi" type="text" id="c_exp" placeholder="MM / JJ" maxlength="7" oninput="fmtExp(this)"></div>
+            <div class="ff"><label>CVV <span class="req">*</span></label><input class="fi" type="text" id="c_cvv" placeholder="•••" maxlength="4"><span class="fi-note">3–4 Stellen auf der Kartenrückseite</span></div>
+          </div>
+          <label class="chk-row" style="margin-top:8px;">
+            <input type="checkbox" id="saveCard" style="width:15px;height:15px;accent-color:var(--leaf);">
+            <span class="chk-label" style="font-size:.8rem;">Karte für nächste Bestellungen speichern</span>
+          </label>
+        </div>
+
+        <!-- PayPal -->
+        <div class="pf" id="pf-paypal">
+          <div class="info-box"><div class="info-box-icon">🅿️</div><div class="info-box-text"><strong>Du wirst nach der Bestellung zu PayPal weitergeleitet.</strong><br>Bezahle sicher mit deinem PayPal-Konto oder einer dort hinterlegten Karte. Alle Daten werden direkt bei PayPal verarbeitet — kein Speichern bei uns.</div></div>
+        </div>
+
+        <!-- Rechnung -->
+        <div class="pf" id="pf-invoice">
+          <div class="info-box"><div class="info-box-icon">📄</div><div class="info-box-text"><strong>Zahlung auf Rechnung — 14 Tage Zahlungsziel.</strong><br>Du erhältst die Ware und zahlst danach per Überweisung. Die Rechnung kommt per E-Mail und liegt der Lieferung bei. Verfügbar ab dem 2. Einkauf.</div></div>
+          <div class="form-row" style="margin-top:14px;">
+            <div class="ff"><label>Geburtsdatum (zur Identifikation)</label><input class="fi" type="date" id="b_bday"></div>
+          </div>
+        </div>
+
+        <!-- Sofort -->
+        <div class="pf" id="pf-sofort">
+          <div class="info-box"><div class="info-box-icon">⚡</div><div class="info-box-text"><strong>Sofortüberweisung via Klarna.</strong><br>Nach der Bestellung wirst du sicher zu deinem Online-Banking weitergeleitet. Sofortige Zahlungsbestätigung — alle deutschen Großbanken werden unterstützt.</div></div>
+        </div>
+
+        <div class="err-box" id="payErr">Bitte alle Zahlungsfelder korrekt ausfüllen.</div>
+      </div>
+
+      <!-- AGB -->
+      <div class="form-section" style="padding:20px 26px;">
+        <label class="chk-row">
+          <input type="checkbox" id="agb">
+          <span class="chk-label">Ich akzeptiere die <a href="heimatkiste-legal.html#agb" style="color:var(--leaf);font-weight:500;">AGB</a> und <a href="heimatkiste-legal.html#datenschutz" style="color:var(--leaf);font-weight:500;">Datenschutzerklärung</a> von Heimatkiste. <span style="color:var(--red);">*</span></span>
+        </label>
+        <label class="chk-row" style="margin-top:12px;">
+          <input type="checkbox" id="newsletter">
+          <span class="chk-label" style="font-size:.8rem;color:var(--chalk);">Ja, ich möchte saisonale Angebote und Rezepte per Newsletter erhalten. Jederzeit abmeldbar.</span>
+        </label>
+      </div>
+
+      <div class="form-nav">
+        <button class="btn-back-step" onclick="goStep(1)">← Zurück</button>
+        <div>
+          <div class="spinner-wrap" id="spinnerWrap"><div class="spinner"></div><span class="spinner-txt">Bestellung wird verarbeitet …</span></div>
+          <button class="btn-next amber-btn" onclick="goStep(3)" id="btnOrder">📦 Jetzt kostenpflichtig bestellen</button>
+        </div>
+      </div>
+    </div>
+
+
+    <!--  STEP 3: BESTÄTIGUNG  -->
+    <div class="form-panel" id="panel-3">
+      <div class="confirm-anim">✓</div>
+      <div class="confirm-order-num" id="c_ordernum">Bestellnummer: #HK-2026-XXXXX</div>
+      <h1 class="confirm-title">Vielen Dank für<br>deine <em>Bestellung!</em></h1>
+      <p class="confirm-sub">Deine Kiste ist auf dem Weg! Eine Bestätigungs-E-Mail mit Sendungsverfolgung geht gleich an dich raus.</p>
+
+      <div class="confirm-boxes">
+        <div class="cbox"><div class="cbox-lbl">📍 Lieferadresse</div><div class="cbox-val" id="c_addr">—</div></div>
+        <div class="cbox"><div class="cbox-lbl">🚚 Versand & Zahlung</div><div class="cbox-val" id="c_ship">—</div></div>
+        <div class="cbox"><div class="cbox-lbl">📧 Bestätigung an</div><div class="cbox-val" id="c_email">—</div></div>
+        <div class="cbox"><div class="cbox-lbl">⏱️ Voraussichtliche Lieferung</div><div class="cbox-val" id="c_date">—</div></div>
+      </div>
+
+      <div class="confirm-items" id="c_items"></div>
+
+      <div class="confirm-actions">
+        <a href="heimatkiste.html" class="btn-continue">🛒 Weiter einkaufen</a>
+        <button class="btn-secondary" onclick="window.print()">🖨️ Drucken</button>
+      </div>
+    </div>
+
+  </div><!-- /left -->
+
+
+  <!-- RIGHT: ORDER SUMMARY -->
+  <div class="order-summary">
+    <div class="os-head">
+      <div class="os-title">🧺 Deine Kiste</div>
+      <button class="os-toggle" id="osToggle" onclick="toggleSummary()">Details</button>
+    </div>
+    <div id="osColl">
+      <div class="os-items" id="osItems">
+        <div class="os-empty"><div class="oe-icon">🧺</div><div class="oe-txt">Kiste ist leer</div></div>
+      </div>
+      <div class="os-coupon">
+        <div class="os-coupon-title">Gutschein</div>
+        <div class="coupon-row">
+          <input class="fi" type="text" id="couponIn" placeholder="Gutscheincode eingeben">
+          <button class="coupon-btn" onclick="applyCoupon()">Einlösen</button>
+        </div>
+        <div class="coupon-ok" id="couponOk"><span>✓</span><span id="couponMsg">Gutschein angewendet!</span></div>
+      </div>
+    </div>
+    <div class="os-totals">
+      <div class="os-row"><span class="lbl">Zwischensumme</span><span class="val" id="osSub">0,00 €</span></div>
+      <div class="os-row" id="osShipRow"><span class="lbl">Versand</span><span class="val val-green" id="osShip">Kostenlos 📦</span></div>
+      <div class="os-row" id="osDiscRow" style="display:none;"><span class="lbl">Gutschein</span><span class="val val-amber" id="osDisc">−0,00 €</span></div>
+      <div class="os-divider"></div>
+      <div class="os-total-row"><span class="os-total-lbl">Gesamt</span><span class="os-total-val" id="osTotal">0,00 €</span></div>
+    </div>
+    <div class="os-footer">
+      <div class="os-trust">
+        <div class="ot-item">SSL-verschlüsselte Zahlung</div>
+        <div class="ot-item">14 Tage kostenloses Rückgaberecht</div>
+        <div class="ot-item">Direkt vom regionalen Erzeuger</div>
+        <div class="ot-item">Frische-Garantie für alle Produkte</div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /layout -->
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* DATA */
+const DP=[
+  {id:'d1',name:'Bio-Äpfel Elstar',farm:'Obsthof Meyer',price:2.80,unit:'1 kg',img:'https://images.unsplash.com/photo-1560806887-1e4cd0b6bcd6?w=300&q=80'},
+  {id:'d2',name:'Sonntagseier 12er',farm:'Geflügelhof Weber',price:4.20,unit:'12 Stk.',img:'https://images.unsplash.com/photo-1582284540020-8acbe03f4924?w=300&q=80'},
+  {id:'d3',name:'Bunte Karotten',farm:'Gemüsebau Lang',price:1.90,unit:'500g',img:'https://images.unsplash.com/photo-1598170845058-32b9d6a5da37?w=300&q=80'},
+  {id:'d4',name:'Heumilch Vollmilch',farm:'Hof Sonnenschein',price:1.45,unit:'1 L',img:'https://images.unsplash.com/photo-1550583724-125581f77833?w=300&q=80'},
+  {id:'d5',name:'Waldhonig',farm:'Imkerei Schmidt',price:7.90,unit:'500g',img:'https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=300&q=80'},
+  {id:'d6',name:'Bergkäse gereift',farm:'Sennerei Hochalp',price:5.80,unit:'250g',img:'https://images.unsplash.com/photo-1486297678162-eb2a19b0a32d?w=300&q=80'},
+  {id:'d7',name:'Erdbeeren',farm:'Hof Metzger',price:3.90,unit:'500g',img:'https://images.unsplash.com/photo-1464965911861-746a04b4bca6?w=300&q=80'},
+  {id:'d8',name:'Sauerteigbrot',farm:'Bäckerei Kern',price:4.50,unit:'800g',img:'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=300&q=80'},
+  {id:'d9',name:'Kürbiskern-Öl',farm:'Ölmühle Faber',price:8.90,unit:'250ml',img:'https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=300&q=80'},
+  {id:'d10',name:'Tomaten Mix',farm:'Gärtnerei Schuster',price:3.20,unit:'500g',img:'https://images.unsplash.com/photo-1546094096-0df4bcaaa337?w=300&q=80'},
+];
+function getAllProds(){
+  const fp=JSON.parse(localStorage.getItem('farmerProducts')||'[]');
+  return [...DP,...fp.map((p,i)=>({...p,id:'fp'+i,unit:p.unit||'Stk.'}))];
+}
+
+/* STATE */
+let cart=JSON.parse(localStorage.getItem('hk_cart')||'{}');
+let shipCost=0,discount=0,payMethod='card',selectedDel='std',summOpen=true;
+const fmt=n=>parseFloat(n).toFixed(2).replace('.',',')+' €';
+
+/* RENDER SUMMARY */
+function renderSummary(){
+  const all=getAllProds(),ids=Object.keys(cart);
+  const el=document.getElementById('osItems');
+  if(!ids.length){el.innerHTML='<div class="os-empty"><div class="oe-icon">🧺</div><div class="oe-txt">Kiste ist leer</div></div>';document.getElementById('osSub').textContent='0,00 €';document.getElementById('osTotal').textContent='0,00 €';return;}
+  el.innerHTML=ids.map(id=>{const p=all.find(x=>x.id===id);if(!p)return'';return`<div class="os-item"><img class="oi-img" src="${p.img}" loading="lazy"><div class="oi-info"><div class="oi-name">${p.name}</div><div class="oi-farm">${p.farm}</div><div class="oi-qty">${cart[id]}× · ${p.unit}</div></div><div class="oi-price">${fmt(p.price*cart[id])}</div></div>`;}).join('');
+  calcTotal();
+}
+function calcTotal(){
+  const all=getAllProds();
+  const sub=Object.keys(cart).reduce((a,id)=>{const p=all.find(x=>x.id===id);return a+(p?p.price*cart[id]:0);},0);
+  document.getElementById('osSub').textContent=fmt(sub);
+  document.getElementById('osTotal').textContent=fmt(Math.max(0,sub+shipCost-discount));
+  const sv=document.getElementById('osShip');
+  if(shipCost>0){sv.textContent=fmt(shipCost);sv.className='val';}else{sv.textContent='Kostenlos 📦';sv.className='val val-green';}
+  if(discount>0){document.getElementById('osDiscRow').style.display='flex';document.getElementById('osDisc').textContent='−'+fmt(discount);}
+  return sub;
+}
+
+function toggleSummary(){
+  summOpen=!summOpen;
+  document.getElementById('osColl').style.display=summOpen?'':'none';
+  document.getElementById('osToggle').textContent=summOpen?'Ausblenden':'Details';
+}
+
+/* FARM DIRECTORY — Adressen, Öffnungszeiten, Kontakt */
+const FARM_INFO = {
+  'Obsthof Meyer':      {emoji:'🍎', addr:'Obstgartenweg 4, 74821 Mosbach',    hours:'Mo–Sa 8–18 Uhr',  phone:'+49 6261 12340', note:'Bitte Parkplatz hinter dem Hofladen nutzen.'},
+  'Geflügelhof Weber':  {emoji:'🥚', addr:'Hühnerbergstr. 12, 74838 Limbach',  hours:'Di–Fr 9–17 Uhr',  phone:'+49 6274 55210', note:'Eier am besten morgens abholen — dann frischestes Angebot.'},
+  'Gemüsebau Lang':     {emoji:'🥕', addr:'Feldweg 3, 74177 Bad Friedrichshall',hours:'Mo–Fr 7–16 Uhr',  phone:'+49 7136 87650', note:'Eingang über das Gewächshaus, Beschilderung folgen.'},
+  'Hof Sonnenschein':   {emoji:'🥛', addr:'Sonnenhang 8, 74821 Mosbach',       hours:'Tägl. 7–19 Uhr',  phone:'+49 6261 98760', note:'Milch bitte in eigene Behälter abfüllen möglich.'},
+  'Imkerei Schmidt':    {emoji:'🍯', addr:'Waldrand 1, 74821 Mosbach',          hours:'Sa 10–14 Uhr',    phone:'+49 6261 44320', note:'Samstags Honigverkostung kostenlos für Besucher.'},
+  'Sennerei Hochalp':   {emoji:'🧀', addr:'Alpstraße 22, 74821 Mosbach',        hours:'Mo–Fr 8–17 Uhr',  phone:'+49 6261 77890', note:'Käseführung buchbar — einfach anrufen.'},
+  'Hof Metzger':        {emoji:'🍓', addr:'Erdbeerfeld 5, 74838 Limbach',       hours:'Jun–Aug tägl. 8–18 Uhr', phone:'+49 6274 33210', note:'Selbstpflücken ist bei schönem Wetter möglich.'},
+  'Bäckerei Kern':      {emoji:'🍞', addr:'Hauptstraße 14, 74821 Mosbach',      hours:'Di–Sa 6–13 Uhr',  phone:'+49 6261 22110', note:'Brot bitte bis 10 Uhr abholen für beste Frische.'},
+  'Ölmühle Faber':      {emoji:'🫒', addr:'Mühlenweg 7, 74821 Mosbach',         hours:'Mo–Fr 9–16 Uhr',  phone:'+49 6261 66540', note:'Abfüllung in eigene Flaschen auf Anfrage.'},
+  'Gärtnerei Schuster': {emoji:'🍅', addr:'Gartenstraße 19, 74177 Bad Friedrichshall', hours:'Mo–Sa 8–17 Uhr', phone:'+49 7136 55430', note:'Saisonales Angebot wechselt täglich.'},
+};
+
+const TIMESLOTS = ['Mo 9–11','Mo 14–16','Di 9–11','Di 14–16','Mi 9–11','Mi 14–16',
+  'Do 9–11','Do 14–16','Fr 9–11','Fr 14–16','Sa 9–12'];
+const FULL_SLOTS = ['Mo 14–16','Mi 9–11']; // Demo: bereits belegte Slots
+
+let pickupSelections = {}; // farmName → gewählter Timeslot
+
+/* RENDER FARM PICKUP CARDS */
+function renderFarmCards() {
+  const all = getAllProds();
+  const ids = Object.keys(cart);
+  if (!ids.length) return;
+
+  // Gruppen nach Betrieb
+  const byFarm = {};
+  ids.forEach(id => {
+    const p = all.find(x => x.id === id);
+    if (!p) return;
+    const farmKey = p.farm || p.farmer || 'Unbekannter Betrieb';
+    if (!byFarm[farmKey]) byFarm[farmKey] = [];
+    byFarm[farmKey].push(p);
+  });
+
+  const container = document.getElementById('farmCardsContainer');
+  container.innerHTML = Object.entries(byFarm).map(([farmName, products]) => {
+    const info = FARM_INFO[farmName] || {emoji:'🏡', addr:'Adresse auf Anfrage', hours:'Auf Vereinbarung', phone:'—', note:''};
+    const cardId = 'fc_' + farmName.replace(/\s+/g,'_');
+    const productItems = products.map(p => `
+      <div class="fc-prod-item">
+        <img class="fc-prod-img" src="${p.img}" loading="lazy">
+        <span class="fc-prod-name">${p.name}</span>
+        <span class="fc-prod-qty">${cart[p.id]}× ${p.unit}</span>
+      </div>`).join('');
+
+    const slots = TIMESLOTS.map(s => {
+      const isFull = FULL_SLOTS.includes(s);
+      const isSel = pickupSelections[farmName] === s;
+      return `<div class="ts-btn ${isFull?'full':''} ${isSel?'sel':''}" onclick="${isFull?'':'selectSlot(\''+farmName+'\',\''+s+'\',\''+cardId+'\')'}">${s}${isFull?'<br><span style="font-weight:400;font-size:.55rem;">Belegt</span>':''}</div>`;
+    }).join('');
+
+    const selSlot = pickupSelections[farmName];
+    return `
+    <div class="farm-card" id="${cardId}">
+      <div class="fc-head" onclick="toggleFarmCard('${cardId}')">
+        <div class="fc-icon">${info.emoji}</div>
+        <div class="fc-info">
+          <div class="fc-name">${farmName}</div>
+          <div class="fc-meta">${products.length} Produkt${products.length>1?'e':''} · ${info.addr.split(',')[1]?.trim()||''}</div>
+        </div>
+        <div class="fc-badge">${selSlot ? '✓ '+selSlot : 'Termin wählen'}</div>
+        <div class="fc-toggle open" id="fct_${cardId}">▾</div>
+      </div>
+      <div class="fc-body open" id="fcb_${cardId}">
+        <div class="fc-details">
+          <div class="fc-detail">
+            <div class="fc-detail-lbl">📍 Adresse</div>
+            <div class="fc-detail-val">${info.addr}</div>
+          </div>
+          <div class="fc-detail">
+            <div class="fc-detail-lbl">🕐 Öffnungszeiten</div>
+            <div class="fc-detail-val">${info.hours}</div>
+          </div>
+          <div class="fc-detail">
+            <div class="fc-detail-lbl">📞 Kontakt</div>
+            <div class="fc-detail-val"><a href="tel:${info.phone}">${info.phone}</a></div>
+          </div>
+          <div class="fc-detail">
+            <div class="fc-detail-lbl">💬 Hinweis</div>
+            <div class="fc-detail-val">${info.note||'—'}</div>
+          </div>
+        </div>
+        <div class="fc-products">
+          <div class="fc-prod-title">Deine Artikel bei diesem Betrieb</div>
+          ${productItems}
+        </div>
+        <div class="fc-timeslot">
+          <div class="fc-timeslot-lbl">📅 Wunschtermin wählen</div>
+          <div class="ts-grid">${slots}</div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function toggleFarmCard(cardId) {
+  const body = document.getElementById('fcb_' + cardId);
+  const toggle = document.getElementById('fct_' + cardId);
+  const open = body.classList.toggle('open');
+  body.style.display = open ? 'block' : 'none';
+  toggle.classList.toggle('open', open);
+}
+
+function selectSlot(farmName, slot, cardId) {
+  pickupSelections[farmName] = slot;
+  renderFarmCards(); // re-render to update badges + selection
+  // Re-open this card
+  const body = document.getElementById('fcb_' + cardId);
+  const toggle = document.getElementById('fct_' + cardId);
+  if (body) { body.style.display = 'block'; body.classList.add('open'); }
+  if (toggle) toggle.classList.add('open');
+}
+
+/* DELIVERY */
+function selDelivery(id, cost) {
+  shipCost = cost; selectedDel = id;
+  ['std','exp','pick'].forEach(t => document.getElementById('do-'+t).classList.toggle('sel', t===id));
+  const isPickup = id === 'pick';
+  document.getElementById('dateWrap').style.display = isPickup ? 'none' : '';
+  document.getElementById('pickupWrap').style.display = isPickup ? 'block' : 'none';
+  if (isPickup) renderFarmCards();
+  calcTotal();
+}
+
+/* PAYMENT */
+function selPay(m){
+  payMethod=m;
+  ['card','paypal','invoice','sofort'].forEach(t=>{
+    document.getElementById('ptab-'+t).classList.toggle('sel',t===m);
+    document.getElementById('pf-'+t).classList.toggle('active',t===m);
+  });
+}
+
+/* PLZ CHECK */
+const PLZ={
+  '748':'Mosbach & Umgebung','749':'Neckarbischofsheim','741':'Heilbronn-Region',
+  '742':'Heilbronn-Region','697':'Mannheim','681':'Mannheim','701':'Stuttgart',
+  '703':'Stuttgart','791':'Freiburg','793':'Freiburg'
+};
+const CITIES={'74821':'Mosbach','74820':'Mosbach','74838':'Limbach','74177':'Bad Friedrichshall','74072':'Heilbronn','70173':'Stuttgart','68159':'Mannheim','79098':'Freiburg'};
+function checkPlz(v){
+  const h=document.getElementById('plzHint');
+  if(v.length===5){
+    const zone=PLZ[v.substring(0,3)];
+    const isA=v.startsWith('748');
+    h.innerHTML=zone?`✓ ${zone} <span class="zone-pill ${isA?'':'b'}">${isA?'Zone A':'Zone B'}</span>`:' Außerhalb der Direktlieferzone <span class="zone-pill c">Zone C · DHL</span>';
+    h.className='plz-hint show';
+    if(CITIES[v]&&!document.getElementById('f_ort').value)document.getElementById('f_ort').value=CITIES[v];
+  }else{h.className='plz-hint';}
+}
+
+/* CARD FORMAT */
+function fmtCard(el){let v=el.value.replace(/\D/g,'').substring(0,16);el.value=v.replace(/(.{4})/g,'$1  ').trim();}
+function fmtExp(el){let v=el.value.replace(/\D/g,'');if(v.length>=2)v=v.slice(0,2)+' / '+v.slice(2,4);el.value=v;}
+
+/* COUPON */
+const COUPONS={'HEIMAT10':{t:'pct',v:10},'REGIONAL5':{t:'fixed',v:5},'ERSTKAUF':{t:'pct',v:15},'FRUEHLING':{t:'pct',v:8}};
+function applyCoupon(){
+  const code=document.getElementById('couponIn').value.trim().toUpperCase();
+  if(!code){toast('Bitte Gutscheincode eingeben','⚠️');return;}
+  const c=COUPONS[code];
+  if(!c){toast('Ungültiger Gutscheincode','✕');return;}
+  const sub=calcTotal();
+  discount=c.t==='pct'?sub*(c.v/100):c.v;
+  document.getElementById('couponOk').classList.add('show');
+  document.getElementById('couponMsg').textContent=c.t==='pct'?`${c.v}% Rabatt — ${fmt(discount)} gespart!`:`${fmt(discount)} Rabatt!`;
+  calcTotal();
+  toast(`"${code}" eingelöst — ${fmt(discount)} Ersparnis!`,'🎉');
+}
+
+/* BILL ADDR */
+function toggleBillAddr(same){document.getElementById('billAddrFields').style.display=same?'none':'block';}
+
+/* VALIDATION */
+function v(id){const el=document.getElementById(id),ok=el&&el.value.trim().length>0;if(el){el.classList.toggle('err',!ok);el.classList.toggle('ok',ok);}return ok;}
+function vEmail(id){const el=document.getElementById(id),ok=el&&/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(el.value);if(el){el.classList.toggle('err',!ok);el.classList.toggle('ok',ok);}return ok;}
+
+function validateStep1(){
+  const base=[v('f_vn'),v('f_nn'),vEmail('f_em'),v('f_str'),v('f_hnr'),v('f_plz'),v('f_ort')];
+  if(!document.getElementById('sameAddr').checked)base.push(v('b_vn'),v('b_nn'),v('b_str'),v('b_plz'),v('b_ort'));
+  return base.every(Boolean);
+}
+function validateStep2(){
+  if(!document.getElementById('agb').checked){toast('Bitte AGB akzeptieren','⚠️');return false;}
+  if(selectedDel==='pick'){
+    const all=getAllProds();
+    const farms=[...new Set(Object.keys(cart).map(id=>{const p=all.find(x=>x.id===id);return p?(p.farm||p.farmer):null;}).filter(Boolean))];
+    const missing=farms.filter(f=>!pickupSelections[f]);
+    if(missing.length){toast('Bitte Abholtermin wählen für: '+missing[0],'⚠️');return false;}
+  }
+  if(payMethod==='card'){const ok=[v('c_name'),v('c_num'),v('c_exp'),v('c_cvv')].every(Boolean);if(!ok){document.getElementById('payErr').classList.add('show');return false;}}
+  document.getElementById('payErr').classList.remove('show');
+  return true;
+}
+
+/* STEP NAVIGATION */
+function goStep(step){
+  if(step===2&&!validateStep1()){toast('Pflichtfelder ausfüllen','⚠️');return;}
+  if(step===3){if(!validateStep2())return;processOrder();return;}
+  setStep(step);
+}
+function setStep(s){
+  document.querySelectorAll('.form-panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('panel-'+s).classList.add('active');
+  for(let i=1;i<=3;i++){
+    const ps=document.getElementById('ps'+i),pn=document.getElementById('pn'+i);
+    if(i<s){ps.className='ps-item done';pn.innerHTML='✓';}
+    else if(i===s){ps.className='ps-item active';pn.textContent='0'+i;}
+    else{ps.className='ps-item pending';pn.textContent='0'+i;}
+  }
+  for(let i=1;i<=2;i++)document.getElementById('pc'+i).className='ps-connector '+(i<s?'done':'pending');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* PROCESS ORDER */
+function processOrder(){
+  const btn=document.getElementById('btnOrder');
+  btn.style.display='none';
+  document.getElementById('spinnerWrap').classList.add('show');
+
+  setTimeout(()=>{
+    const onum='HK-2026-'+Math.floor(10000+Math.random()*90000);
+    document.getElementById('c_ordernum').textContent='Bestellnummer: #'+onum;
+
+    const vn=document.getElementById('f_vn').value,nn=document.getElementById('f_nn').value;
+    const str=document.getElementById('f_str').value,hnr=document.getElementById('f_hnr').value;
+    const plz=document.getElementById('f_plz').value,ort=document.getElementById('f_ort').value;
+    document.getElementById('c_addr').innerHTML=`<strong>${vn} ${nn}</strong><br>${str} ${hnr}<br>${plz} ${ort}`;
+    document.getElementById('c_email').textContent=document.getElementById('f_em').value;
+
+    const shipN={std:'Standard (3–5 Tage)',exp:'Express (1–2 Tage)',pick:'Hofabholung'}[selectedDel];
+    const payN={card:'Kreditkarte',paypal:'PayPal',invoice:'Auf Rechnung',sofort:'Sofortüberweisung'}[payMethod];
+    if(selectedDel==='pick'){
+      const slots=Object.entries(pickupSelections).map(([f,s])=>`<span style="display:block"><strong>${f}:</strong> ${s} Uhr</span>`).join('');
+      document.getElementById('c_ship').innerHTML=`<strong>Hofabholung 🏡</strong><br>${slots||'—'}<br><span style="font-size:.75rem;color:var(--chalk)">${payN}</span>`;
+    } else {
+      document.getElementById('c_ship').innerHTML=`<strong>${shipN}</strong><br>${payN}`;
+    }
+
+    const days={std:4,exp:2,pick:0}[selectedDel];
+    if(selectedDel==='pick'){
+      document.getElementById('c_date').textContent='Gemäß gewähltem Abholtermin';
+    } else {
+      const d=new Date();d.setDate(d.getDate()+days);
+      document.getElementById('c_date').textContent=d.toLocaleDateString('de-DE',{weekday:'long',day:'numeric',month:'long'});
+    }
+
+    const all=getAllProds(),ids=Object.keys(cart);
+    document.getElementById('c_items').innerHTML=ids.map(id=>{const p=all.find(x=>x.id===id);if(!p)return'';return`<div class="ci-row"><img class="ci-img" src="${p.img}" loading="lazy"><div class="ci-name">${p.name}</div><div class="ci-qty">${cart[id]}× ${p.unit}</div><div class="ci-price">${fmt(p.price*cart[id])}</div></div>`;}).join('');
+
+    cart={};localStorage.setItem('hk_cart','{}');
+    setStep(3);
+    btn.style.display='';document.getElementById('spinnerWrap').classList.remove('show');
+  },1800);
+}
+
+/* TOAST */
+function toast(msg,icon='📦'){const t=document.getElementById('toast');t.innerHTML=`<span>${icon}</span>${msg}`;t.classList.add('on');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('on'),3200);}
+
+/* INIT */
+const minD=new Date();minD.setDate(minD.getDate()+3);
+document.getElementById('f_date').min=minD.toISOString().split('T')[0];
+renderSummary();
+if(!Object.keys(cart).length)toast('Kiste leer — erst Produkte hinzufügen','🧺');
+</script>
+</body>
+</html>
