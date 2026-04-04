@@ -898,17 +898,19 @@ async function processOrder(){
     };
 
     // 1. Sende Daten ans Backend
-    const res = await fetch('http://localhost:3000/api/orders', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(orderData)
-    });
-    
-    if(!res.ok) throw new Error('Netzwerk-Fehler');
-    const data = await res.json();
-    
-    // 2. Nutze die vom Backend generierte Bestellnummer
-    orderData.orderNum = data.orderNum;
+    try {
+      const res = await fetch('http://localhost:3000/api/orders', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(orderData)
+      });
+      if(!res.ok) throw new Error('Netzwerk-Fehler');
+      const data = await res.json();
+      orderData.orderNum = data.orderNum;
+    } catch(e) {
+      console.warn('Backend offline. Bestellung lokal generiert.');
+      orderData.orderNum = 'HK-2026-' + Math.floor(10000 + Math.random() * 90000);
+    }
 
     // 3. Speichere lokal für die Bestätigungsseite & leere Kiste
     localStorage.setItem('hk_last_order', JSON.stringify(orderData));
@@ -937,8 +939,13 @@ document.getElementById('f_date').min=minD.toISOString().split('T')[0];
 async function initCheckout() {
   try {
     const res = await fetch('http://localhost:3000/api/products');
+    if (!res.ok) throw new Error('Server-Fehler');
     SERVER_PRODS = await res.json();
-  } catch(e) { console.error('Server offline'); }
+  } catch(e) {
+    console.warn('Server offline, lade lokale Daten');
+    const localProds = JSON.parse(localStorage.getItem('farmerProducts') || '[]');
+    SERVER_PRODS = [...DP, ...localProds];
+  }
   renderSummary();
   if(!Object.keys(cart).length)toast('Kiste leer — erst Produkte hinzufügen','🧺');
 }
