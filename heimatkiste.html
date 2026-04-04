@@ -1975,7 +1975,21 @@ async function initApp() {
     DP = await res.json();
   } catch (err) {
     console.error('Keine Verbindung zum Server:', err);
-    toast('Keine Verbindung zum Server!', '⚠️');
+    toast('Demo-Modus aktiv (Vercel/Offline)', 'ℹ️');
+    const localProds = JSON.parse(localStorage.getItem('farmerProducts') || '[]');
+    DP = [
+      {id:'d1',name:'Bio-Äpfel Elstar',farm:'Obsthof Meyer',price:2.80,unit:'1 kg',img:'https://images.unsplash.com/photo-1560806887-1e4cd0b6bcd6?w=300&q=80',cat:'Obst',rating:4.9,reviews:128},
+      {id:'d2',name:'Sonntagseier 12er',farm:'Geflügelhof Weber',price:4.20,unit:'12 Stk.',img:'https://images.unsplash.com/photo-1582284540020-8acbe03f4924?w=300&q=80',cat:'Eier & Honig',rating:5.0,reviews:84},
+      {id:'d3',name:'Bunte Karotten',farm:'Gemüsebau Lang',price:1.90,unit:'500g',img:'https://images.unsplash.com/photo-1598170845058-32b9d6a5da37?w=300&q=80',cat:'Gemüse',rating:4.8,reviews:56},
+      {id:'d4',name:'Heumilch Vollmilch',farm:'Hof Sonnenschein',price:1.45,unit:'1 L',img:'https://images.unsplash.com/photo-1550583724-125581f77833?w=300&q=80',cat:'Milchprodukte',rating:4.9,reviews:210},
+      {id:'d5',name:'Waldhonig',farm:'Imkerei Schmidt',price:7.90,unit:'500g',img:'https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=300&q=80',cat:'Eier & Honig',rating:5.0,reviews:142},
+      {id:'d6',name:'Bergkäse gereift',farm:'Sennerei Hochalp',price:5.80,unit:'250g',img:'https://images.unsplash.com/photo-1486297678162-eb2a19b0a32d?w=300&q=80',cat:'Milchprodukte',rating:4.7,reviews:95},
+      {id:'d7',name:'Erdbeeren',farm:'Hof Metzger',price:3.90,unit:'500g',img:'https://images.unsplash.com/photo-1464965911861-746a04b4bca6?w=300&q=80',cat:'Obst',rating:4.9,reviews:312},
+      {id:'d8',name:'Sauerteigbrot',farm:'Bäckerei Kern',price:4.50,unit:'800g',img:'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=300&q=80',cat:'Brot & Backwaren',rating:4.8,reviews:118},
+      {id:'d9',name:'Kürbiskern-Öl',farm:'Ölmühle Faber',price:8.90,unit:'250ml',img:'https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=300&q=80',cat:'Sonstiges',rating:4.9,reviews:64},
+      {id:'d10',name:'Tomaten Mix',farm:'Gärtnerei Schuster',price:3.20,unit:'500g',img:'https://images.unsplash.com/photo-1546094096-0df4bcaaa337?w=300&q=80',cat:'Gemüse',rating:4.7,reviews:82},
+      ...localProds
+    ];
   }
   
   setSeasonMonth();
