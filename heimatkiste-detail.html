@@ -1,0 +1,1165 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Heimatkiste — Produktdetail</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Syne:wght@400;500;600;700;800&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+/* ════════════════════════════════════════════════════
+   HEIMATKISTE — PRODUKTDETAIL (NEXT LEVEL)
+   CSS-Variablen vereinheitlicht mit heimatkiste.html
+════════════════════════════════════════════════════ */
+:root {
+  --ink:     #0c1a0e;
+  --forest:  #162e1c;
+  --leaf:    #2a5535;
+  --moss:    #3d6447;
+  --sage:    #6a9876;
+  --sage-lt: #a8c6b0;
+  --mint:    #d0e6d6;
+  --amber:   #c47c2a;
+  --amber2:  #e09a3c;
+  --amber3:  #f2bb62;
+  --cream:   #f5edd8;
+  --parch:   #ede3cc;
+  --wheat:   #d4bfa0;
+  --chalk:   #887863;
+  --dust:    #c8b89a;
+  --rust:    #b03a22;
+  --white:   #fdfaf3;
+  --display: 'Cormorant Garamond', Georgia, serif;
+  --ui:      'Syne', sans-serif;
+  --body:    'Jost', sans-serif;
+  --ease:    cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-b:  cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; }
+body { background: var(--cream); color: var(--ink); font-family: var(--body); overflow-x: hidden; line-height: 1.65; }
+a { text-decoration: none; color: inherit; }
+button { cursor: pointer; border: none; font-family: inherit; background: none; }
+img { display: block; max-width: 100%; }
+
+/* Noise Grain */
+body::before {
+  content: ''; position: fixed; inset: 0; z-index: 9999; pointer-events: none;
+  opacity: .022;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 150px;
+}
+
+/* ════════════════════════════════════════
+   HEADER
+════════════════════════════════════════ */
+header {
+  background: rgba(245,237,216,.97);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(12,26,14,.07);
+  position: sticky; top: 0; z-index: 300;
+  box-shadow: 0 2px 24px rgba(12,26,14,.04);
+}
+.nav {
+  max-width: 1400px; margin: 0 auto; padding: 0 56px;
+  height: 76px; display: flex; align-items: center;
+  justify-content: space-between; gap: 24px;
+}
+.logo {
+  font-family: var(--display); font-size: 1.6rem; font-weight: 700;
+  letter-spacing: -.01em; color: var(--ink);
+  display: flex; align-items: center; gap: 8px;
+  transition: opacity .2s;
+}
+.logo:hover { opacity: .75; }
+.logo-sub {
+  font-family: var(--ui); font-size: .5rem; font-weight: 600;
+  letter-spacing: .18em; text-transform: uppercase;
+  color: var(--chalk); display: block; margin-top: 1px;
+}
+.nav-mid { display: flex; gap: 36px; }
+.nav-mid a {
+  font-family: var(--ui); font-size: .72rem; font-weight: 600;
+  letter-spacing: .06em; text-transform: uppercase;
+  color: var(--chalk); transition: color .2s;
+  position: relative; padding-bottom: 2px;
+}
+.nav-mid a::after {
+  content: ''; position: absolute; bottom: -3px; left: 0;
+  width: 0; height: 1px; background: var(--amber);
+  transition: width .3s var(--ease);
+}
+.nav-mid a:hover { color: var(--ink); }
+.nav-mid a:hover::after { width: 100%; }
+.nav-right { display: flex; align-items: center; gap: 10px; }
+.nav-icon {
+  width: 40px; height: 40px; border-radius: 50%;
+  background: transparent; border: 1.5px solid rgba(12,26,14,.1);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1rem; color: var(--ink); position: relative;
+  transition: background .2s, transform .2s;
+}
+.nav-icon:hover { background: var(--parch); transform: scale(1.06); }
+.nbadge {
+  position: absolute; top: -4px; right: -4px;
+  width: 17px; height: 17px; border-radius: 50%;
+  background: var(--rust); color: white;
+  font-family: var(--ui); font-size: .52rem; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; transform: scale(0);
+  transition: all .25s var(--ease-b);
+}
+.nbadge.on { opacity: 1; transform: scale(1); }
+
+/* Hamburger */
+.hamburger {
+  display: none; flex-direction: column; justify-content: center;
+  gap: 5px; width: 40px; height: 40px; padding: 9px;
+  cursor: pointer; border-radius: 8px; transition: background .2s;
+  background: none; border: none; flex-shrink: 0;
+}
+.hamburger:hover { background: rgba(12,26,14,.08); }
+.hamburger span {
+  width: 22px; height: 2px; border-radius: 2px;
+  background: var(--ink); transition: all .3s var(--ease); display: block;
+}
+.hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* Mobile Nav */
+.mob-nav { display: none; position: fixed; inset: 0; z-index: 499; padding-top: 80px; }
+.mob-nav.open { display: block; }
+.mob-nav-bg { position: absolute; inset: 0; background: rgba(12,26,14,.55); backdrop-filter: blur(4px); }
+.mob-nav-drawer {
+  position: absolute; top: 0; left: 0; right: 0;
+  background: var(--cream); padding: 20px 20px 28px;
+  border-bottom: 1px solid rgba(12,26,14,.08);
+  box-shadow: 0 20px 60px rgba(12,26,14,.18);
+  animation: drawerIn .3s var(--ease) both;
+}
+@keyframes drawerIn { from{opacity:0;transform:translateY(-10px)} to{opacity:1;transform:translateY(0)} }
+.mob-nav-links { display: flex; flex-direction: column; gap: 2px; margin-bottom: 16px; }
+.mob-nav-links a {
+  font-family: var(--ui); font-size: .78rem; font-weight: 600;
+  letter-spacing: .06em; text-transform: uppercase;
+  color: var(--ink); padding: 11px 14px; border-radius: 10px;
+  transition: background .18s; display: flex; align-items: center; gap: 10px;
+}
+.mob-nav-links a:hover { background: var(--parch); }
+.mob-nav-links hr { border: none; border-top: 1px solid rgba(12,26,14,.08); margin: 4px 0; }
+.mob-nav-cta { background: var(--forest); color: white !important; border-radius: 100px !important; justify-content: center; }
+.mob-nav-cta:hover { background: var(--leaf) !important; }
+
+/* ════════════════════════════════════════
+   BREADCRUMB
+════════════════════════════════════════ */
+.breadcrumb {
+  max-width: 1400px; margin: 0 auto; padding: 22px 56px 0;
+  display: flex; align-items: center; gap: 8px;
+  font-family: var(--ui); font-size: .65rem; font-weight: 600;
+  letter-spacing: .06em; text-transform: uppercase; color: var(--chalk);
+}
+.breadcrumb a { transition: color .2s; }
+.breadcrumb a:hover { color: var(--leaf); }
+.bc-sep { opacity: .4; }
+
+/* ════════════════════════════════════════
+   DETAIL LAYOUT
+════════════════════════════════════════ */
+.detail-wrap { max-width: 1400px; margin: 0 auto; padding: 40px 56px 100px; }
+.detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
+
+/* ── BILD-SEITE ── */
+.detail-imgs { position: sticky; top: 100px; }
+
+.detail-main-img {
+  border-radius: 24px; overflow: hidden; aspect-ratio: 1;
+  background: var(--parch); position: relative; cursor: zoom-in;
+}
+.detail-main-img::after {
+  content: '⊕';
+  position: absolute; bottom: 16px; right: 16px;
+  width: 36px; height: 36px; border-radius: 50%;
+  background: rgba(12,26,14,.45); backdrop-filter: blur(8px);
+  color: white; font-size: 1.1rem;
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; transition: opacity .25s;
+}
+.detail-main-img:hover::after { opacity: 1; }
+.detail-main-img img {
+  width: 100%; height: 100%; object-fit: cover;
+  transition: opacity .2s, transform .2s;
+}
+.detail-main-img:hover img { transform: scale(1.03); }
+
+/* Galerie Thumbnails */
+.gallery-thumbs {
+  display: flex; gap: 10px; margin-top: 14px; flex-wrap: wrap;
+}
+.g-thumb {
+  width: 74px; height: 74px; border-radius: 12px; overflow: hidden;
+  border: 2px solid transparent; cursor: pointer;
+  transition: all .22s var(--ease); flex-shrink: 0;
+  background: var(--parch);
+}
+.g-thumb img { width: 100%; height: 100%; object-fit: cover; transition: transform .3s var(--ease); }
+.g-thumb:hover img { transform: scale(1.07); }
+.g-thumb.active { border-color: var(--leaf); box-shadow: 0 4px 14px rgba(42,85,53,.2); }
+.g-thumb:hover:not(.active) { border-color: var(--wheat); transform: translateY(-2px); }
+
+.detail-img-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+.dtag {
+  font-family: var(--ui); font-size: .62rem; font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase;
+  padding: 7px 16px; border-radius: 100px;
+  border: 1.5px solid rgba(12,26,14,.1);
+}
+.dtag.bio { background: rgba(42,85,53,.08); color: var(--leaf); border-color: rgba(42,85,53,.2); }
+.dtag.reg { background: var(--parch); color: var(--ink); }
+.dtag.new { background: var(--amber); color: var(--ink); border-color: var(--amber); }
+.dtag.soldout { background: var(--rust); color: white; border-color: var(--rust); }
+
+/* ── INFO-SEITE ── */
+.di-eyebrow {
+  font-family: var(--ui); font-size: .62rem; font-weight: 700;
+  letter-spacing: .2em; text-transform: uppercase; color: var(--sage);
+  margin-bottom: 12px; display: flex; align-items: center; gap: 8px;
+}
+.di-eyebrow::before { content: ''; width: 18px; height: 1px; background: var(--sage); }
+.di-name {
+  font-family: var(--display); font-size: clamp(2.2rem, 4vw, 3.4rem);
+  font-weight: 700; line-height: 1.02; letter-spacing: -.025em; margin-bottom: 6px;
+}
+.di-farm {
+  display: flex; align-items: center; gap: 6px;
+  font-size: .88rem; color: var(--chalk); margin-bottom: 20px; font-weight: 300;
+}
+.di-farm::before { content: '📍'; font-size: .8rem; }
+
+/* Sterne */
+.di-stars { display: flex; align-items: center; gap: 10px; margin-bottom: 24px; }
+.stars { color: var(--amber); letter-spacing: 2px; font-size: 1rem; }
+.rev-count { font-family: var(--ui); font-size: .7rem; font-weight: 600; color: var(--chalk); }
+
+/* Preis */
+.di-price-block {
+  border-top: 1px solid rgba(12,26,14,.07);
+  border-bottom: 1px solid rgba(12,26,14,.07);
+  padding: 22px 0; margin-bottom: 24px;
+}
+.di-price {
+  font-family: var(--display); font-size: clamp(2.2rem, 4vw, 3rem);
+  font-weight: 700; letter-spacing: -.04em; color: var(--ink); line-height: 1;
+  transition: all .25s var(--ease);
+}
+.di-price-unit { font-family: var(--ui); font-size: .72rem; color: var(--chalk); margin-top: 5px; }
+.di-free-ship {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: var(--ui); font-size: .65rem; font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase;
+  color: var(--leaf); background: rgba(42,85,53,.08);
+  padding: 5px 14px; border-radius: 100px; margin-top: 10px;
+}
+
+/* ── VARIANTEN ── */
+.di-variants { margin-bottom: 20px; }
+.di-var-label {
+  font-family: var(--ui); font-size: .62rem; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--chalk);
+  margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between;
+}
+.di-var-label em { font-style: normal; color: var(--leaf); font-size: .72rem; letter-spacing: 0; }
+.var-opts { display: flex; gap: 8px; flex-wrap: wrap; }
+.var-opt {
+  font-family: var(--ui); font-size: .7rem; font-weight: 700;
+  padding: 9px 18px; border-radius: 100px;
+  border: 1.5px solid rgba(12,26,14,.14);
+  color: var(--chalk); cursor: pointer;
+  transition: all .2s var(--ease);
+  background: var(--parch);
+}
+.var-opt:hover { border-color: var(--leaf); color: var(--leaf); }
+.var-opt.sel {
+  background: var(--forest); color: white; border-color: var(--forest);
+  box-shadow: 0 4px 16px rgba(22,46,28,.2);
+}
+
+/* ── LAGERBESTAND ── */
+.stock-row {
+  display: flex; align-items: center; gap: 12px; margin-bottom: 20px;
+}
+.stock-bar { flex: 1; height: 4px; background: rgba(12,26,14,.08); border-radius: 4px; overflow: hidden; }
+.stock-fill { height: 100%; border-radius: 4px; transition: width 1s var(--ease); }
+.stock-fill.high   { background: var(--sage); }
+.stock-fill.medium { background: var(--amber); }
+.stock-fill.low    { background: var(--rust); }
+.stock-text { font-family: var(--ui); font-size: .62rem; font-weight: 700; letter-spacing: .06em; white-space: nowrap; }
+.stock-text.high   { color: var(--sage); }
+.stock-text.medium { color: var(--amber); }
+.stock-text.low    { color: var(--rust); }
+
+/* ── MENGE & KISTE ── */
+.di-add-row { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+.qty-wrap {
+  display: flex; align-items: center;
+  background: var(--parch); border-radius: 100px;
+  border: 1.5px solid rgba(12,26,14,.1); overflow: hidden;
+}
+.qty-btn {
+  width: 48px; height: 48px; display: flex; align-items: center; justify-content: center;
+  font-size: 1.3rem; font-weight: 700; color: var(--ink); transition: background .15s;
+}
+.qty-btn:hover { background: var(--wheat); }
+.qty-val { font-family: var(--ui); font-weight: 700; font-size: 1rem; min-width: 40px; text-align: center; }
+.add-btn {
+  flex: 1; background: var(--forest); color: white;
+  font-family: var(--ui); font-size: .75rem; font-weight: 700;
+  letter-spacing: .1em; text-transform: uppercase;
+  padding: 16px 24px; border-radius: 100px;
+  transition: all .3s var(--ease);
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  position: relative; overflow: hidden;
+}
+.add-btn::before {
+  content: ''; position: absolute; inset: 0;
+  background: var(--leaf); transform: scaleX(0); transform-origin: left;
+  transition: transform .35s var(--ease); border-radius: inherit;
+}
+.add-btn span { position: relative; z-index: 1; }
+.add-btn:hover::before { transform: scaleX(1); }
+.add-btn:hover { transform: translateY(-2px); box-shadow: 0 16px 40px rgba(22,46,28,.25); }
+.add-btn:active { transform: scale(.97); }
+
+.fav-btn {
+  width: 50px; height: 50px; border-radius: 50%;
+  background: var(--parch); border: 1.5px solid rgba(12,26,14,.1);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.2rem; color: var(--chalk);
+  transition: all .22s var(--ease-b); flex-shrink: 0;
+}
+.fav-btn.liked, .fav-btn:hover { color: var(--rust); border-color: rgba(176,58,34,.22); background: rgba(176,58,34,.06); }
+.fav-btn:hover { transform: scale(1.1); }
+
+/* ── TABS ── */
+.di-tabs-nav {
+  display: flex; gap: 0;
+  border-bottom: 1.5px solid rgba(12,26,14,.08);
+  margin-top: 8px;
+}
+.di-tab-btn {
+  font-family: var(--ui); font-size: .65rem; font-weight: 700;
+  letter-spacing: .1em; text-transform: uppercase;
+  padding: 13px 22px; color: var(--chalk); cursor: pointer;
+  position: relative; transition: color .22s;
+  border: none; border-bottom: 2px solid transparent;
+  margin-bottom: -1.5px; background: none;
+}
+.di-tab-btn:hover { color: var(--ink); }
+.di-tab-btn.on { color: var(--leaf); border-bottom-color: var(--leaf); }
+
+.di-tab-panels { position: relative; min-height: 130px; }
+.di-tab-panel {
+  font-size: .9rem; color: var(--chalk); line-height: 1.85; font-weight: 300;
+  padding: 22px 0;
+  opacity: 0; transform: translateY(10px);
+  transition: opacity .32s var(--ease), transform .32s var(--ease);
+  position: absolute; top: 0; left: 0; right: 0;
+  pointer-events: none;
+}
+.di-tab-panel.on {
+  opacity: 1; transform: translateY(0);
+  position: relative; pointer-events: all;
+}
+.di-tab-panel ul { padding-left: 18px; list-style: disc; display: flex; flex-direction: column; gap: 5px; }
+.di-tab-panel table { width: 100%; border-collapse: collapse; font-size: .86rem; }
+.di-tab-panel td { padding: 9px 0; border-bottom: 1px solid rgba(12,26,14,.06); vertical-align: top; }
+.di-tab-panel td:first-child { color: var(--ink); font-weight: 500; width: 45%; }
+
+/* Trust-Badges */
+.di-trust {
+  display: flex; gap: 20px; flex-wrap: wrap;
+  padding-top: 20px; border-top: 1px solid rgba(12,26,14,.07);
+  margin-top: 20px;
+}
+.trust-item { display: flex; align-items: center; gap: 7px; font-size: .78rem; color: var(--chalk); font-weight: 300; }
+.trust-item::before { content: '✓'; color: var(--leaf); font-weight: 700; font-size: .85rem; }
+
+/* ════════════════════════════════════════
+   LIGHTBOX
+════════════════════════════════════════ */
+.lightbox {
+  position: fixed; inset: 0; z-index: 9000;
+  background: rgba(12,26,14,.92); backdrop-filter: blur(14px);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none;
+  transition: opacity .35s var(--ease);
+}
+.lightbox.open { opacity: 1; pointer-events: all; }
+.lightbox-inner {
+  position: relative; max-width: min(90vw, 780px); max-height: 88vh;
+  transform: scale(.93);
+  transition: transform .4s var(--ease);
+}
+.lightbox.open .lightbox-inner { transform: scale(1); }
+.lightbox-inner img {
+  max-width: 100%; max-height: 88vh;
+  object-fit: contain; border-radius: 20px; display: block;
+  box-shadow: 0 40px 100px rgba(0,0,0,.5);
+}
+.lightbox-close {
+  position: absolute; top: -18px; right: -18px;
+  width: 40px; height: 40px; border-radius: 50%;
+  background: var(--amber); color: var(--ink);
+  font-size: 1rem; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: transform .2s, background .2s;
+}
+.lightbox-close:hover { transform: scale(1.12) rotate(90deg); background: var(--amber2); }
+.lightbox-nav {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  width: 48px; height: 48px; border-radius: 50%;
+  background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2);
+  color: white; font-size: 1.5rem;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: background .2s, transform .2s;
+}
+.lightbox-nav:hover { background: rgba(255,255,255,.22); transform: translateY(-50%) scale(1.08); }
+.lightbox-nav.prev { right: calc(100% + 16px); }
+.lightbox-nav.next { left: calc(100% + 16px); }
+.lightbox-dots {
+  position: absolute; bottom: -36px; left: 50%; transform: translateX(-50%);
+  display: flex; gap: 8px;
+}
+.ldot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: rgba(255,255,255,.25); cursor: pointer;
+  transition: all .22s var(--ease);
+}
+.ldot.active { background: var(--amber); transform: scale(1.5); }
+
+/* ════════════════════════════════════════
+   RELATED
+════════════════════════════════════════ */
+.related { max-width: 1400px; margin: 0 auto; padding: 0 56px 80px; }
+.related-hdr {
+  display: flex; align-items: baseline; justify-content: space-between;
+  margin-bottom: 36px; flex-wrap: wrap; gap: 16px;
+  padding-bottom: 18px; border-bottom: 1px solid rgba(12,26,14,.07);
+}
+.related-hdr h3 { font-family: var(--display); font-size: 2.2rem; font-weight: 700; letter-spacing: -.02em; }
+.related-hdr a {
+  font-family: var(--ui); font-size: .68rem; font-weight: 700;
+  letter-spacing: .1em; text-transform: uppercase; color: var(--leaf);
+  display: inline-flex; align-items: center; gap: 8px;
+  border-bottom: 1px solid currentColor; padding-bottom: 2px;
+  transition: gap .2s;
+}
+.related-hdr a:hover { gap: 14px; }
+.rel-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+.rel-card {
+  background: white; border-radius: 18px; overflow: hidden;
+  border: 1px solid rgba(12,26,14,.06); cursor: pointer;
+  transition: all .35s var(--ease);
+}
+.rel-card:hover { transform: translateY(-6px); box-shadow: 0 24px 56px rgba(12,26,14,.1); }
+.rel-img { aspect-ratio: 4/3; overflow: hidden; background: var(--parch); }
+.rel-img img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s var(--ease); }
+.rel-card:hover .rel-img img { transform: scale(1.07); }
+.rel-body { padding: 16px 18px 20px; }
+.rel-cat { font-family: var(--ui); font-size: .58rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--sage); margin-bottom: 4px; }
+.rel-name { font-family: var(--display); font-size: 1.05rem; font-weight: 700; letter-spacing: -.01em; margin-bottom: 3px; }
+.rel-farm { font-size: .72rem; color: var(--chalk); margin-bottom: 10px; font-weight: 300; }
+.rel-price { font-family: var(--display); font-size: 1.15rem; font-weight: 700; }
+
+/* ════════════════════════════════════════
+   CART SIDEBAR
+════════════════════════════════════════ */
+.overlay {
+  position: fixed; inset: 0; z-index: 800;
+  background: rgba(12,26,14,.45); backdrop-filter: blur(6px);
+  opacity: 0; pointer-events: none; transition: opacity .4s;
+}
+.overlay.on { opacity: 1; pointer-events: all; }
+.sidebar {
+  position: fixed; top: 0; right: 0; bottom: 0; z-index: 801;
+  width: 440px; max-width: 100vw; background: var(--white);
+  display: flex; flex-direction: column;
+  transform: translateX(100%); transition: transform .5s var(--ease);
+  box-shadow: -20px 0 80px rgba(12,26,14,.18);
+}
+.sidebar.on { transform: translateX(0); }
+.sb-head {
+  padding: 28px 32px; border-bottom: 1px solid rgba(12,26,14,.07);
+  display: flex; align-items: center; justify-content: space-between; flex-shrink: 0;
+}
+.sb-head h2 { font-family: var(--display); font-size: 1.4rem; font-weight: 700; }
+.sb-close {
+  width: 34px; height: 34px; border-radius: 50%;
+  background: var(--parch); display: flex; align-items: center;
+  justify-content: center; font-size: 1rem; cursor: pointer; transition: background .2s;
+}
+.sb-close:hover { background: var(--wheat); }
+.sb-body { flex: 1; overflow-y: auto; padding: 20px 32px; }
+.ci { display: flex; gap: 14px; align-items: flex-start; padding: 16px 0; border-bottom: 1px solid rgba(12,26,14,.05); }
+.ci-img { width: 68px; height: 68px; border-radius: 12px; object-fit: cover; flex-shrink: 0; background: var(--parch); }
+.ci-info { flex: 1; }
+.ci-name { font-family: var(--display); font-weight: 700; font-size: .95rem; margin-bottom: 2px; }
+.ci-farm { font-size: .7rem; color: var(--chalk); font-weight: 300; margin-bottom: 8px; }
+.ci-ctrl { display: flex; align-items: center; gap: 8px; }
+.cqb { width: 26px; height: 26px; border-radius: 50%; background: var(--parch); border: 1px solid rgba(12,26,14,.1); font-size: .85rem; font-weight: 700; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: background .15s; }
+.cqb:hover { background: var(--wheat); }
+.cqv { font-family: var(--ui); font-weight: 700; font-size: .85rem; min-width: 20px; text-align: center; }
+.ci-rm { font-size: .72rem; color: var(--chalk); cursor: pointer; transition: color .2s; margin-left: 4px; }
+.ci-rm:hover { color: var(--rust); }
+.ci-price { font-family: var(--display); font-size: 1rem; font-weight: 700; flex-shrink: 0; }
+.sb-empty { text-align: center; padding: 64px 20px; color: var(--chalk); }
+.sb-empty-icon { font-size: 3.5rem; display: block; margin-bottom: 20px; }
+.sb-empty p { font-family: var(--ui); font-size: .75rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; }
+.sb-foot { padding: 20px 32px 28px; border-top: 1px solid rgba(12,26,14,.07); flex-shrink: 0; }
+.sb-row { display: flex; justify-content: space-between; font-size: .85rem; color: var(--chalk); margin-bottom: 8px; }
+.sb-row.total { font-family: var(--display); font-size: 1.15rem; font-weight: 700; color: var(--ink); padding-top: 12px; border-top: 1px solid rgba(12,26,14,.08); margin-top: 12px; }
+.checkout-btn { width: 100%; background: var(--forest); color: white; font-family: var(--ui); font-size: .75rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; padding: 16px; border-radius: 100px; margin-top: 16px; transition: all .25s; }
+.checkout-btn:hover { background: var(--leaf); }
+
+/* ════════════════════════════════════════
+   NOT FOUND
+════════════════════════════════════════ */
+.not-found { text-align: center; padding: 120px 56px; max-width: 600px; margin: 0 auto; }
+.not-found span { font-size: 5rem; display: block; margin-bottom: 28px; }
+.not-found h2 { font-family: var(--display); font-size: 2.5rem; font-weight: 700; margin-bottom: 14px; }
+.not-found p { font-size: .9rem; color: var(--chalk); font-weight: 300; margin-bottom: 36px; }
+.btn-back { display: inline-block; background: var(--forest); color: white; font-family: var(--ui); font-size: .72rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; padding: 14px 32px; border-radius: 100px; transition: all .25s; }
+.btn-back:hover { background: var(--leaf); }
+
+/* ════════════════════════════════════════
+   TOAST
+════════════════════════════════════════ */
+.toast {
+  position: fixed; bottom: 32px; left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background: var(--ink); color: var(--cream);
+  font-family: var(--ui); font-size: .72rem; font-weight: 600;
+  letter-spacing: .06em; padding: 14px 28px; border-radius: 100px;
+  z-index: 9998; transition: transform .4s var(--ease), opacity .4s;
+  opacity: 0; white-space: nowrap; display: flex; align-items: center;
+  gap: 10px; pointer-events: none;
+  box-shadow: 0 12px 40px rgba(12,26,14,.25);
+}
+.toast.on { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+/* ════════════════════════════════════════
+   RESPONSIVE
+════════════════════════════════════════ */
+@media (max-width: 1100px) {
+  .detail-grid { grid-template-columns: 1fr; gap: 40px; }
+  .detail-imgs { position: static; }
+  .rel-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 768px) {
+  .hamburger { display: flex; }
+  .nav-mid { display: none !important; }
+  .nav { padding: 0 20px; }
+  .detail-wrap, .breadcrumb, .related { padding-left: 20px; padding-right: 20px; }
+  .related { padding-bottom: 60px; }
+  .gallery-thumbs { gap: 8px; }
+  .g-thumb { width: 60px; height: 60px; }
+  .di-add-row { flex-wrap: wrap; }
+  .add-btn { min-width: 100%; order: 1; }
+  .qty-wrap { order: 0; }
+  .fav-btn { order: 0; }
+  .lightbox-nav.prev { right: auto; left: 8px; }
+  .lightbox-nav.next { left: auto; right: 8px; }
+}
+@media (max-width: 540px) {
+  .rel-grid { grid-template-columns: 1fr; }
+  .sidebar { width: 100vw; }
+  .di-name { font-size: 2rem; }
+  .var-opts { gap: 6px; }
+  .var-opt { padding: 8px 14px; font-size: .65rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- ════════════ HEADER ════════════ -->
+<header>
+  <div class="nav">
+    <a href="heimatkiste.html" class="logo">
+      <span>🧺</span>
+      <div>
+        <div>Heimatkiste</div>
+        <span class="logo-sub">Regionaler Marktplatz</span>
+      </div>
+    </a>
+    <div class="nav-mid">
+      <a href="heimatkiste.html#kategorien">Kategorien</a>
+      <a href="heimatkiste.html#produkte">Marktplatz</a>
+      <a href="heimatkiste.html#bauern">Erzeuger</a>
+    </div>
+    <div class="nav-right">
+      <button class="nav-icon" id="cartBtn">🛒<span class="nbadge" id="cartBadge">0</span></button>
+      <button class="hamburger" id="hmbBtn" aria-label="Menü öffnen">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- ════════════ MOBILE NAV ════════════ -->
+<div class="mob-nav" id="mobNav">
+  <div class="mob-nav-bg"></div>
+  <div class="mob-nav-drawer">
+    <div class="mob-nav-links">
+      <a href="heimatkiste.html">🏠 Marktplatz</a>
+      <a href="heimatkiste.html#kategorien">📦 Kategorien</a>
+      <a href="heimatkiste.html#produkte">🛒 Alle Produkte</a>
+      <a href="heimatkiste.html#bauern">🌾 Erzeuger</a>
+      <hr>
+      <a href="heimatkiste-farmer.html" class="mob-nav-cta">🌾 Für Erzeuger</a>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ BREADCRUMB ════════════ -->
+<div class="breadcrumb">
+  <a href="heimatkiste.html">Marktplatz</a>
+  <span class="bc-sep">›</span>
+  <span id="bcCat">—</span>
+  <span class="bc-sep">›</span>
+  <span id="bcName">—</span>
+</div>
+
+<!-- ════════════ DETAIL CONTENT (via JS) ════════════ -->
+<div class="detail-wrap" id="detailWrap"></div>
+
+<!-- ════════════ RELATED ════════════ -->
+<div class="related" id="relatedSec" style="display:none">
+  <div class="related-hdr">
+    <h3>Das könnte dir <em style="font-style:italic;color:var(--leaf)">gefallen</em></h3>
+    <a href="heimatkiste.html#produkte">Alle Produkte anzeigen →</a>
+  </div>
+  <div class="rel-grid" id="relGrid"></div>
+</div>
+
+<!-- ════════════ LIGHTBOX ════════════ -->
+<div class="lightbox" id="lightbox">
+  <div class="lightbox-inner">
+    <img id="lbImg" src="" alt="Produktbild vergrößert">
+    <button class="lightbox-close" id="lbClose">✕</button>
+    <button class="lightbox-nav prev" id="lbPrev">‹</button>
+    <button class="lightbox-nav next" id="lbNext">›</button>
+    <div class="lightbox-dots" id="lbDots"></div>
+  </div>
+</div>
+
+<!-- ════════════ CART SIDEBAR ════════════ -->
+<div class="overlay" id="cartOvl"></div>
+<div class="sidebar" id="cartSb">
+  <div class="sb-head">
+    <h2>🛒 Deine Kiste</h2>
+    <button class="sb-close" id="cartClose">✕</button>
+  </div>
+  <div class="sb-body" id="cartBody"></div>
+  <div class="sb-foot" id="cartFoot" style="display:none">
+    <div class="sb-row"><span>Versand</span><span style="color:var(--sage);font-weight:600">🌿 Kostenlos</span></div>
+    <div class="sb-row total"><span>Gesamt</span><span id="sbTotal">0,00 €</span></div>
+    <button class="checkout-btn" id="checkoutBtn">Zur Kasse →</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ══════════════════════════════════════════
+   UTILITIES
+══════════════════════════════════════════ */
+const $ = id => document.getElementById(id);
+const fmt = n => parseFloat(n).toFixed(2).replace('.', ',') + ' €';
+
+function toast(msg, icon = '✓') {
+  const t = $('toast');
+  t.innerHTML = `<span>${icon}</span> ${msg}`;
+  t.classList.add('on');
+  clearTimeout(t._t);
+  t._t = setTimeout(() => t.classList.remove('on'), 2800);
+}
+
+/* ══════════════════════════════════════════
+   PRODUKT-DATEN
+══════════════════════════════════════════ */
+let DP_CACHE = []; // Cache für alle Produkte
+
+async function getAllProds() {
+  if (DP_CACHE.length > 0) return DP_CACHE;
+  try {
+    const res = await fetch('http://localhost:3000/api/products');
+    if (!res.ok) throw new Error('Server-Antwort war nicht ok');
+    DP_CACHE = await res.json();
+    return DP_CACHE;
+  } catch (error) {
+    console.error("Produkte konnten nicht geladen werden:", error);
+    toast('Fehler: Produkte konnten nicht geladen werden', '⚠️');
+    return [];
+  }
+}
+
+/* ══════════════════════════════════════════
+   STATE
+══════════════════════════════════════════ */
+let cart = JSON.parse(localStorage.getItem('hk_cart') || '{}');
+let favs = new Set(JSON.parse(localStorage.getItem('hk_favs') || '[]'));
+let qty  = 1;
+
+function saveState() {
+  localStorage.setItem('hk_cart', JSON.stringify(cart));
+  localStorage.setItem('hk_favs', JSON.stringify([...favs]));
+}
+
+/* ══════════════════════════════════════════
+   CART SIDEBAR
+══════════════════════════════════════════ */
+function updateBadge() {
+  const ct = Object.values(cart).reduce((a, b) => a + b, 0);
+  const b  = $('cartBadge');
+  b.textContent = ct;
+  b.classList.toggle('on', ct > 0);
+}
+
+function renderCart() {
+  const ids  = Object.keys(cart);
+  const body = $('cartBody');
+  const foot = $('cartFoot');
+  const all  = getAllProds();
+  if (!ids.length) {
+    body.innerHTML = `<div class="sb-empty"><span class="sb-empty-icon">🧺</span><p>Deine Kiste ist leer</p></div>`;
+    foot.style.display = 'none'; return;
+  }
+  foot.style.display = '';
+  body.innerHTML = ids.map(id => {
+    const p = all.find(x => x.id === id) || { name:'?', farm:'', img:'', price:0 };
+    return `<div class="ci">
+      <img class="ci-img" src="${p.img}" alt="${p.name}">
+      <div class="ci-info">
+        <div class="ci-name">${p.name}</div>
+        <div class="ci-farm">${p.farm}</div>
+        <div class="ci-ctrl">
+          <button class="cqb" onclick="cq('${id}',-1)">−</button>
+          <span class="cqv">${cart[id]}</span>
+          <button class="cqb" onclick="cq('${id}',1)">+</button>
+          <span class="ci-rm" onclick="cr('${id}')">✕ entfernen</span>
+        </div>
+      </div>
+      <div class="ci-price">${fmt(p.price * cart[id])}</div>
+    </div>`;
+  }).join('');
+  const sum = ids.reduce((a, id) => {
+    const p = all.find(x => x.id === id);
+    return a + (p ? p.price * cart[id] : 0);
+  }, 0);
+  $('sbTotal').textContent = fmt(sum);
+}
+
+function cq(id, d) { cart[id] = (cart[id] || 0) + d; if (cart[id] <= 0) delete cart[id]; saveState(); updateBadge(); renderCart(); }
+function cr(id)    { delete cart[id]; saveState(); updateBadge(); renderCart(); }
+
+function openCart()  { renderCart(); $('cartSb').classList.add('on'); $('cartOvl').classList.add('on'); document.body.style.overflow = 'hidden'; }
+function closeCart() { $('cartSb').classList.remove('on'); $('cartOvl').classList.remove('on'); document.body.style.overflow = ''; }
+$('cartBtn').onclick  = openCart;
+$('cartClose').onclick = closeCart;
+$('cartOvl').onclick  = closeCart;
+$('checkoutBtn').onclick = () => { if (!Object.keys(cart).length) return; saveState(); window.location.href = 'HeimatkisteCheckout.html'; };
+
+/* ══════════════════════════════════════════
+   RENDER DETAIL
+══════════════════════════════════════════ */
+async function renderDetail(p) {
+  document.title = `${p.name} | Heimatkiste`;
+  $('bcCat').textContent = p.cat;
+  $('bcName').textContent = p.name;
+
+  const isOos  = p.outOfStock;
+  const bl     = isOos ? 'soldout' : p.badge === 'bio' ? 'bio' : p.badge === 'new' ? 'new' : 'reg';
+  const bt     = isOos ? '✕ Ausverkauft' : p.badge === 'bio' ? '🌿 Bio' : p.badge === 'new' ? '✨ Neu' : '📍 Regional';
+  const isFav  = favs.has(p.id);
+
+  /* Galerie-Bilder: 4 Varianten des gleichen Bildes */
+  const base = p.img.split('?')[0];
+  const imgs = [
+    base + '?w=800&q=85&auto=format',
+    base + '?w=800&q=85&auto=format&sat=-15',
+    base + '?w=800&q=85&auto=format&bri=-8&con=5',
+    base + '?w=800&q=85&auto=format&hue=15',
+  ];
+
+  /* Varianten je Kategorie */
+  const varMap = {
+    'Obst':            ['500g', '1 kg', '2 kg', '5 kg'],
+    'Gemüse':          ['500g', '1 kg', '2 kg'],
+    'Milchprodukte':   ['500ml', '1 L', '2 L'],
+    'Eier & Honig':    ['6 Stk.', '12 Stk.', '30 Stk.'],
+    'Brot & Backwaren':['500g', '800g', '1,2 kg'],
+    'Sonstiges':       ['250ml', '500ml', '1 L'],
+  };
+  const vars       = varMap[p.cat] || ['Klein', 'Mittel', 'Groß'];
+  const defVar     = vars.find(v => v === p.unit) || vars[0];
+  const varMults   = [0.75, 1.0, 1.85, 3.2];
+
+  /* Lagerbestand deterministisch per ID */
+  const seed   = p.id.charCodeAt(p.id.length - 1) % 3;
+  const stocks = [
+    { pct: 84, cls: 'high',   label: '✓ Gut verfügbar' },
+    { pct: 38, cls: 'medium', label: '⚡ Begrenzt verfügbar' },
+    { pct: 14, cls: 'low',    label: `⚠ Nur noch ${2 + (p.id.charCodeAt(0) % 5)} vorrätig!` },
+  ];
+  const stock = stocks[seed];
+
+  $('detailWrap').innerHTML = `
+    <div class="detail-grid">
+
+      <!-- ══ BILD-SEITE ══ -->
+      <div class="detail-imgs">
+        <div class="detail-main-img" id="mainImgWrap" title="Klicken zum Vergrößern">
+          <img src="${imgs[0]}" alt="${p.name}" id="mainImg">
+        </div>
+        <div class="gallery-thumbs" id="galleryThumbs">
+          ${imgs.map((src, i) => `
+            <div class="g-thumb${i === 0 ? ' active' : ''}" data-idx="${i}">
+              <img src="${src}" alt="${p.name} Ansicht ${i + 1}" loading="lazy">
+            </div>`).join('')}
+        </div>
+        <div class="detail-img-tags">
+          <span class="dtag ${bl}">${bt}</span>
+          <span class="dtag reg">${p.cat}</span>
+          ${p.region ? `<span class="dtag reg">📍 ${p.region}</span>` : ''}
+        </div>
+      </div>
+
+      <!-- ══ INFO-SEITE ══ -->
+      <div class="detail-info">
+        <div class="di-eyebrow">${p.cat}</div>
+        <h1 class="di-name">${p.name}</h1>
+        <div class="di-farm">${p.farm}${p.region ? ` · ${p.region}` : ''}</div>
+
+        <div class="di-stars">
+          <span class="stars">${'★'.repeat(Math.round(p.rating))}${'☆'.repeat(5 - Math.round(p.rating))}</span>
+          <span class="rev-count">${p.reviews} Bewertungen</span>
+        </div>
+
+        <div class="di-price-block">
+          <div class="di-price" id="dynPrice">${fmt(p.price)}</div>
+          <div class="di-price-unit">pro <span id="dynUnit">${defVar}</span></div>
+          <div class="di-free-ship">🌿 Kostenloser Versand · Direkt vom Hof</div>
+        </div>
+
+        <!-- Varianten -->
+        <div class="di-variants">
+          <div class="di-var-label">
+            Menge / Größe
+            <em id="selVarLabel">${defVar}</em>
+          </div>
+          <div class="var-opts">
+            ${vars.map((v, i) => `
+              <button class="var-opt${v === defVar ? ' sel' : ''}"
+                      data-var="${v}" data-mult="${varMults[i] || 1}">
+                ${v}
+              </button>`).join('')}
+          </div>
+        </div>
+
+        <!-- Lagerbestand -->
+        <div class="stock-row">
+          <div class="stock-bar">
+            <div class="stock-fill ${stock.cls}" style="width:0%" id="stockFill"></div>
+          </div>
+          <span class="stock-text ${stock.cls}">${stock.label}</span>
+        </div>
+
+        <!-- Menge & In die Kiste -->
+        <div class="di-add-row">
+          <div class="qty-wrap" style="${isOos ? 'opacity:0.5;pointer-events:none;' : ''}">
+            <button class="qty-btn" id="qm">−</button>
+            <span class="qty-val" id="qv">1</span>
+            <button class="qty-btn" id="qp">+</button>
+          </div>
+          <button class="add-btn" id="addBtn" ${isOos ? 'disabled style="background:var(--parch);color:var(--chalk);cursor:not-allowed;box-shadow:none;transform:none;"' : ''}><span>${isOos ? '✕ Ausverkauft' : '🧺 In die Kiste'}</span></button>
+          <button class="fav-btn${isFav ? ' liked' : ''}" id="favBtn">${isFav ? '♥' : '♡'}</button>
+        </div>
+
+        <!-- Tabs -->
+        <div class="di-tabs-nav">
+          <button class="di-tab-btn on" data-tab="desc">Beschreibung</button>
+          <button class="di-tab-btn" data-tab="naehr">Nährwerte</button>
+          <button class="di-tab-btn" data-tab="liefung">Lieferung</button>
+        </div>
+        <div class="di-tab-panels">
+          <div class="di-tab-panel on" id="tab-desc">
+            <p>${p.desc || 'Frisches Produkt direkt vom lokalen Erzeuger. Qualität ohne Kompromisse.'}</p>
+          </div>
+          <div class="di-tab-panel" id="tab-naehr">
+            <table>
+              <tr><td>Energie</td><td>ca. 52 kcal / 100g</td></tr>
+              <tr><td>Kohlenhydrate</td><td>12,3 g</td></tr>
+              <tr><td>Eiweiß</td><td>0,3 g</td></tr>
+              <tr><td>Fett</td><td>0,2 g</td></tr>
+              <tr><td>Ballaststoffe</td><td>2,4 g</td></tr>
+              <tr><td>Herkunft</td><td>${p.region || 'Regional'}, Deutschland</td></tr>
+              <tr><td>Lagerung</td><td>Kühl und trocken lagern</td></tr>
+            </table>
+          </div>
+          <div class="di-tab-panel" id="tab-liefung">
+            <ul>
+              <li>Lieferzeit 3–5 Werktage (Standard) oder 1–2 Tage (Express)</li>
+              <li>Versandkostenfrei ab 25 € Bestellwert</li>
+              <li>Gekühlter Versand mit Isolierverpackung</li>
+              <li>Abholung direkt beim Erzeuger auf Wunsch möglich</li>
+              <li>Lieferung Montag bis Samstag</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Trust -->
+        <div class="di-trust">
+          <span class="trust-item">Direkt vom Erzeuger</span>
+          <span class="trust-item">Ohne Zwischenhändler</span>
+          <span class="trust-item">Frisch geliefert</span>
+          <span class="trust-item">Bio &amp; Regional</span>
+        </div>
+      </div>
+    </div>`;
+
+  /* ── Lager-Balken animiert einfahren ── */
+  requestAnimationFrame(() => {
+    setTimeout(() => {
+      const fill = $('stockFill');
+      if (fill) fill.style.width = stock.pct + '%';
+    }, 300);
+  });
+
+  /* ── Galerie-Logik ── */
+  let galIdx = 0;
+  const allImgs = imgs;
+
+  function setGalleryImg(idx) {
+    galIdx = ((idx % allImgs.length) + allImgs.length) % allImgs.length;
+    const mainImg = $('mainImg');
+    mainImg.style.opacity = '0';
+    mainImg.style.transform = 'scale(1.06)';
+    setTimeout(() => {
+      mainImg.src = allImgs[galIdx];
+      mainImg.style.opacity = '1';
+      mainImg.style.transform = 'scale(1)';
+    }, 180);
+    document.querySelectorAll('.g-thumb').forEach((t, i) => t.classList.toggle('active', i === galIdx));
+    document.querySelectorAll('.ldot').forEach((d, i) => d.classList.toggle('active', i === galIdx));
+    $('lbImg').src = allImgs[galIdx];
+  }
+
+  $('mainImg').style.transition = 'opacity .2s, transform .2s';
+  document.querySelectorAll('.g-thumb').forEach(t =>
+    t.addEventListener('click', () => setGalleryImg(+t.dataset.idx))
+  );
+
+  /* ── Lightbox ── */
+  // Dots aufbauen
+  $('lbDots').innerHTML = allImgs.map((_, i) =>
+    `<div class="ldot${i === 0 ? ' active' : ''}" data-i="${i}"></div>`
+  ).join('');
+  $('lbDots').querySelectorAll('.ldot').forEach(d =>
+    d.addEventListener('click', () => setGalleryImg(+d.dataset.i))
+  );
+
+  $('mainImgWrap').addEventListener('click', () => {
+    $('lbImg').src = allImgs[galIdx];
+    $('lightbox').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  });
+  $('lbClose').onclick = closeLightbox;
+  $('lbPrev').onclick  = () => setGalleryImg(galIdx - 1);
+  $('lbNext').onclick  = () => setGalleryImg(galIdx + 1);
+  $('lightbox').addEventListener('click', e => {
+    if (e.target === $('lightbox')) closeLightbox();
+  });
+
+  /* ── Varianten-Logik ── */
+  const basePrice = p.price;
+  document.querySelectorAll('.var-opt').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.var-opt').forEach(b => b.classList.remove('sel'));
+      btn.classList.add('sel');
+      const mult = parseFloat(btn.dataset.mult);
+      $('selVarLabel').textContent = btn.dataset.var;
+      $('dynUnit').textContent     = btn.dataset.var;
+      // Preis-Animation
+      const priceEl = $('dynPrice');
+      priceEl.style.transform = 'scale(0.94)';
+      priceEl.style.opacity   = '0.5';
+      setTimeout(() => {
+        priceEl.textContent = fmt(basePrice * mult);
+        priceEl.style.transform = 'scale(1)';
+        priceEl.style.opacity   = '1';
+      }, 150);
+    });
+  });
+
+  /* ── Tab-Logik ── */
+  document.querySelectorAll('.di-tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.di-tab-btn').forEach(b => b.classList.remove('on'));
+      document.querySelectorAll('.di-tab-panel').forEach(panel => panel.classList.remove('on'));
+      btn.classList.add('on');
+      $('tab-' + btn.dataset.tab).classList.add('on');
+    });
+  });
+
+  /* ── Menge ── */
+  $('qm').onclick = () => { if (qty > 1) { qty--; $('qv').textContent = qty; } };
+  $('qp').onclick = () => { qty++; $('qv').textContent = qty; };
+
+  /* ── In die Kiste ── */
+  $('addBtn').onclick = () => {
+    if (p.outOfStock) return;
+    for (let i = 0; i < qty; i++) cart[p.id] = (cart[p.id] || 0) + 1;
+    saveState(); updateBadge();
+    toast(`${qty}× ${p.name} zur Kiste hinzugefügt`, '🧺');
+    // Button-Feedback
+    const btn = $('addBtn');
+    btn.querySelector('span').textContent = '✓ Hinzugefügt!';
+    btn.style.background = 'var(--leaf)';
+    setTimeout(() => {
+      btn.querySelector('span').textContent = '🧺 In die Kiste';
+      btn.style.background = '';
+    }, 1800);
+      openCart();
+  };
+
+  /* ── Favorit ── */
+  $('favBtn').onclick = () => {
+    const fb = $('favBtn');
+    if (favs.has(p.id)) {
+      favs.delete(p.id); fb.classList.remove('liked'); fb.textContent = '♡';
+      toast('Aus Favoriten entfernt', '♡');
+    } else {
+      favs.add(p.id); fb.classList.add('liked'); fb.textContent = '♥';
+      toast(`${p.name} zu Favoriten hinzugefügt`, '♥');
+    }
+    saveState();
+  };
+
+  /* ── Related ── */
+  const all = await getAllProds();
+  const related = all.filter(x => x.id !== p.id && x.cat === p.cat).slice(0, 4);
+  if (related.length) {
+    $('relatedSec').style.display = '';
+    $('relGrid').innerHTML = related.map(r => `
+      <div class="rel-card" onclick="nav('${r.id}')">
+        <div class="rel-img"><img src="${r.img}" alt="${r.name}" loading="lazy"></div>
+        <div class="rel-body">
+          <div class="rel-cat">${r.cat}</div>
+          <div class="rel-name">${r.name}</div>
+          <div class="rel-farm">${r.farm}</div>
+          <div class="rel-price">
+            ${fmt(r.price)}
+            <span style="font-family:var(--ui);font-size:.65rem;color:var(--chalk);font-weight:400"> / ${r.unit}</span>
+          </div>
+        </div>
+      </div>`).join('');
+  }
+}
+
+/* ══════════════════════════════════════════
+   LIGHTBOX CLOSE
+══════════════════════════════════════════ */
+function closeLightbox() {
+  $('lightbox').classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', e => {
+  if (!$('lightbox').classList.contains('open')) return;
+  if (e.key === 'Escape')     closeLightbox();
+  if (e.key === 'ArrowLeft')  document.getElementById('lbPrev')?.click();
+  if (e.key === 'ArrowRight') document.getElementById('lbNext')?.click();
+});
+
+/* ══════════════════════════════════════════
+   NOT FOUND
+══════════════════════════════════════════ */
+function notFound() {
+  $('detailWrap').innerHTML = `
+    <div class="not-found">
+      <span>🔍</span>
+      <h2>Produkt nicht gefunden</h2>
+      <p>Dieses Produkt existiert nicht mehr oder wurde entfernt.</p>
+      <a href="heimatkiste.html#produkte" class="btn-back">← Zurück zum Marktplatz</a>
+    </div>`;
+}
+
+/* ══════════════════════════════════════════
+   NAVIGATION (reload mit neuem Produkt)
+══════════════════════════════════════════ */
+function nav(id) {
+  localStorage.setItem('hk_detail_id', id);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  setTimeout(() => location.reload(), 150);
+}
+
+/* ══════════════════════════════════════════
+   HAMBURGER
+══════════════════════════════════════════ */
+(function () {
+  const btn = $('hmbBtn');
+  const nav = $('mobNav');
+  if (!btn || !nav) return;
+  function openNav()  { nav.classList.add('open');    btn.classList.add('open');    document.body.style.overflow = 'hidden'; }
+  function closeNav() { nav.classList.remove('open'); btn.classList.remove('open'); document.body.style.overflow = ''; }
+  btn.addEventListener('click', () => nav.classList.contains('open') ? closeNav() : openNav());
+  nav.querySelector('.mob-nav-bg').addEventListener('click', closeNav);
+  nav.querySelectorAll('.mob-nav-links a').forEach(a => a.addEventListener('click', closeNav));
+})();
+
+/* ══════════════════════════════════════════
+   INIT
+══════════════════════════════════════════ */
+async function initDetail() {
+  updateBadge();
+  const pid = localStorage.getItem('hk_detail_id');
+  if (!pid) {
+    notFound();
+    return;
+  }
+
+  try {
+    let p = null;
+    // Lokale Erzeuger-Produkte (ID beginnt mit 'f') müssen aus der Gesamtliste gefischt werden
+    if (pid.startsWith('f')) {
+        const allProds = await getAllProds();
+        p = allProds.find(x => x.id === pid);
+    } else {
+        // Reguläre Produkte können direkt vom Server geholt werden
+        const res = await fetch(`http://localhost:3000/api/products/${pid}`);
+        if (res.ok) {
+            p = await res.json();
+        } else {
+            // Rettungsnetz: Falls der Server-Endpunkt im Hintergrund noch nicht aktualisiert wurde
+            const allProds = await getAllProds();
+            p = allProds.find(x => x.id === pid);
+        }
+    }
+
+    if (p) {
+      await renderDetail(p);
+    } else {
+      notFound();
+    }
+  } catch (err) {
+    console.error("Fehler beim Laden der Produktdetails:", err);
+    toast('Fehler: Produktdetails konnten nicht geladen werden', '⚠️');
+    notFound();
+  }
+}
+
+initDetail();
+</script>
+</body>
+</html>

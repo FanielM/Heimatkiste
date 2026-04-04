@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Heimatkiste — Über Uns</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600;1,700&family=Syne:wght@400;500;600;700;800&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+/* ════════════════════════════════════════════════════
+   HEIMATKISTE — ÜBER UNS (EDITORIAL STYLE)
+════════════════════════════════════════════════════ */
+:root {
+  --ink:     #0c1a0e;
+  --forest:  #162e1c;
+  --leaf:    #2a5535;
+  --moss:    #3d6447;
+  --sage:    #6a9876;
+  --sage-lt: #a8c6b0;
+  --mint:    #d0e6d6;
+  --amber:   #c47c2a;
+  --amber2:  #e09a3c;
+  --amber3:  #f2bb62;
+  --cream:   #f5edd8;
+  --parch:   #ede3cc;
+  --wheat:   #d4bfa0;
+  --chalk:   #887863;
+  --dust:    #c8b89a;
+  --rust:    #b03a22;
+  --white:   #fdfaf3;
+  --display: 'Cormorant Garamond', Georgia, serif;
+  --ui:      'Syne', sans-serif;
+  --body:    'Jost', sans-serif;
+  --ease:    cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; }
+body { background: var(--cream); color: var(--ink); font-family: var(--body); font-weight: 400; line-height: 1.65; overflow-x: hidden; }
+img  { display: block; max-width: 100%; }
+a    { text-decoration: none; color: inherit; }
+ul   { list-style: none; }
+button { cursor: pointer; border: none; background: none; font-family: inherit; }
+
+/* ── NOISE GRAIN ── */
+body::before {
+  content: ''; position: fixed; inset: 0; z-index: 9999; pointer-events: none;
+  opacity: .032;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 160px;
+}
+
+/* ── CURSOR ── */
+.cursor      { width:9px; height:9px; border-radius:50%; background:var(--amber); position:fixed; pointer-events:none; z-index:10001; transform:translate(-50%,-50%); transition:transform .08s, width .2s, height .2s; mix-blend-mode:multiply; }
+.cursor-ring { width:38px; height:38px; border-radius:50%; border:1.5px solid rgba(196,124,42,.45); position:fixed; pointer-events:none; z-index:10000; transform:translate(-50%,-50%); transition:left .14s var(--ease), top .14s var(--ease), width .28s var(--ease), height .28s var(--ease), border-color .25s; }
+.cursor-ring.hover { width:60px; height:60px; border-color:rgba(196,124,42,.55); }
+
+/* ── HEADER ── */
+header {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 500;
+  background: rgba(245,237,216,.92); backdrop-filter: blur(24px) saturate(160%);
+  border-bottom: 1px solid rgba(12,26,14,.07); box-shadow: 0 2px 20px rgba(12,26,14,.04);
+}
+.nav {
+  max-width: 1440px; margin: 0 auto; padding: 0 60px; height: 76px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.logo { font-family: var(--display); font-size: 1.65rem; font-weight: 700; color: var(--forest); display: flex; align-items: center; gap: 10px; }
+.logo-sub { font-family: var(--ui); font-size: .52rem; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; color: var(--chalk); display: block; margin-top: 1px; }
+nav ul { display: flex; gap: 36px; }
+nav a { font-family: var(--ui); font-size: .7rem; font-weight: 600; letter-spacing: .07em; text-transform: uppercase; color: var(--chalk); transition: color .25s; position: relative; padding-bottom: 2px; }
+nav a::after { content: ''; position: absolute; bottom: -3px; left: 0; width: 0; height: 1px; background: var(--amber); transition: width .3s var(--ease); }
+nav a:hover, nav a.active { color: var(--ink); }
+nav a:hover::after, nav a.active::after { width: 100%; }
+.nav-actions { display: flex; gap: 8px; }
+.nav-icon-btn { width: 42px; height: 42px; border-radius: 50%; border: 1.5px solid rgba(12,26,14,.1); display: flex; align-items: center; justify-content: center; font-size: 1rem; color: var(--ink); transition: background .2s; }
+.nav-icon-btn:hover { background: var(--parch); }
+.hamburger { display: none; flex-direction: column; justify-content: center; gap: 4px; width: 42px; height: 42px; border-radius: 50%; border: 1.5px solid rgba(12,26,14,.1); cursor: pointer; transition: background .2s; flex-shrink: 0; }
+.hamburger span { width: 18px; height: 2px; background: var(--ink); border-radius: 2px; transition: all .3s var(--ease); }
+
+/* ── HERO ── */
+.about-hero {
+  padding: 180px 60px 100px;
+  text-align: center;
+  position: relative;
+}
+.hero-eyebrow {
+  font-family: var(--ui); font-size: .65rem; font-weight: 700;
+  letter-spacing: .22em; text-transform: uppercase; color: var(--amber);
+  margin-bottom: 20px; display: inline-flex; align-items: center; gap: 12px;
+  animation: fadeUp 1s .1s var(--ease) both;
+}
+.hero-eyebrow::before { content: ''; width: 30px; height: 1px; background: var(--amber); }
+.about-hero h1 {
+  font-family: var(--display); font-size: clamp(3rem, 6vw, 5.5rem);
+  font-weight: 700; line-height: 1.05; letter-spacing: -.025em;
+  color: var(--forest); margin-bottom: 24px; max-width: 900px; margin-inline: auto;
+  animation: fadeUp 1s .2s var(--ease) both;
+}
+.about-hero h1 em { font-style: italic; color: var(--leaf); font-weight: 400; }
+.about-hero p {
+  font-size: 1.1rem; color: var(--chalk); font-weight: 300; line-height: 1.8;
+  max-width: 600px; margin: 0 auto;
+  animation: fadeUp 1s .3s var(--ease) both;
+}
+
+/* ── LARGE IMAGE ── */
+.hero-image-wrap {
+  max-width: 1440px; margin: 0 auto; padding: 0 60px;
+  animation: fadeUp 1s .5s var(--ease) both;
+}
+.hero-image {
+  width: 100%; height: 600px; border-radius: 32px; overflow: hidden;
+  position: relative; background: var(--parch);
+}
+.hero-image img { width: 100%; height: 100%; object-fit: cover; }
+.hero-image::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(12,26,14,.3), transparent 30%);
+}
+
+/* ── MISSION TEXT ── */
+.mission-sec { padding: 120px 60px; text-align: center; }
+.mission-text {
+  font-family: var(--display); font-size: clamp(2rem, 4vw, 3.2rem);
+  font-weight: 300; line-height: 1.25; color: var(--ink);
+  max-width: 1000px; margin: 0 auto;
+}
+.mission-text em { font-style: italic; color: var(--amber); }
+
+/* ── VALUES GRID ── */
+.values-sec { background: var(--forest); color: white; padding: 120px 60px; position: relative; overflow: hidden; }
+.values-sec::before {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(circle at 100% 0%, rgba(196,124,42,.12), transparent 50%);
+}
+.v-inner { max-width: 1440px; margin: 0 auto; }
+.v-head { margin-bottom: 60px; }
+.v-title { font-family: var(--display); font-size: 3.5rem; font-weight: 700; line-height: 1.1; letter-spacing: -.02em; }
+.v-title em { font-style: italic; color: var(--amber2); font-weight: 400; }
+
+.v-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; }
+.v-card {
+  background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.08);
+  border-radius: 24px; padding: 48px 40px;
+  transition: transform .4s var(--ease), background .4s;
+}
+.v-card:hover { transform: translateY(-8px); background: rgba(255,255,255,.08); }
+.v-icon { font-size: 2.5rem; margin-bottom: 24px; display: block; }
+.v-card-title { font-family: var(--ui); font-size: .85rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: white; margin-bottom: 16px; }
+.v-card-txt { font-size: .95rem; color: rgba(255,255,255,.6); font-weight: 300; line-height: 1.7; }
+
+/* ── STORY SPLIT ── */
+.story-sec { padding: 120px 60px; max-width: 1440px; margin: 0 auto; }
+.story-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+.story-img { border-radius: 32px; overflow: hidden; aspect-ratio: 4/5; position: relative; }
+.story-img img { width: 100%; height: 100%; object-fit: cover; }
+
+.story-content h2 { font-family: var(--display); font-size: 3rem; font-weight: 700; color: var(--forest); line-height: 1.1; margin-bottom: 24px; }
+.story-content p { font-size: 1rem; color: var(--chalk); font-weight: 300; line-height: 1.8; margin-bottom: 24px; }
+.founder-sign { font-family: var(--display); font-size: 2.2rem; font-style: italic; color: var(--ink); margin-top: 32px; }
+.founder-role { font-family: var(--ui); font-size: .65rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--sage); margin-top: 4px; }
+
+/* ── CTA ── */
+.about-cta { text-align: center; padding: 100px 60px 140px; }
+.about-cta h2 { font-family: var(--display); font-size: 2.8rem; font-weight: 700; color: var(--ink); margin-bottom: 32px; }
+.btn-primary {
+  background: var(--amber); color: var(--ink);
+  font-family: var(--ui); font-size: .75rem; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase;
+  padding: 18px 42px; border-radius: 100px;
+  display: inline-flex; align-items: center; gap: 10px;
+  transition: all .3s var(--ease);
+}
+.btn-primary:hover { background: var(--amber2); transform: translateY(-3px); box-shadow: 0 16px 40px rgba(196,124,42,.3); }
+
+/* ── REVEAL ── */
+.reveal { opacity: 0; transform: translateY(32px); transition: opacity .85s var(--ease), transform .85s var(--ease); }
+.reveal.vis { opacity: 1; transform: translateY(0); }
+.d1 { transition-delay: .1s; } .d2 { transition-delay: .2s; } .d3 { transition-delay: .3s; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ── FOOTER (Slim) ── */
+footer { background: var(--ink); color: rgba(255,255,255,.4); padding: 40px 60px; text-align: center; font-family: var(--ui); font-size: .65rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; }
+footer a { color: var(--amber); transition: color .2s; }
+footer a:hover { color: var(--amber2); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 1024px) {
+  .v-grid { grid-template-columns: 1fr; gap: 24px; }
+  .story-grid { grid-template-columns: 1fr; gap: 48px; }
+  .story-img { aspect-ratio: 16/9; }
+}
+@media (max-width: 768px) {
+  .nav, .about-hero, .hero-image-wrap, .mission-sec, .values-sec, .story-sec, .about-cta { padding-left: 24px; padding-right: 24px; }
+  nav ul { display: none; }
+  .hamburger { display: flex; }
+  .about-hero { padding-top: 140px; padding-bottom: 60px; }
+  .about-hero h1 { font-size: 2.8rem; }
+  .hero-image { height: 400px; }
+  .mission-text { font-size: 1.6rem; }
+  .v-title { font-size: 2.6rem; }
+  .story-content h2 { font-size: 2.4rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- Cursor -->
+<div class="cursor" id="cur"></div>
+<div class="cursor-ring" id="curR"></div>
+
+<!-- Header -->
+<header>
+  <div class="nav">
+    <a href="heimatkiste.html" class="logo">
+      <span>🧺</span>
+      <div>
+        <div>Heimatkiste</div>
+        <span class="logo-sub">Regionaler Marktplatz</span>
+      </div>
+    </a>
+    <nav>
+      <ul>
+        <li><a href="heimatkiste.html#produkte">Marktplatz</a></li>
+        <li><a href="heimatkiste.html#bauern">Erzeuger</a></li>
+        <li><a href="heimatkiste-rezepte.html">Hofküche</a></li>
+        <li><a href="heimatkiste-about.html" class="active">Über Uns</a></li>
+      </ul>
+    </nav>
+    <div class="nav-actions">
+      <button class="nav-icon-btn" onclick="window.location.href='HeimatkisteCheckout.html'">🛒</button>
+      <button class="hamburger" id="hmbBtn" aria-label="Menü öffnen">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- Mobile Nav (Simple fallback) -->
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const hmb = document.getElementById('hmbBtn');
+    hmb.addEventListener('click', () => { window.location.href = 'heimatkiste.html'; });
+  });
+</script>
+
+<!-- HERO SECTION -->
+<section class="about-hero">
+  <div class="hero-eyebrow">Unsere Geschichte</div>
+  <h1>Wahre Qualität hat<br><em>keine</em> weiten Wege.</h1>
+  <p>Wir glauben daran, dass die besten Lebensmittel direkt vor unserer Haustür wachsen. Heimatkiste verbindet dich mit den Menschen, die unsere Natur pflegen und unsere Region ernähren.</p>
+</section>
+
+<div class="hero-image-wrap">
+  <div class="hero-image">
+    <img src="https://images.unsplash.com/photo-1500651230702-0e2d8a49d4ad?auto=format&fit=crop&w=1800&q=88" alt="Traktor auf einem weiten Feld">
+  </div>
+</div>
+
+<!-- MISSION -->
+<section class="mission-sec reveal">
+  <div class="mission-text">
+    „Unsere Mission ist es, den direkten Weg vom Feld auf den Teller wiederherzustellen — für eine <em>transparente, faire</em> und genussvolle Lebensmittelkultur.“
+  </div>
+</section>
+
+<!-- VALUES -->
+<section class="values-sec">
+  <div class="v-inner">
+    <div class="v-head reveal">
+      <div class="hero-eyebrow" style="color:var(--amber2)">Wofür wir stehen</div>
+      <h2 class="v-title">Unsere <em>Werte.</em></h2>
+    </div>
+    <div class="v-grid">
+      <div class="v-card reveal">
+        <span class="v-icon">📍</span>
+        <div class="v-card-title">100% Regional</div>
+        <div class="v-card-txt">Keine anonymen Großmärkte. Jedes Produkt auf Heimatkiste stammt direkt von einem Erzeuger aus deiner Umgebung. Du weißt immer genau, wo dein Essen herkommt.</div>
+      </div>
+      <div class="v-card reveal d1">
+        <span class="v-icon">🤝</span>
+        <div class="v-card-title">Faire Bedingungen</div>
+        <div class="v-card-txt">Wir schalten Zwischenhändler aus. Das bedeutet faire und selbstbestimmte Preise für die Bauern und absolute Frische zu ehrlichen Konditionen für dich.</div>
+      </div>
+      <div class="v-card reveal d2">
+        <span class="v-icon">🌱</span>
+        <div class="v-card-title">Natürliche Qualität</div>
+        <div class="v-card-txt">Wir arbeiten eng mit Erzeugern zusammen, die großen Wert auf nachhaltigen Anbau, artgerechte Tierhaltung und handwerkliche Verarbeitung legen.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STORY / FOUNDERS -->
+<section class="story-sec">
+  <div class="story-grid">
+    <div class="story-img reveal">
+      <img src="https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=1200&q=80" alt="Hände in fruchtbarer Erde">
+    </div>
+    <div class="story-content reveal d1">
+      <div class="hero-eyebrow">Wie alles begann</div>
+      <h2>Aus Liebe zur <em>Region.</em></h2>
+      <p>Die Idee zu Heimatkiste entstand 2024 auf einem kleinen Wochenmarkt im Neckartal. Wir stellten fest, wie schwer es im Alltag oft ist, wirklich frische, lokale Lebensmittel direkt vom Hof zu beziehen, ohne am Wochenende weite Strecken abzufahren.</p>
+      <p>Gleichzeitig sahen wir, wie viele großartige, traditionelle Höfe Schwierigkeiten haben, ihre hochwertigen Produkte abseits der Supermarkt-Ketten zu vertreiben.</p>
+      <p>Also haben wir Heimatkiste gegründet: Einen digitalen Marktplatz, der es so einfach wie möglich macht, die Landwirtschaft der eigenen Region zu unterstützen und gleichzeitig fantastisch zu essen.</p>
+      <div class="founder-sign">Julian &amp; Sarah</div>
+      <div class="founder-role">Gründer von Heimatkiste</div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="about-cta reveal">
+  <h2>Bist du bereit für <em>echten</em> Geschmack?</h2>
+  <a href="heimatkiste.html#produkte" class="btn-primary">Entdecke unseren Marktplatz →</a>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  © 2026 Heimatkiste GbR · <a href="heimatkiste-legal.html">Impressum &amp; Datenschutz</a>
+</footer>
+
+<!-- SCRIPTS -->
+<script>
+  /* ── CUSTOM CURSOR ── */
+  const cur  = document.getElementById('cur');
+  const curR = document.getElementById('curR');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; cur.style.left = mx + 'px'; cur.style.top = my + 'px'; });
+  function lerpCursor() {
+    rx += (mx - rx) * .12; ry += (my - ry) * .12;
+    curR.style.left = rx + 'px'; curR.style.top = ry + 'px';
+    requestAnimationFrame(lerpCursor);
+  }
+  lerpCursor();
+  document.addEventListener('mousedown', () => cur.classList.add('click'));
+  document.addEventListener('mouseup',   () => cur.classList.remove('click'));
+  document.querySelectorAll('button, a, .v-card').forEach(el => {
+    el.addEventListener('mouseenter', () => curR.classList.add('hover'));
+    el.addEventListener('mouseleave', () => curR.classList.remove('hover'));
+  });
+
+  /* ── REVEAL OBSERVER ── */
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('vis'); });
+  }, { threshold: .1, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+
+</body>
+</html>
